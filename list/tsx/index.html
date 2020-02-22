@@ -48,13 +48,13 @@
 <script src="web.js"></script>
 <script>
 
-	$.$mol_app_bench_list_tsx.render({})
+	$.$hyoo_bench_list_tsx.render({})
 
 	window.addEventListener( 'message' , function onMessage( event ) {
 
 		switch( event.data[ 0 ] ) {
 			case 'set data' :
-				$.$mol_app_bench_list_tsx.render({
+				$.$hyoo_bench_list_tsx.render({
 					data : event.data[ 1 ] ,
 					selected : null ,
 				})

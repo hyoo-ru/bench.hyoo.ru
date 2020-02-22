@@ -2,7 +2,7 @@
 namespace $ {
 
 	@ $mol_fiber.class
-	export class $mol_app_bench_list_tsxatom_item extends $mol_jsx_view {
+	export class $hyoo_bench_list_tsxatom_item extends $mol_jsx_view {
 
 		@ $mol_mem
 		title() { return '' }
@@ -39,7 +39,7 @@ namespace $ {
 	}
 
 	@ $mol_fiber.class
-	export class $mol_app_bench_list_tsxatom extends $mol_jsx_view {
+	export class $hyoo_bench_list_tsxatom extends $mol_jsx_view {
 
 		constructor() {
 			
@@ -81,7 +81,7 @@ namespace $ {
 		render() { return (
 			<div classList={[ 'list' ]} >
 				{ ... this.data().items.map( item => (
-					<$mol_app_bench_list_tsxatom_item
+					<$hyoo_bench_list_tsxatom_item
 						id={ '/item:' + item.id }
 						title={ ()=> item.title }
 						content={ ()=> item.content }
@@ -95,7 +95,7 @@ namespace $ {
 
 	$mol_atom2_autorun( ()=>
 		$mol_jsx_attach( $mol_dom_context.document , ()=>
-			<$mol_app_bench_list_tsxatom id="/list" />
+			<$hyoo_bench_list_tsxatom id="/list" />
 		)
 	)
 

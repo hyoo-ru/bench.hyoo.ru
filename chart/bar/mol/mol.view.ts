@@ -1,14 +1,14 @@
 namespace $.$$ {
 
-	export interface $mol_app_bench_chart_bar_mol_data {
+	export interface $hyoo_bench_chart_bar_mol_data {
 		sample : string
 		graphs : number[][]
 	}
 
-	export class $mol_app_bench_chart_bar_mol extends $.$mol_app_bench_chart_bar_mol {
+	export class $hyoo_bench_chart_bar_mol extends $.$hyoo_bench_chart_bar_mol {
 		
 		@ $mol_mem
-		static data( next? : $mol_app_bench_chart_bar_mol_data , force? : $mol_mem_force ) : $mol_app_bench_chart_bar_mol_data {
+		static data( next? : $hyoo_bench_chart_bar_mol_data , force? : $mol_mem_force ) : $hyoo_bench_chart_bar_mol_data {
 			window.addEventListener( 'message' , event => {
 				switch( event.data[0] ) {
 					case 'fill' :
@@ -21,7 +21,7 @@ namespace $.$$ {
 		}
 		
 		graphs() {
-			const data = $mol_app_bench_chart_bar_mol.data()
+			const data = $hyoo_bench_chart_bar_mol.data()
 
 			return [
 				...super.graphs(),
@@ -34,7 +34,7 @@ namespace $.$$ {
 		}
 		
 		series( id : number ) {
-			return $mol_app_bench_chart_bar_mol.data().graphs[ id ] ?? [] as number[]
+			return $hyoo_bench_chart_bar_mol.data().graphs[ id ] ?? [] as number[]
 		}
 		
 		hor_series() {

@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	export class $mol_app_bench extends $.$mol_app_bench {
+	export class $hyoo_bench extends $.$hyoo_bench {
 		
 		@ $mol_mem
 		bench( next? : string ) {

@@ -1,6 +1,6 @@
 namespace $.$$ {
 
-	export interface $mol_app_bench_list_mol_data {
+	export interface $hyoo_bench_list_mol_data {
 		sample : string
 		items : {
 			id : number
@@ -9,7 +9,7 @@ namespace $.$$ {
 		}[]
 	}
 
-	export class $mol_app_bench_list_mol extends $.$mol_app_bench_list_mol {
+	export class $hyoo_bench_list_mol extends $.$hyoo_bench_list_mol {
 
 		@ $mol_mem
 		static listener() {
@@ -20,13 +20,13 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		static data( next? : $mol_app_bench_list_mol_data ) {
+		static data( next? : $hyoo_bench_list_mol_data ) {
 			this.listener()
 			return next || { sample : '' , items : [] }
 		}
 
 		items() {
-			return $mol_app_bench_list_mol.data().items
+			return $hyoo_bench_list_mol.data().items
 		}
 		
 		@ $mol_mem
