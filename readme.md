@@ -76,4 +76,4 @@ http://localhost:9080/hyoo/bench/#bench=..%2Fgeometry
 
 ## Articles
 
-- [$hyoo_bench: готовим JS бенчмарки быстро и просто](https://habrahabr.ru/post/322162/)
+- [$mol_app_bench: готовим JS бенчмарки быстро и просто](https://habrahabr.ru/post/322162/)
