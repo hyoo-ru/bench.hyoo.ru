@@ -14,15 +14,22 @@ jobs:
     
     - name: Checkout sources
       uses: actions/checkout@v1
+      with:
+        repository: 'eigenmethod/mam'
+    
+    - name: Checkout sources
+      uses: actions/checkout@v1
+      with:
+        path: 'hyoo/bench'
     
     - name: Build app
-      uses: hyoo-ru/mam_build@master
+      uses: hyoo-ru/mam_build@master2
       with:
-        module: 'hyoo/bench'
+        module: 'hyoo/bench/bench'
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
         repo-token: ${{ secrets.GH_PAT }}
-        site-directory: '.'
+        site-directory: 'hyoo/bench/bench/-'
