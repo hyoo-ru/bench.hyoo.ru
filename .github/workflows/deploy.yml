@@ -16,11 +16,11 @@ jobs:
       uses: hyoo-ru/mam_build@master2
       with:
         package: hyoo/bench
-        modules: bench list/mol list/tsx list/tsxatom
+        modules: bench list/mol list/tsx list/tsxatom bar/mol rope/mol 
         
     - name: Consolidate apps
       run: |
-        mv hyoo/bench/list hyoo/bench/bench/-
+        mv hyoo/bench/list hyoo/bench/geometry hyoo/bench/elements/chart hyoo/bench/bench/-
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
