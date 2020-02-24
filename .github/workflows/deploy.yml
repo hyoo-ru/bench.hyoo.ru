@@ -15,20 +15,10 @@ jobs:
     - name: Environment Printer
       uses: managedkaos/print-env@v1.0
     
-    - name: Checkout sources
-      uses: actions/checkout@v1
-      with:
-        repository: eigenmethod/mam
-        ref: master
-    
-    - name: Checkout sources
-      uses: actions/checkout@v1
-      with:
-        path: hyoo/bench
-    
     - name: Build app
       uses: hyoo-ru/mam_build@master2
       with:
+        package: hyoo/bench
         module: hyoo/bench/bench
     
     - name: Deploy on GitHub Pages
