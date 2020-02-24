@@ -45,7 +45,7 @@ namespace $ {
 			
 			super()
 
-			window.addEventListener( 'message' , event => {
+			$mol_dom_context.addEventListener( 'message' , event => {
 
 				switch( event.data[ 0 ] ) {
 					case 'set data' :
