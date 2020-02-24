@@ -21,7 +21,7 @@ jobs:
     - name: Consolidate apps
       run: |
         mkdir hyoo/bench/bench/-/list
-        mv hyoo/bench/list hyoo/bench/bench/-/list
+        mv hyoo/bench/list hyoo/bench/bench/-
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
