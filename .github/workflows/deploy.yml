@@ -12,6 +12,9 @@ jobs:
     
     steps:
     
+    - name: Environment Printer
+      uses: managedkaos/print-env@v1.0
+    
     - name: Checkout sources
       uses: actions/checkout@v1
       with:
