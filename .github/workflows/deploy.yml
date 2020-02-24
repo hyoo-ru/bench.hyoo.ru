@@ -24,6 +24,7 @@ jobs:
     - name: Consolidate apps
       run: |
         mkdir hyoo/bench/bench/-/list
+        cp hyoo/bench/list/index.html hyoo/bench/bench/-/list
         mv hyoo/bench/list/mol/- hyoo/bench/bench/-/list/mol
         mv hyoo/bench/list/tsx/- hyoo/bench/bench/-/list/tsx
         mv hyoo/bench/list/tsxatom/- hyoo/bench/bench/-/list/tsxatom
