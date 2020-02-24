@@ -19,7 +19,7 @@ jobs:
       uses: hyoo-ru/mam_build@master2
       with:
         package: hyoo/bench
-        module: hyoo/bench/bench
+        modules: hyoo/bench/bench hyoo/bench/list
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
