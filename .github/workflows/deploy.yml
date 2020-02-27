@@ -16,9 +16,7 @@ jobs:
       uses: hyoo-ru/mam_build@master2
       with:
         package: hyoo/bench
-        modules: bench list/mol list/tsx list/tsxatom
-        # rope/mol 
-        # bar/mol 
+        modules: bench list/mol list/tsx list/tsxatom chart/rope/mol chart/bar/mol 
         
     - name: Consolidate apps
       run: |
