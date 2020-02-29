@@ -34,14 +34,14 @@ jobs:
         mv hyoo/bench/elements ./-
         mkdir ./-/chart
         mkdir ./-/chart/bar
-        mv hyoo/bench/chart/bar/anychart ./-/bench/chart/bar
-        mv hyoo/bench/chart/bar/hcharts ./-/bench/chart/bar
-        mv hyoo/bench/chart/bar/mol/- ./-/bench/chart/bar/mol
+        mv hyoo/bench/chart/bar/anychart ./-/chart/bar
+        mv hyoo/bench/chart/bar/hcharts ./-/chart/bar
+        mv hyoo/bench/chart/bar/mol/- ./-/chart/bar/mol
         mkdir ./-/chart/rope
-        mv hyoo/bench/chart/bar/anychart ./-/bench/chart/rope
-        mv hyoo/bench/chart/bar/canvasjs ./-/bench/chart/rope
-        mv hyoo/bench/chart/bar/hcharts ./-/bench/chart/rope
-        mv hyoo/bench/chart/bar/mol/- ./-/bench/chart/rope/mol
+        mv hyoo/bench/chart/bar/anychart ./-/chart/rope
+        mv hyoo/bench/chart/bar/canvasjs ./-/chart/rope
+        mv hyoo/bench/chart/bar/hcharts ./-/chart/rope
+        mv hyoo/bench/chart/bar/mol/- ./-/chart/rope/mol
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
