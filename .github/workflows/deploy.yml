@@ -20,11 +20,32 @@ jobs:
         
     - name: Consolidate apps
       run: |
-        mv hyoo/bench/list hyoo/bench/geometry hyoo/bench/elements hyoo/bench/chart hyoo/bench/bench/-
+        makdir -
+        mkdir -/list
+        mv hyoo/bench/bench/- -/bench
+        mv hyoo/bench/list/angularjs -/list
+        mv hyoo/bench/list/native-html -/list
+        mv hyoo/bench/list/react -/list
+        mv hyoo/bench/list/sapui5 -/list
+        mv hyoo/bench/list/mol/- -/list/mol
+        mv hyoo/bench/list/tsx/- -/list/tsx
+        mv hyoo/bench/list/tsxatom/- -/list/tsxatom
+        mv hyoo/bench/geometry -
+        mv hyoo/bench/elements -
+        mkdir -/chart
+        mkdir -/chart/bar
+        mv hyoo/bench/chart/bar/anychart -/bench/chart/bar
+        mv hyoo/bench/chart/bar/hcharts -/bench/chart/bar
+        mv hyoo/bench/chart/bar/mol/- -/bench/chart/bar/mol
+        mkdir -/chart/rope
+        mv hyoo/bench/chart/bar/anychart -/bench/chart/rope
+        mv hyoo/bench/chart/bar/canvasjs -/bench/chart/rope
+        mv hyoo/bench/chart/bar/hcharts -/bench/chart/rope
+        mv hyoo/bench/chart/bar/mol/- -/bench/chart/rope/mol
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
         repo-token: ${{ secrets.GH_PAT }}
-        site-directory: hyoo/bench/bench/-
+        site-directory: ./-
