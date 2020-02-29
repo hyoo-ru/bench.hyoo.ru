@@ -20,7 +20,7 @@ jobs:
         
     - name: Consolidate apps
       run: |
-        makdir -
+        mkdir -
         mkdir -/list
         mv hyoo/bench/bench/- -/bench
         mv hyoo/bench/list/angularjs -/list
