@@ -22,8 +22,10 @@ jobs:
       run: |
         mkdir ./-
         mv hyoo/bench/CNAME ./-
+        mv hyoo/bench/index.html ./-
         touch ./-/.nojeckyll
         mkdir ./-/list
+        mv hyoo/bench/list/index.html ./-/list
         mv hyoo/bench/bench/- ./-/bench
         mv hyoo/bench/list/angularjs ./-/list
         mv hyoo/bench/list/native-html ./-/list
@@ -36,10 +38,12 @@ jobs:
         mv hyoo/bench/elements ./-
         mkdir ./-/chart
         mkdir ./-/chart/bar
+        mv hyoo/bench/chart/bar/index.html ./-/chart/bar
         mv hyoo/bench/chart/bar/anychart ./-/chart/bar
         mv hyoo/bench/chart/bar/hcharts ./-/chart/bar
         mv hyoo/bench/chart/bar/mol/- ./-/chart/bar/mol
         mkdir ./-/chart/rope
+        mv hyoo/bench/chart/rope/index.html ./-/chart/rope
         mv hyoo/bench/chart/rope/anychart ./-/chart/rope
         mv hyoo/bench/chart/rope/canvasjs ./-/chart/rope
         mv hyoo/bench/chart/rope/hcharts ./-/chart/rope
