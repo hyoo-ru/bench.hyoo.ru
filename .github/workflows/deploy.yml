@@ -21,6 +21,8 @@ jobs:
     - name: Consolidate apps
       run: |
         mkdir ./-
+        mv CNAME ./-
+        touch ./-/.nojeckyll
         mkdir ./-/list
         mv hyoo/bench/bench/- ./-/bench
         mv hyoo/bench/list/angularjs ./-/list
