@@ -1,4 +1,4 @@
-$hyoo_bench $mol_view
+$hyoo_bench_app $mol_view
 	sub /
 		<= Sandbox_page $mol_page
 			title <= sandbox_title @ \Sandbox

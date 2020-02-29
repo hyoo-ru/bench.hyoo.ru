@@ -1,79 +1,79 @@
-[hyoo_bench] {
+[hyoo_bench_app] {
 	margin: 0;
 	display: flex;
 	align-self: stretch;
 	flex-direction: row-reverse;
 }
 
-[hyoo_bench_main_page] {
+[hyoo_bench_app_main_page] {
 	flex: 10 2 50rem;
 }
 
-[hyoo_bench_main_page_body] {
+[hyoo_bench_app_main_page_body] {
 	display: flex;
 	overflow: auto;
 	z-index: 1;
 }
 
-[hyoo_bench_addon_page] {
+[hyoo_bench_app_addon_page] {
 	flex: 1 1 16rem;
 }
 
-[hyoo_bench_sandbox_page] {
+[hyoo_bench_app_sandbox_page] {
 	flex: 1000 1 20rem;
 }
 
-[hyoo_bench_menu] {
+[hyoo_bench_app_menu] {
 	padding: .5rem;
 }
 
-[hyoo_bench_menu] > * {
+[hyoo_bench_app_menu] > * {
 	margin: 0;
 }
 
-[hyoo_bench_inform] {
+[hyoo_bench_app_inform] {
 	flex: 0 1 auto;
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
 }
-[hyoo_bench_result_page] {
+[hyoo_bench_app_result_page] {
 	flex: 1 1 auto;
 }
 
-[hyoo_bench_sandbox] {
+[hyoo_bench_app_sandbox] {
 	border: none;
 }
 
-[hyoo_bench_descr] {
+[hyoo_bench_app_descr] {
 	flex: 0 1 auto;
 	max-width: none;
 }
 
-[hyoo_bench_param_fields] {
+[hyoo_bench_app_param_fields] {
 	flex: none;
 }
 
-[hyoo_bench_result] {
+[hyoo_bench_app_result] {
 	flex: 1000 1 50%;
 	font-size: .9rem;
 }
 
-[hyoo_bench_menu] {
+[hyoo_bench_app_menu] {
 	display: flex;
 	flex-direction: column;
 }
 
-[hyoo_bench_result_head] {
+[hyoo_bench_app_result_head] {
 	cursor: pointer;
 }
 
-[hyoo_bench_result_cell_number] {
+[hyoo_bench_app_result_cell_number] {
 	white-space: nowrap;
 	text-align: right;
 }
 
-[hyoo_bench_result_portion] {
+[hyoo_bench_app_result_portion] {
 	display: inline-flex;
 	vertical-align: bottom;
 	margin-left: .5rem;

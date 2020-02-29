@@ -1,10 +1,10 @@
 namespace $.$$ {
 	
-	export class $hyoo_bench extends $.$hyoo_bench {
+	export class $hyoo_bench_app extends $.$hyoo_bench_app {
 		
 		@ $mol_mem
 		bench( next? : string ) {
-			return $mol_state_arg.value( this.state_key( 'bench' ) , next ) || '../list/'
+			return $mol_state_arg.value( this.state_key( 'bench' ) , next ) || '//bench.hyoo.ru/list/'
 		}
 		
 		@ $mol_mem
