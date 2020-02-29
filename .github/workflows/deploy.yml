@@ -38,10 +38,10 @@ jobs:
         mv hyoo/bench/chart/bar/hcharts ./-/chart/bar
         mv hyoo/bench/chart/bar/mol/- ./-/chart/bar/mol
         mkdir ./-/chart/rope
-        mv hyoo/bench/chart/bar/anychart ./-/chart/rope
-        mv hyoo/bench/chart/bar/canvasjs ./-/chart/rope
-        mv hyoo/bench/chart/bar/hcharts ./-/chart/rope
-        mv hyoo/bench/chart/bar/mol/- ./-/chart/rope/mol
+        mv hyoo/bench/chart/rope/anychart ./-/chart/rope
+        mv hyoo/bench/chart/rope/canvasjs ./-/chart/rope
+        mv hyoo/bench/chart/rope/hcharts ./-/chart/rope
+        mv hyoo/bench/chart/rope/mol/- ./-/chart/rope/mol
     
     - name: Deploy on GitHub Pages
       if: github.ref == 'refs/heads/master'
