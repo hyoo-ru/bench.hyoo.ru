@@ -1,4 +1,6 @@
-function require( path ){ return $node[ path ] };
+require( "source-map-support" ).install(); var exports = void 0;
+;
+process.on( 'unhandledRejection' , up => { throw up } );
 
 var $node = $node || {}
 void function( module ) { var exports = module.exports = this; function require( id ) { return $node[ id.replace( /^.\// , "../mol/" ) ] }; 
@@ -27,7 +29,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 /// 	namespace $.$$ { export var x = 2 } // overrides
 /// 	namespace $.$$ { console.log( x , y ) } // usage
 ///
-var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , self ) : self
+var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , global ) : global
 $.$$ = $
 
 $.$mol = $  // deprecated
@@ -367,45 +369,23 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_log_debug(next) {
-        if (next !== undefined) {
-            if (next == null) {
-                sessionStorage.removeItem('$mol_log_debug()');
-            }
-            else {
-                sessionStorage.setItem('$mol_log_debug()', next);
-            }
-        }
-        return sessionStorage.getItem('$mol_log_debug()');
+    let debug;
+    function $mol_log_debug(next = debug) {
+        return debug = next;
     }
     $.$mol_log_debug = $mol_log_debug;
 })($ || ($ = {}));
-//log_debug.web.js.map
+//log_debug.node.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    let filter = undefined;
-    $.$mol_log_filter = function $mol_log_filter(next) {
-        if (next !== undefined) {
-            if (next == null) {
-                sessionStorage.removeItem('$mol_log_filter()');
-            }
-            else {
-                sessionStorage.setItem('$mol_log_filter()', next);
-            }
-            filter = next;
-        }
-        if (filter !== undefined)
-            return filter;
-        return filter = sessionStorage.getItem('$mol_log_filter()');
+    let filter;
+    $.$mol_log_filter = function $mol_log_filter(next = filter) {
+        return filter = next;
     };
-    if (typeof sessionStorage === 'undefined')
-        $.$mol_log_filter = (next = null) => filter = next;
-    if ($.$mol_log_filter() == null)
-        console.info('Use $mol_log_filter( needle : string|null ) to toggle logs');
 })($ || ($ = {}));
-//log_filter.web.js.map
+//log_filter.node.js.map
 ;
 "use strict";
 var $;
@@ -520,13 +500,6 @@ var $;
         $.$mol_log2_legend.info($.$mol_log2_token_empty, 'Use `$mol_log2.excludes : null | RegExp[]` to toggle logs');
 })($ || ($ = {}));
 //log2.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    console.debug($.$mol_log2_legend);
-})($ || ($ = {}));
-//log2.web.js.map
 ;
 "use strict";
 var $;
@@ -1373,19 +1346,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-})($ || ($ = {}));
-//context.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_dom_context = self;
-})($ || ($ = {}));
-//context.web.js.map
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_dict_key(value) {
         if (!value)
             return value;
@@ -1501,35 +1461,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_merge_dict(target, source) {
-        let result = {};
-        for (let key in target)
-            result[key] = target[key];
-        for (let key in source)
-            result[key] = source[key];
-        return result;
-    }
-    $.$mol_merge_dict = $mol_merge_dict;
-})($ || ($ = {}));
-//dict.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_state_arg extends $.$mol_object {
         constructor(prefix = '') {
             super();
             this.prefix = prefix;
         }
-        static href(next, force) {
-            if (next === undefined)
-                return $.$mol_dom_context.location.href;
-            history.replaceState(history.state, $.$mol_dom_context.document.title, next);
-            return next;
+        static href(next) {
+            return next || process.argv.slice(2).join(' ');
         }
         static dict(next) {
-            var href = this.href(next && this.make_link(next)).split(/#/)[1] || '';
-            var chunks = href.split(/[\/\?#&;]/g);
+            if (next !== void 0)
+                this.href(this.make_link(next));
+            var href = this.href();
+            var chunks = href.split(' ');
             var params = {};
             chunks.forEach(chunk => {
                 if (!chunk)
@@ -1539,36 +1483,31 @@ var $;
             });
             return params;
         }
-        static dict_cut(except) {
-            const dict = this.dict();
-            const cut = {};
-            for (const key in dict) {
-                if (except.indexOf(key) >= 0)
-                    continue;
-                cut[key] = dict[key];
-            }
-            return cut;
-        }
         static value(key, next) {
-            const nextDict = (next === void 0) ? void 0 : $.$mol_merge_dict(this.dict(), { [key]: next });
-            const next2 = this.dict(nextDict)[key];
-            return (next2 == null) ? null : next2;
+            if (next === void 0)
+                return this.dict()[key] || null;
+            this.href(this.link({ [key]: next }));
+            return next;
         }
         static link(next) {
-            return this.make_link($.$mol_merge_dict(this.dict_cut(Object.keys(next)), next));
+            var params = {};
+            var prev = this.dict();
+            for (var key in prev) {
+                params[key] = prev[key];
+            }
+            for (var key in next) {
+                params[key] = next[key];
+            }
+            return this.make_link(params);
         }
         static make_link(next) {
-            const chunks = [];
-            for (let key in next) {
+            var chunks = [];
+            for (var key in next) {
                 if (null == next[key])
                     continue;
-                const val = next[key];
-                chunks.push([key].concat(val ? [val] : []).map(this.encode).join('='));
+                chunks.push([key].concat(next[key]).map(encodeURIComponent).join('='));
             }
-            return new URL('#' + chunks.join('/'), $.$mol_dom_context.location.href).toString();
-        }
-        static encode(str) {
-            return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29');
+            return chunks.join(' ');
         }
         value(key, next) {
             return this.constructor.value(this.prefix + key, next);
@@ -1593,16 +1532,10 @@ var $;
     ], $mol_state_arg, "dict", null);
     __decorate([
         $.$mol_mem_key
-    ], $mol_state_arg, "dict_cut", null);
-    __decorate([
-        $.$mol_mem_key
     ], $mol_state_arg, "value", null);
     $.$mol_state_arg = $mol_state_arg;
-    self.addEventListener('hashchange', $.$mol_fiber_root($.$mol_log_group('$mol_state_arg hashchange', (event) => {
-        $mol_state_arg.href($.$mol_dom_context.location.href);
-    })));
 })($ || ($ = {}));
-//arg.web.js.map
+//arg.node.js.map
 ;
 "use strict";
 var $;
@@ -1685,6 +1618,46 @@ var $;
 //text.js.map
 ;
 "use strict";
+var $node = new Proxy({}, { get(target, name, wrapper) {
+        const path = require('path');
+        const fs = require('fs');
+        const mod = require('module');
+        if (mod.builtinModules.indexOf(name) >= 0)
+            return require(name);
+        let dir = path.resolve('.');
+        const suffix = `./node_modules/${name}`;
+        while (!fs.existsSync(path.join(dir, suffix))) {
+            const parent = path.resolve(dir, '..');
+            if (parent === dir) {
+                $.$mol_exec('.', 'npm', 'install', name);
+                try {
+                    $.$mol_exec('.', 'npm', 'install', '@types/' + name);
+                }
+                catch (_a) { }
+                break;
+            }
+            else {
+                dir = parent;
+            }
+        }
+        return require(name);
+    } });
+//node.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+})($ || ($ = {}));
+//context.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
+})($ || ($ = {}));
+//context.node.js.map
+;
+"use strict";
 var $;
 (function ($) {
     class $mol_state_local extends $.$mol_object {
@@ -1738,17 +1711,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    self.addEventListener('storage', event => {
-        if (!event.key)
-            return;
-        $.$mol_state_local.value(event.key, undefined, $.$mol_mem_force_cache);
-    });
-})($ || ($ = {}));
-//local.web.js.map
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_const(value) {
         var getter = (() => value);
         getter['()'] = value;
@@ -1762,166 +1724,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_dom_parse(text, type = 'application/xhtml+xml') {
-        const parser = new $.$mol_dom_context.DOMParser();
-        const doc = parser.parseFromString(text, type);
-        const error = doc.getElementsByTagName('parsererror')[0];
-        if (error)
-            throw new Error(error.textContent);
-        return doc;
-    }
-    $.$mol_dom_parse = $mol_dom_parse;
-})($ || ($ = {}));
-//parse.js.map
-;
-"use strict";
-var $node = $node || {};
-//node.web.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_fetch_response extends $.$mol_object2 {
-        constructor(native) {
-            super();
-            this.native = native;
-        }
-        headers() {
-            return this.native.headers;
-        }
-        mime() {
-            return this.headers().get('content-type');
-        }
-        stream() {
-            return this.native.body;
-        }
-        text() {
-            const buffer = this.buffer();
-            const native = this.native;
-            const mime = native.headers.get('content-type') || '';
-            const [, charset] = /charset=(.*)/.exec(mime) || [, 'utf-8'];
-            const decoder = new TextDecoder(charset);
-            return decoder.decode(buffer);
-        }
-        json() {
-            const response = this.native;
-            const parse = $.$mol_fiber_sync(response.json);
-            return parse.call(response);
-        }
-        buffer() {
-            const response = this.native;
-            const parse = $.$mol_fiber_sync(response.arrayBuffer);
-            return parse.call(response);
-        }
-        xml() {
-            return $.$mol_dom_parse(this.text(), 'application/xml');
-        }
-        xhtml() {
-            return $.$mol_dom_parse(this.text(), 'application/xhtml+xml');
-        }
-        html() {
-            return $.$mol_dom_parse(this.text(), 'text/html');
-        }
-    }
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "stream", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "text", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "json", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "buffer", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "xml", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "xhtml", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch_response.prototype, "html", null);
-    $.$mol_fetch_response = $mol_fetch_response;
-    class $mol_fetch extends $.$mol_object2 {
-        static response(input, init) {
-            const response = this.request(input, init);
-            if (Math.floor(response.status / 100) === 2)
-                return new $mol_fetch_response(response);
-            throw new Error(response.statusText || `HTTP Error ${response.status}`);
-        }
-        static stream(input, init) {
-            return this.response(input, init).stream();
-        }
-        static text(input, init) {
-            return this.response(input, init).text();
-        }
-        static json(input, init) {
-            return this.response(input, init).json();
-        }
-        static buffer(input, init) {
-            this.response(input, init).buffer();
-        }
-        static xml(input, init) {
-            return this.response(input, init).xml();
-        }
-        static xhtml(input, init) {
-            return this.response(input, init).xhtml();
-        }
-        static html(input, init) {
-            return this.response(input, init).html();
-        }
-    }
-    $mol_fetch.request = $.$mol_fiber_sync((input, init = {}) => {
-        if (typeof AbortController === 'function') {
-            var controller = new AbortController();
-            init.signal = controller.signal;
-            const fiber = $.$mol_fiber.current;
-            fiber.abort = () => {
-                if (fiber.cursor === -2)
-                    return true;
-                controller.abort();
-                return true;
-            };
-        }
-        let native = $.$mol_dom_context.fetch;
-        if (!native)
-            native = $node['node-fetch'];
-        return native(input, init);
-    });
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "response", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "stream", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "text", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "json", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "buffer", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "xml", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "xhtml", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_fetch, "html", null);
-    $.$mol_fetch = $mol_fetch;
-})($ || ($ = {}));
-//fetch.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_file extends $.$mol_object {
         static absolute(path) {
             return $mol_file.make({
@@ -1929,50 +1731,166 @@ var $;
             });
         }
         static relative(path) {
-            return this.absolute(new URL(path, this.base).toString());
+            return $mol_file.absolute($node.path.resolve(path).replace(/\\/g, '/'));
         }
         path() {
             return '.';
         }
+        watcher() {
+            const watcher = $node.chokidar.watch(this.path(), {
+                persistent: true,
+                ignored: /(^\.|___$)/,
+                depth: 0,
+                ignoreInitial: true,
+            });
+            watcher.on('all', (type, path) => $.$mol_fiber_unlimit(() => {
+                const file = $mol_file.relative(path.replace(/\\/g, '/'));
+                file.stat(undefined, $.$mol_mem_force_cache);
+                if (type === 'change')
+                    return;
+                file.parent().stat(undefined, $.$mol_mem_force_cache);
+            }));
+            watcher.on('error', (error) => {
+                this.stat(error, $.$mol_mem_force_cache);
+            });
+            return watcher;
+        }
+        stat(next, force) {
+            const path = this.path();
+            let stat;
+            stat = next !== null && next !== void 0 ? next : $node.fs.statSync(path);
+            this.parent().watcher();
+            return stat;
+        }
+        version() {
+            return this.stat().mtime.getTime().toString(36).toUpperCase();
+        }
+        exists(next) {
+            let exists = true;
+            try {
+                this.stat();
+            }
+            catch (error) {
+                if (error.code === 'ENOENT')
+                    exists = false;
+                else
+                    return $.$mol_fail_hidden(error);
+            }
+            if (next === undefined) {
+                return exists;
+            }
+            else {
+                if (next === exists)
+                    return exists;
+                if (next) {
+                    this.parent().exists(true);
+                    $node.fs.mkdirSync(this.path());
+                }
+                else {
+                    $node.fs.unlinkSync(this.path());
+                }
+                this.stat(undefined, $.$mol_mem_force_cache);
+                return next;
+            }
+        }
         parent() {
             return this.resolve('..');
         }
+        type() {
+            const stat = this.stat();
+            if (stat.isFile())
+                return 'file';
+            if (stat.isDirectory())
+                return 'dir';
+            if (stat.isBlockDevice())
+                return 'blocks';
+            if (stat.isCharacterDevice())
+                return 'chars';
+            if (stat.isSymbolicLink())
+                return 'link';
+            if (stat.isFIFO())
+                return 'fifo';
+            if (stat.isSocket())
+                return 'socket';
+            throw new Error(`Unknown file type ${this.path()}`);
+        }
         name() {
-            return this.path().replace(/^.*\//, '');
+            return $node.path.basename(this.path());
         }
         ext() {
-            var match = /((?:\.\w+)+)$/.exec(this.path());
-            return match && match[1].substring(1);
+            const match = /((?:\.\w+)+)$/.exec(this.path());
+            return match ? match[1].substring(1) : '';
         }
         content(next, force) {
-            return $.$mol_fetch.text(this.path());
+            if (next === undefined) {
+                this.stat();
+                return $node.fs.readFileSync(this.path());
+            }
+            this.parent().exists(true);
+            $node.fs.writeFileSync(this.path(), next);
+            return next;
+        }
+        reader() {
+            return $node.fs.createReadStream(this.path());
+        }
+        writer() {
+            return $node.fs.createWriteStream(this.path());
+        }
+        sub() {
+            if (!this.exists())
+                return [];
+            if (this.type() !== 'dir')
+                return [];
+            return $node.fs.readdirSync(this.path())
+                .filter(name => !/^\.+$/.test(name))
+                .map(name => this.resolve(name));
         }
         resolve(path) {
-            let res = this.path() + '/' + path;
-            while (true) {
-                let prev = res;
-                res = res.replace(/\/[^\/.]+\/\.\.\//, '/');
-                if (prev === res)
-                    break;
-            }
-            return this.constructor.absolute(res);
+            return this.constructor.relative($node.path.join(this.path(), path));
         }
         relate(base = this.constructor.relative('.')) {
-            throw new Error('Not implemented yet');
+            return $node.path.relative(base.path(), this.path()).replace(/\\/g, '/');
+        }
+        append(next) {
+            $node.fs.appendFileSync(this.path(), next);
+        }
+        find(include, exclude) {
+            let found = [];
+            this.sub().forEach(child => {
+                if (exclude && child.path().match(exclude))
+                    return;
+                if (!include || child.path().match(include))
+                    found.push(child);
+                if (child.type() === 'dir')
+                    found = found.concat(child.find(include, exclude));
+            });
+            return found;
         }
     }
-    $mol_file.base = $.$mol_dom_context.document
-        ? new URL('.', $.$mol_dom_context.document.currentScript['src']).toString()
-        : '';
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "watcher", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "stat", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "version", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "type", null);
     __decorate([
         $.$mol_mem
     ], $mol_file.prototype, "content", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "sub", null);
     __decorate([
         $.$mol_mem_key
     ], $mol_file, "absolute", null);
     $.$mol_file = $mol_file;
 })($ || ($ = {}));
-//file.web.js.map
+//file.node.js.map
 ;
 "use strict";
 var $;
@@ -2063,22 +1981,16 @@ var $;
 var $;
 (function ($) {
     class $mol_window extends $.$mol_object {
-        static size(next, force) {
+        static size(next) {
             return next || {
-                width: self.innerWidth,
-                height: self.innerHeight,
+                width: 1024,
+                height: 768,
             };
         }
     }
-    __decorate([
-        $.$mol_mem
-    ], $mol_window, "size", null);
     $.$mol_window = $mol_window;
-    self.addEventListener('resize', $.$mol_fiber_root($.$mol_log_group(`$mol_window resize`, () => {
-        $mol_window.size(undefined, $.$mol_mem_force_cache);
-    })));
 })($ || ($ = {}));
-//window.web.js.map
+//window.node.js.map
 ;
 "use strict";
 var $;
@@ -2095,24 +2007,6 @@ var $;
     $.$mol_atom2_autorun = $mol_atom2_autorun;
 })($ || ($ = {}));
 //autorun.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_after_timeout extends $.$mol_object2 {
-        constructor(delay, task) {
-            super();
-            this.delay = delay;
-            this.task = task;
-            this.id = setTimeout(task, delay);
-        }
-        destructor() {
-            clearTimeout(this.id);
-        }
-    }
-    $.$mol_after_timeout = $mol_after_timeout;
-})($ || ($ = {}));
-//timeout.js.map
 ;
 "use strict";
 var $;
@@ -2157,20 +2051,6 @@ var $;
     $.$mol_view_selection = $mol_view_selection;
 })($ || ($ = {}));
 //selection.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    if ($.$mol_dom_context.document) {
-        $.$mol_dom_context.document.addEventListener('focus', (event) => {
-            new $.$mol_after_tick($.$mol_fiber_root(() => $.$mol_view_selection.focus(event)));
-        }, true);
-        $.$mol_dom_context.document.addEventListener('blur', (event) => {
-            new $.$mol_after_timeout(0, $.$mol_fiber_root(() => $.$mol_view_selection.blur(event)));
-        }, true);
-    }
-})($ || ($ = {}));
-//selection.web.js.map
 ;
 "use strict";
 var $;
@@ -2350,23 +2230,6 @@ var $;
     $.$mol_style_attach("mol/skin/skin.css", ":root {\n\t--mol_skin_font: 1rem/1.5 \"-apple-system\", BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n\t--mol_skin_font_monospace: Monaco, monospace;\n}\n\n/* Deprecated, use mol_theme instead */\n:root {\n\n\t--mol_skin_outline: 0 0 0 1px var(--mol_theme_line);\n\t\n\t--mol_skin_base: #3a8ccb;\n\t--mol_skin_base_text: white;\n\t\n\t--mol_skin_current: var(--mol_skin_base);\n\t--mol_skin_current_text: white;\n\t--mol_skin_current_line: #1471b8;\n\t\n\t--mol_skin_button: var(--mol_skin_card);\n\t--mol_skin_hover: rgba( 0 , 0 , 0 , .05 );\n\t\n\t--mol_skin_round: 0px;\n\t\n\t--mol_skin_focus_line: rgba( 0 , 0 , 0 , .2 );\n\t--mol_skin_focus_outline: 0 0 0 1px var(--mol_skin_focus_line);\n\t\n\t--mol_skin_float: var(--mol_skin_focus_outline);\n\n\t--mol_skin_passive: #eee;\n\t--mol_skin_passive_text: rgba( 0 , 0 , 0 , .5 );\n\t\n\t--mol_skin_light: #fcfcfc;\n\t--mol_skin_light_line: rgba( 230 , 230 , 230 , .75 );\n\t--mol_skin_light_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_skin_light_hover: #f7f7f7;\n\t--mol_skin_light_outline: 0 0 0 1px var(--mol_theme_line);\n\n\t--mol_skin_card: var(--mol_theme_back);\n\t--mol_skin_card_text: var(--mol_theme_text);\n\t\n\t--mol_skin_accent: #dd0e3e;\n\t--mol_skin_accent_text: white;\n\t--mol_skin_accent_hover: #c50d37;\n\n\t--mol_skin_warn: rgba( 255 , 50 , 50 , 0.75 );\n\t--mol_skin_warn_text: white;\n\t--mol_skin_warn_hover: color( var(--mol_skin_warn) lightness(-5%) );\n\n\t--mol_skin_good: #96DAA9;\n\t--mol_skin_good_text: black;\n\n\t--mol_skin_bad: #CC5252;\n\t--mol_skin_bad_text: white;\n}\n");
 })($ || ($ = {}));
 //skin.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_after_frame extends $.$mol_object2 {
-        constructor(task) {
-            super();
-            this.task = task;
-            this.id = requestAnimationFrame(task);
-        }
-        destructor() {
-            cancelAnimationFrame(this.id);
-        }
-    }
-    $.$mol_after_frame = $mol_after_frame;
-})($ || ($ = {}));
-//frame.web.js.map
 ;
 "use strict";
 var $;
@@ -2660,28 +2523,6 @@ var $;
     $.$mol_style_attach("mol/view/view.css", "[mol_view] {\n\ttransition-property: background-color, height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n\tbox-sizing: border-box;\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t135deg,\n\t\trgba(255,220,220,1),\n\t\trgba(255,220,220,1) 11px,\n\t\trgba(255,255,220,1) 10px,\n\t\trgba(255,255,220,1) 20px\n\t);\n\tbackground-size: 28px 28px;\n\tcolor: black;\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: 200vmax 0;\n\t}\n}\n\n@keyframes mol_view_wait_show {\n\tto {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t\t45deg,\n\t\t\thsla( 0 , 0% , 50% , .1 ) 0% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 5% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 45% ,\n\t\t\thsla( 0 , 0% , 50% , .1 ) 50% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 55% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 95% ,\n\t\t\thsla( 0 , 0% , 50% , .1 ) 100%\n\t\t);\n\t\tbackground-size: 200vmax 200vmax;\n\t}\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait_show .5s .5s linear forwards , mol_view_wait_move 1s linear infinite;\n}\n");
 })($ || ($ = {}));
 //view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    if ($.$mol_dom_context.document) {
-        const event_name = self.cordova ? 'deviceready' : 'DOMContentLoaded';
-        $.$mol_dom_context.document.addEventListener(event_name, $.$mol_fiber_root($.$mol_log2.func((event) => {
-            $.$mol_view.autobind();
-            $.$mol_defer.run();
-        })));
-        function $mol_view_watch() {
-            $.$mol_fiber_unlimit(() => {
-                for (const view of $.$mol_view.watchers) {
-                    view.view_rect_cache(view.dom_node().getBoundingClientRect().toJSON());
-                }
-                new $.$mol_after_frame($mol_view_watch);
-            });
-        }
-        $mol_view_watch();
-    }
-})($ || ($ = {}));
-//view.web.js.map
 ;
 "use strict";
 var $;
@@ -3063,6 +2904,37 @@ var $;
     $.$mol_memo = $mol_memo;
 })($ || ($ = {}));
 //memo.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_timeout extends $.$mol_object2 {
+        constructor(delay, task) {
+            super();
+            this.delay = delay;
+            this.task = task;
+            this.id = setTimeout(task, delay);
+        }
+        destructor() {
+            clearTimeout(this.id);
+        }
+    }
+    $.$mol_after_timeout = $mol_after_timeout;
+})($ || ($ = {}));
+//timeout.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_after_frame extends $.$mol_after_timeout {
+        constructor(task) {
+            super(16, task);
+            this.task = task;
+        }
+    }
+    $.$mol_after_frame = $mol_after_frame;
+})($ || ($ = {}));
+//frame.node.js.map
 ;
 "use strict";
 var $;
@@ -6576,7 +6448,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_bench extends $.$mol_view {
+    class $hyoo_bench_app extends $.$mol_view {
         sub() {
             return [this.Sandbox_page(), this.Main_page(), this.Addon_page()];
         }
@@ -6588,7 +6460,7 @@ var $;
             })(new this.$.$mol_page());
         }
         sandbox_title() {
-            return this.$.$mol_locale.text("$hyoo_bench_sandbox_title");
+            return this.$.$mol_locale.text("$hyoo_bench_app_sandbox_title");
         }
         Sandbox() {
             return ((obj) => {
@@ -6658,7 +6530,7 @@ var $;
             })(new this.$.$mol_page());
         }
         addon_title() {
-            return this.$.$mol_locale.text("$hyoo_bench_addon_title");
+            return this.$.$mol_locale.text("$hyoo_bench_app_addon_title");
         }
         Filter() {
             return ((obj) => {
@@ -6717,75 +6589,75 @@ var $;
             return 0;
         }
         result_col_title_sample() {
-            return this.$.$mol_locale.text("$hyoo_bench_result_col_title_sample");
+            return this.$.$mol_locale.text("$hyoo_bench_app_result_col_title_sample");
         }
     }
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Sandbox_page", null);
+    ], $hyoo_bench_app.prototype, "Sandbox_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Sandbox", null);
+    ], $hyoo_bench_app.prototype, "Sandbox", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Main_page", null);
+    ], $hyoo_bench_app.prototype, "Main_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Inform", null);
+    ], $hyoo_bench_app.prototype, "Inform", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Descr_scroll", null);
+    ], $hyoo_bench_app.prototype, "Descr_scroll", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Descr", null);
+    ], $hyoo_bench_app.prototype, "Descr", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Param_fields", null);
+    ], $hyoo_bench_app.prototype, "Param_fields", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Result", null);
+    ], $hyoo_bench_app.prototype, "Result", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "result_col_sort", null);
+    ], $hyoo_bench_app.prototype, "result_col_sort", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Addon_page", null);
+    ], $hyoo_bench_app.prototype, "Addon_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Filter", null);
+    ], $hyoo_bench_app.prototype, "Filter", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "filter", null);
+    ], $hyoo_bench_app.prototype, "filter", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Menu", null);
+    ], $hyoo_bench_app.prototype, "Menu", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Menu_option", null);
+    ], $hyoo_bench_app.prototype, "Menu_option", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "menu_option_checked", null);
+    ], $hyoo_bench_app.prototype, "menu_option_checked", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Param", null);
+    ], $hyoo_bench_app.prototype, "Param", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Param_value", null);
+    ], $hyoo_bench_app.prototype, "Param_value", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "param_value", null);
-    $.$hyoo_bench = $hyoo_bench;
+    ], $hyoo_bench_app.prototype, "param_value", null);
+    $.$hyoo_bench_app = $hyoo_bench_app;
 })($ || ($ = {}));
-//bench.view.tree.js.map
+//app.view.tree.js.map
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_bench extends $.$hyoo_bench {
+        class $hyoo_bench_app extends $.$hyoo_bench_app {
             bench(next) {
-                return $.$mol_state_arg.value(this.state_key('bench'), next) || '../list/';
+                return $.$mol_state_arg.value(this.state_key('bench'), next) || '//bench.hyoo.ru/list/';
             }
             sandbox() {
                 const next = this.Sandbox().dom_node();
@@ -6917,68 +6789,90 @@ var $;
         }
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "bench", null);
+        ], $hyoo_bench_app.prototype, "bench", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "sandbox", null);
+        ], $hyoo_bench_app.prototype, "sandbox", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "command_last", null);
+        ], $hyoo_bench_app.prototype, "command_last", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "command_result", null);
+        ], $hyoo_bench_app.prototype, "command_result", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "meta", null);
+        ], $hyoo_bench_app.prototype, "meta", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "samples_all", null);
+        ], $hyoo_bench_app.prototype, "samples_all", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "samples", null);
+        ], $hyoo_bench_app.prototype, "samples", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "steps", null);
+        ], $hyoo_bench_app.prototype, "steps", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "title", null);
+        ], $hyoo_bench_app.prototype, "title", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "description", null);
+        ], $hyoo_bench_app.prototype, "description", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "result_sample", null);
+        ], $hyoo_bench_app.prototype, "result_sample", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "result", null);
+        ], $hyoo_bench_app.prototype, "result", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "sandbox_title", null);
+        ], $hyoo_bench_app.prototype, "sandbox_title", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "result_col_sort", null);
+        ], $hyoo_bench_app.prototype, "result_col_sort", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "menu_options", null);
+        ], $hyoo_bench_app.prototype, "menu_options", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "menu_option_checked", null);
+        ], $hyoo_bench_app.prototype, "menu_option_checked", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "param_value", null);
+        ], $hyoo_bench_app.prototype, "param_value", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "param_dict", null);
-        $$.$hyoo_bench = $hyoo_bench;
+        ], $hyoo_bench_app.prototype, "param_dict", null);
+        $$.$hyoo_bench_app = $hyoo_bench_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//bench.view.js.map
+//app.view.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/bench/bench/bench.view.css", "[hyoo_bench] {\n\tmargin: 0;\n\tdisplay: flex;\n\talign-self: stretch;\n\tflex-direction: row-reverse;\n}\n\n[hyoo_bench_main_page] {\n\tflex: 10 2 50rem;\n}\n\n[hyoo_bench_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n}\n\n[hyoo_bench_addon_page] {\n\tflex: 1 1 16rem;\n}\n\n[hyoo_bench_sandbox_page] {\n\tflex: 1000 1 20rem;\n}\n\n[hyoo_bench_menu] {\n\tpadding: .5rem;\n}\n\n[hyoo_bench_menu] > * {\n\tmargin: 0;\n}\n\n[hyoo_bench_inform] {\n\tflex: 0 1 auto;\n\toverflow: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n[hyoo_bench_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n}\n\n[hyoo_bench_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_result] {\n\tflex: 1000 1 50%;\n\tfont-size: .9rem;\n}\n\n[hyoo_bench_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_bench_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
+    $.$mol_style_attach("hyoo/bench/app/app.view.css", "[hyoo_bench_app] {\n\tmargin: 0;\n\tdisplay: flex;\n\talign-self: stretch;\n\tflex-direction: row-reverse;\n}\n\n[hyoo_bench_app_main_page] {\n\tflex: 10 2 50rem;\n}\n\n[hyoo_bench_app_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n}\n\n[hyoo_bench_app_addon_page] {\n\tflex: 1 1 16rem;\n}\n\n[hyoo_bench_app_sandbox_page] {\n\tflex: 1000 1 20rem;\n}\n\n[hyoo_bench_app_menu] {\n\tpadding: .5rem;\n}\n\n[hyoo_bench_app_menu] > * {\n\tmargin: 0;\n}\n\n[hyoo_bench_app_inform] {\n\tflex: 0 1 auto;\n\toverflow: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n[hyoo_bench_app_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_app_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_app_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n}\n\n[hyoo_bench_app_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_app_result] {\n\tflex: 1000 1 50%;\n\tfont-size: .9rem;\n}\n\n[hyoo_bench_app_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_bench_app_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_app_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_app_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
 })($ || ($ = {}));
-//bench.view.css.js.map
-
-//# sourceMappingURL=web.js.map
+//app.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_exec(dir, command, ...args) {
+        let [app, ...args0] = command.split(' ');
+        args = [...args0, ...args];
+        console.info(`${$node.colorette.gray($node.path.relative('', dir))}> ${$node.colorette.blue(app)} ${$node.colorette.cyan(args.join(' '))}`);
+        var res = $node['child_process'].spawnSync(app, args, {
+            cwd: $node.path.resolve(dir),
+            shell: true,
+        });
+        if (res.status || res.error)
+            return $.$mol_fail(res.error || new Error(res.stderr.toString()));
+        if (!res.stdout)
+            res.stdout = new Buffer('');
+        return res;
+    }
+    $.$mol_exec = $mol_exec;
+})($ || ($ = {}));
+//exec.node.js.map
+;
+export default $
+//# sourceMappingURL=node.esm.js.map

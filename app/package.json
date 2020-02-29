@@ -1,5 +1,5 @@
 {
-  "name": "hyoo_bench_bench",
+  "name": "hyoo_bench_app",
   "version": "0.0.1",
   "main": "node.js",
   "module": "node.esm.js",

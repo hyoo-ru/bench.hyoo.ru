@@ -6576,7 +6576,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_bench extends $.$mol_view {
+    class $hyoo_bench_app extends $.$mol_view {
         sub() {
             return [this.Sandbox_page(), this.Main_page(), this.Addon_page()];
         }
@@ -6588,7 +6588,7 @@ var $;
             })(new this.$.$mol_page());
         }
         sandbox_title() {
-            return this.$.$mol_locale.text("$hyoo_bench_sandbox_title");
+            return this.$.$mol_locale.text("$hyoo_bench_app_sandbox_title");
         }
         Sandbox() {
             return ((obj) => {
@@ -6658,7 +6658,7 @@ var $;
             })(new this.$.$mol_page());
         }
         addon_title() {
-            return this.$.$mol_locale.text("$hyoo_bench_addon_title");
+            return this.$.$mol_locale.text("$hyoo_bench_app_addon_title");
         }
         Filter() {
             return ((obj) => {
@@ -6717,75 +6717,75 @@ var $;
             return 0;
         }
         result_col_title_sample() {
-            return this.$.$mol_locale.text("$hyoo_bench_result_col_title_sample");
+            return this.$.$mol_locale.text("$hyoo_bench_app_result_col_title_sample");
         }
     }
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Sandbox_page", null);
+    ], $hyoo_bench_app.prototype, "Sandbox_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Sandbox", null);
+    ], $hyoo_bench_app.prototype, "Sandbox", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Main_page", null);
+    ], $hyoo_bench_app.prototype, "Main_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Inform", null);
+    ], $hyoo_bench_app.prototype, "Inform", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Descr_scroll", null);
+    ], $hyoo_bench_app.prototype, "Descr_scroll", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Descr", null);
+    ], $hyoo_bench_app.prototype, "Descr", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Param_fields", null);
+    ], $hyoo_bench_app.prototype, "Param_fields", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Result", null);
+    ], $hyoo_bench_app.prototype, "Result", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "result_col_sort", null);
+    ], $hyoo_bench_app.prototype, "result_col_sort", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Addon_page", null);
+    ], $hyoo_bench_app.prototype, "Addon_page", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Filter", null);
+    ], $hyoo_bench_app.prototype, "Filter", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "filter", null);
+    ], $hyoo_bench_app.prototype, "filter", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench.prototype, "Menu", null);
+    ], $hyoo_bench_app.prototype, "Menu", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Menu_option", null);
+    ], $hyoo_bench_app.prototype, "Menu_option", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "menu_option_checked", null);
+    ], $hyoo_bench_app.prototype, "menu_option_checked", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Param", null);
+    ], $hyoo_bench_app.prototype, "Param", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "Param_value", null);
+    ], $hyoo_bench_app.prototype, "Param_value", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench.prototype, "param_value", null);
-    $.$hyoo_bench = $hyoo_bench;
+    ], $hyoo_bench_app.prototype, "param_value", null);
+    $.$hyoo_bench_app = $hyoo_bench_app;
 })($ || ($ = {}));
-//bench.view.tree.js.map
+//app.view.tree.js.map
 ;
 "use strict";
 var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $hyoo_bench extends $.$hyoo_bench {
+        class $hyoo_bench_app extends $.$hyoo_bench_app {
             bench(next) {
-                return $.$mol_state_arg.value(this.state_key('bench'), next) || '../list/';
+                return $.$mol_state_arg.value(this.state_key('bench'), next) || '//bench.hyoo.ru/list/';
             }
             sandbox() {
                 const next = this.Sandbox().dom_node();
@@ -6917,69 +6917,68 @@ var $;
         }
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "bench", null);
+        ], $hyoo_bench_app.prototype, "bench", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "sandbox", null);
+        ], $hyoo_bench_app.prototype, "sandbox", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "command_last", null);
+        ], $hyoo_bench_app.prototype, "command_last", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "command_result", null);
+        ], $hyoo_bench_app.prototype, "command_result", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "meta", null);
+        ], $hyoo_bench_app.prototype, "meta", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "samples_all", null);
+        ], $hyoo_bench_app.prototype, "samples_all", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "samples", null);
+        ], $hyoo_bench_app.prototype, "samples", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "steps", null);
+        ], $hyoo_bench_app.prototype, "steps", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "title", null);
+        ], $hyoo_bench_app.prototype, "title", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "description", null);
+        ], $hyoo_bench_app.prototype, "description", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "result_sample", null);
+        ], $hyoo_bench_app.prototype, "result_sample", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "result", null);
+        ], $hyoo_bench_app.prototype, "result", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "sandbox_title", null);
+        ], $hyoo_bench_app.prototype, "sandbox_title", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "result_col_sort", null);
+        ], $hyoo_bench_app.prototype, "result_col_sort", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "menu_options", null);
+        ], $hyoo_bench_app.prototype, "menu_options", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "menu_option_checked", null);
+        ], $hyoo_bench_app.prototype, "menu_option_checked", null);
         __decorate([
             $.$mol_mem_key
-        ], $hyoo_bench.prototype, "param_value", null);
+        ], $hyoo_bench_app.prototype, "param_value", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_bench.prototype, "param_dict", null);
-        $$.$hyoo_bench = $hyoo_bench;
+        ], $hyoo_bench_app.prototype, "param_dict", null);
+        $$.$hyoo_bench_app = $hyoo_bench_app;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
-//bench.view.js.map
+//app.view.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/bench/bench/bench.view.css", "[hyoo_bench] {\n\tmargin: 0;\n\tdisplay: flex;\n\talign-self: stretch;\n\tflex-direction: row-reverse;\n}\n\n[hyoo_bench_main_page] {\n\tflex: 10 2 50rem;\n}\n\n[hyoo_bench_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n}\n\n[hyoo_bench_addon_page] {\n\tflex: 1 1 16rem;\n}\n\n[hyoo_bench_sandbox_page] {\n\tflex: 1000 1 20rem;\n}\n\n[hyoo_bench_menu] {\n\tpadding: .5rem;\n}\n\n[hyoo_bench_menu] > * {\n\tmargin: 0;\n}\n\n[hyoo_bench_inform] {\n\tflex: 0 1 auto;\n\toverflow: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n[hyoo_bench_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n}\n\n[hyoo_bench_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_result] {\n\tflex: 1000 1 50%;\n\tfont-size: .9rem;\n}\n\n[hyoo_bench_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_bench_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
+    $.$mol_style_attach("hyoo/bench/app/app.view.css", "[hyoo_bench_app] {\n\tmargin: 0;\n\tdisplay: flex;\n\talign-self: stretch;\n\tflex-direction: row-reverse;\n}\n\n[hyoo_bench_app_main_page] {\n\tflex: 10 2 50rem;\n}\n\n[hyoo_bench_app_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n}\n\n[hyoo_bench_app_addon_page] {\n\tflex: 1 1 16rem;\n}\n\n[hyoo_bench_app_sandbox_page] {\n\tflex: 1000 1 20rem;\n}\n\n[hyoo_bench_app_menu] {\n\tpadding: .5rem;\n}\n\n[hyoo_bench_app_menu] > * {\n\tmargin: 0;\n}\n\n[hyoo_bench_app_inform] {\n\tflex: 0 1 auto;\n\toverflow: auto;\n\tdisplay: flex;\n\tflex-direction: column;\n}\n[hyoo_bench_app_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_app_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_app_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n}\n\n[hyoo_bench_app_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_app_result] {\n\tflex: 1000 1 50%;\n\tfont-size: .9rem;\n}\n\n[hyoo_bench_app_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_bench_app_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_app_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_app_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
 })($ || ($ = {}));
-//bench.view.css.js.map
-;
-export default $
-//# sourceMappingURL=web.esm.js.map
+//app.view.css.js.map
+
+//# sourceMappingURL=web.js.map
