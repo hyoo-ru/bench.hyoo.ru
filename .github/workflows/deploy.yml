@@ -16,7 +16,7 @@ jobs:
       uses: hyoo-ru/mam_build@master2
       with:
         package: hyoo/bench
-        modules: bench list/mol list/tsx list/tsxatom chart/rope/mol chart/bar/mol 
+        modules: app list/mol list/tsx list/tsxatom chart/rope/mol chart/bar/mol 
         
     - name: Consolidate apps
       run: |
@@ -25,8 +25,8 @@ jobs:
         mv hyoo/bench/index.html ./-
         touch ./-/.nojeckyll
         mkdir ./-/list
+        mv hyoo/bench/app/- ./-/app
         mv hyoo/bench/list/index.html ./-/list
-        mv hyoo/bench/bench/- ./-/bench
         mv hyoo/bench/list/angularjs ./-/list
         mv hyoo/bench/list/native-html ./-/list
         mv hyoo/bench/list/react ./-/list
