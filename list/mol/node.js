@@ -14,24 +14,18 @@ module.exports;
 
 $node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
 ;
+"use strict"
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-;
-"use strict"
-/// Fake namespace for optional overrides
-///
-/// 	namespace $ { export var x = 1 , y = 1 } // defaults
-/// 	namespace $.$$ { export var x = 2 } // overrides
-/// 	namespace $.$$ { console.log( x , y ) } // usage
-///
-var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , global ) : global
+var globalThis = globalThis || global || self || this
+var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , globalThis ) : globalThis
 $.$$ = $
-
 $.$mol = $  // deprecated
 
 ;
@@ -117,6 +111,9 @@ var $;
     $.$mol_owning_catch = $mol_owning_catch;
 })($ || ($ = {}));
 //owning.js.map
+;
+"use strict";
+//writable.js.map
 ;
 "use strict";
 var $;
@@ -588,6 +585,7 @@ var $;
         }
         return source;
     }
+    $.$mol_conform_array = $mol_conform_array;
     $mol_conform_handler(Array, $mol_conform_array);
     $mol_conform_handler(Uint8Array, $mol_conform_array);
     $mol_conform_handler(Uint16Array, $mol_conform_array);
@@ -1324,7 +1322,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete(Number.NaN);
+                        return cache.obsolete(Number.NaN);
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -1459,7 +1457,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this, key);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete();
+                        return cache.obsolete();
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -1662,7 +1660,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] , :root {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n@media (prefers-color-scheme: light) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t\t--mol_theme_field: white;\n\t}\n}\n\n@media (prefers-color-scheme: dark) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t\t--mol_theme_hover: #333;\n\t\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t\t--mol_theme_field: black;\n\t}\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t--mol_theme_field: white;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t--mol_theme_field: black;\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: rgb(204, 68, 50);\n\t--mol_theme_hover: rgb(165, 56, 42);\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n}\n");
+    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n@media (prefers-color-scheme: light) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t\t--mol_theme_field: white;\n\t}\n}\n\n@media (prefers-color-scheme: dark) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t\t--mol_theme_hover: #333;\n\t\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t\t--mol_theme_field: black;\n\t}\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t--mol_theme_field: white;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t--mol_theme_field: black;\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: rgb(204, 68, 50);\n\t--mol_theme_hover: rgb(165, 56, 42);\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n}\n");
 })($ || ($ = {}));
 //theme.css.js.map
 ;
@@ -1782,8 +1780,8 @@ var $;
             this.focused([event.target]);
         }
         static blur(event) {
-            const element = $.$mol_mem_cached(() => this.focused())[0];
-            if (element === event.target)
+            const elements = $.$mol_mem_cached(() => this.focused());
+            if (elements && elements[0] === event.target)
                 this.focused([]);
         }
     }
@@ -1799,6 +1797,16 @@ var $;
     $.$mol_view_selection = $mol_view_selection;
 })($ || ($ = {}));
 //selection.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_dom_qname(name) {
+        return name.replace(/\W/, '').replace(/^(?=\d+)/, '_');
+    }
+    $.$mol_dom_qname = $mol_dom_qname;
+})($ || ($ = {}));
+//qname.js.map
 ;
 "use strict";
 var $;
@@ -1945,7 +1953,20 @@ var $;
 var $;
 (function ($) {
     function $mol_func_name(func) {
-        return func.name;
+        let name = func.name;
+        if ((name === null || name === void 0 ? void 0 : name.length) > 1)
+            return name;
+        for (let key in $) {
+            try {
+                if ($[key] !== func)
+                    continue;
+                name = key;
+                Object.defineProperty(func, 'name', { value: name });
+                break;
+            }
+            catch (_a) { }
+        }
+        return name;
     }
     $.$mol_func_name = $mol_func_name;
     function $mol_func_name_from(target, source) {
@@ -1974,6 +1995,9 @@ var $;
 ;
 "use strict";
 //extract.js.map
+;
+"use strict";
+//pick.js.map
 ;
 "use strict";
 var $;
@@ -2027,7 +2051,7 @@ var $;
             return this.$.$mol_view_state_key(suffix);
         }
         dom_name() {
-            return this.constructor.toString().replace('$', '') || 'div';
+            return $.$mol_dom_qname(this.constructor.toString()) || 'div';
         }
         dom_name_space() { return 'http://www.w3.org/1999/xhtml'; }
         sub() {
@@ -2047,6 +2071,9 @@ var $;
                 }
             });
             return min;
+        }
+        maximal_width() {
+            return this.minimal_width();
         }
         minimal_height() {
             let min = 0;
@@ -2437,7 +2464,7 @@ var $;
     var $$;
     (function ($$) {
         class $mol_check extends $.$mol_check {
-            event_click(next) {
+            click(next) {
                 this.checked(!this.checked());
                 if (next)
                     next.preventDefault();
@@ -2557,10 +2584,93 @@ var $;
 //frame.node.js.map
 ;
 "use strict";
-//exclude.js.map
+var $;
+(function ($) {
+    class $mol_decor {
+        constructor(value) {
+            this.value = value;
+        }
+        prefix() { return ''; }
+        valueOf() { return this.value; }
+        postfix() { return ''; }
+        toString() {
+            return `${this.prefix()}${this.valueOf()}${this.postfix()}`;
+        }
+    }
+    $.$mol_decor = $mol_decor;
+})($ || ($ = {}));
+//decor.js.map
 ;
 "use strict";
-//omit.js.map
+var $;
+(function ($) {
+    class $mol_style_unit extends $.$mol_decor {
+        constructor(value, literal) {
+            super(value);
+            this.literal = literal;
+        }
+        postfix() {
+            return this.literal;
+        }
+        static per(value) { return new $mol_style_unit(value, '%'); }
+        static px(value) { return new $mol_style_unit(value, 'px'); }
+        static mm(value) { return new $mol_style_unit(value, 'mm'); }
+        static cm(value) { return new $mol_style_unit(value, 'cm'); }
+        static Q(value) { return new $mol_style_unit(value, 'Q'); }
+        static in(value) { return new $mol_style_unit(value, 'in'); }
+        static pc(value) { return new $mol_style_unit(value, 'pc'); }
+        static pt(value) { return new $mol_style_unit(value, 'pt'); }
+        static cap(value) { return new $mol_style_unit(value, 'cap'); }
+        static ch(value) { return new $mol_style_unit(value, 'ch'); }
+        static em(value) { return new $mol_style_unit(value, 'em'); }
+        static rem(value) { return new $mol_style_unit(value, 'rem'); }
+        static ex(value) { return new $mol_style_unit(value, 'ex'); }
+        static ic(value) { return new $mol_style_unit(value, 'ic'); }
+        static lh(value) { return new $mol_style_unit(value, 'lh'); }
+        static rlh(value) { return new $mol_style_unit(value, 'rlh'); }
+        static vh(value) { return new $mol_style_unit(value, 'vh'); }
+        static vw(value) { return new $mol_style_unit(value, 'vw'); }
+        static vi(value) { return new $mol_style_unit(value, 'vi'); }
+        static vb(value) { return new $mol_style_unit(value, 'vb'); }
+        static vmin(value) { return new $mol_style_unit(value, 'vmin'); }
+        static vmax(value) { return new $mol_style_unit(value, 'vmax'); }
+    }
+    $.$mol_style_unit = $mol_style_unit;
+})($ || ($ = {}));
+//unit.js.map
+;
+"use strict";
+//result.js.map
+;
+"use strict";
+//error.js.map
+;
+"use strict";
+//override.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_style_func extends $.$mol_decor {
+        constructor(value, name) {
+            super(value);
+            this.name = name;
+        }
+        prefix() { return this.name + '('; }
+        postfix() { return ')'; }
+        static calc(value) {
+            return new $mol_style_func(value, 'calc');
+        }
+        static fit_content(value) {
+            return new $mol_style_func(value, 'fit-content');
+        }
+    }
+    $.$mol_style_func = $mol_style_func;
+})($ || ($ = {}));
+//func.js.map
+;
+"use strict";
+//properties.js.map
 ;
 "use strict";
 //class.js.map
@@ -2569,15 +2679,12 @@ var $;
 //element.js.map
 ;
 "use strict";
-//properties.js.map
-;
-"use strict";
-//definition.js.map
+//guard.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    function $mol_style_sheet(Component, config) {
+    function $mol_style_sheet(Component, config0) {
         let rules = [];
         const make_class = (prefix, suffix, config) => {
             const props = [];
@@ -2585,18 +2692,28 @@ var $;
                 if (/^[a-z]/.test(key)) {
                     const name = key.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase());
                     const val = config[key];
-                    props.push(`\t${name}: ${val};\n`);
+                    if (Array.isArray(val)) {
+                        props.push(`\t${name}: ${val.join(' ')};\n`);
+                    }
+                    else if (val.constructor === Object) {
+                        for (let suffix in val) {
+                            props.push(`\t${name}-${suffix}: ${val[suffix]};\n`);
+                        }
+                    }
+                    else {
+                        props.push(`\t${name}: ${val};\n`);
+                    }
                 }
                 else if (/^[A-Z]/.test(key)) {
                     make_class(prefix + '_' + key.toLowerCase(), suffix, config[key]);
                 }
                 else if (key[0] === '$') {
-                    make_class(prefix + '] ' + key.replace('$', '['), suffix, config[key]);
+                    make_class(prefix + '] [' + $.$mol_dom_qname(key), suffix, config[key]);
                 }
                 else if (key === '>') {
                     const types = config[key];
                     for (let type in types) {
-                        make_class(prefix + '] > ' + type.replace('$', '['), suffix, types[type]);
+                        make_class(prefix + '] > [' + $.$mol_dom_qname(type), suffix, types[type]);
                     }
                 }
                 else if (key === '@') {
@@ -2623,7 +2740,7 @@ var $;
                 rules.push(`${prefix}${suffix} {\n${props.reverse().join('')}}\n`);
             }
         };
-        make_class(Component.name.replace('$', '['), ']', config);
+        make_class('[' + $.$mol_dom_qname(Component.name), ']', config0);
         return rules.reverse().join('');
     }
     $.$mol_style_sheet = $mol_style_sheet;
@@ -2726,21 +2843,22 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        const { per, rem } = $.$mol_style_unit;
         $.$mol_style_define($$.$mol_scroll, {
             display: 'block',
             overflow: 'auto',
-            flex: '1 1 auto',
+            flex: 'auto',
             alignSelf: 'stretch',
             boxSizing: 'border-box',
             willChange: 'scroll-position',
             transform: 'translateZ(0)',
             boxShadow: `inset 0 0 0 .5px ${"var(--mol_theme_line)"}`,
-            maxHeight: '100%',
-            maxWidth: '100%',
+            maxHeight: per(100),
+            maxWidth: per(100),
             webkitOverflowScrolling: 'touch',
             '::-webkit-scrollbar': {
-                width: '.5rem',
-                height: '.5rem',
+                width: rem(.5),
+                height: rem(.5),
             },
             '::-webkit-scrollbar-corner': {
                 background: "var(--mol_theme_line)",
@@ -2754,8 +2872,8 @@ var $;
             '@media': {
                 'print': {
                     overflow: 'visible',
-                }
-            }
+                },
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

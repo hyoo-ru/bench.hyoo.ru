@@ -386,6 +386,9 @@ var $;
 //make.test.js.map
 ;
 "use strict";
+//writable.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     function $mol_dom_parse(text, type = 'application/xhtml+xml') {
@@ -974,6 +977,7 @@ var $;
         }
         return source;
     }
+    $.$mol_conform_array = $mol_conform_array;
     $mol_conform_handler(Array, $mol_conform_array);
     $mol_conform_handler(Uint8Array, $mol_conform_array);
     $mol_conform_handler(Uint16Array, $mol_conform_array);
@@ -1570,12 +1574,30 @@ var $;
         constructor(task) {
             super();
             this.task = task;
-            this.id = requestAnimationFrame(task);
+            const Frame = this.constructor;
+            Frame.schedule(task);
+        }
+        static schedule(task) {
+            this.queue.add(task);
+            if (this.scheduled)
+                return;
+            this.scheduled = requestAnimationFrame(() => this.run());
+        }
+        static run() {
+            this.scheduled = 0;
+            const promise = Promise.resolve();
+            for (const task of this.queue) {
+                promise.then(task);
+            }
+            this.queue = new Set;
         }
         destructor() {
-            cancelAnimationFrame(this.id);
+            const Frame = this.constructor;
+            Frame.queue.delete(this.task);
         }
     }
+    $mol_after_frame.queue = new Set();
+    $mol_after_frame.scheduled = 0;
     $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
 //frame.web.js.map
@@ -2279,7 +2301,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete(Number.NaN);
+                        return cache.obsolete(Number.NaN);
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -2911,7 +2933,7 @@ var $;
             super(message);
             this.errors = errors;
             if (errors.length) {
-                const stacks = [...errors.map(error => error.stack), this.stack];
+                const stacks = [...errors.map(error => error.message), this.stack];
                 const diff = $.$mol_diff_path(...stacks.map(stack => {
                     if (!stack)
                         return [];

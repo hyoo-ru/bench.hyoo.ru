@@ -7,24 +7,18 @@ Error.stackTraceLimit = Infinity;
 module.exports;
 //mol.js.map
 ;
+"use strict"
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-;
-"use strict"
-/// Fake namespace for optional overrides
-///
-/// 	namespace $ { export var x = 1 , y = 1 } // defaults
-/// 	namespace $.$$ { export var x = 2 } // overrides
-/// 	namespace $.$$ { console.log( x , y ) } // usage
-///
-var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , global ) : global
+var globalThis = globalThis || global || self || this
+var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , globalThis ) : globalThis
 $.$$ = $
-
 $.$mol = $  // deprecated
 
 ;
@@ -110,6 +104,9 @@ var $;
     $.$mol_owning_catch = $mol_owning_catch;
 })($ || ($ = {}));
 //owning.js.map
+;
+"use strict";
+//writable.js.map
 ;
 "use strict";
 var $;
@@ -581,6 +578,7 @@ var $;
         }
         return source;
     }
+    $.$mol_conform_array = $mol_conform_array;
     $mol_conform_handler(Array, $mol_conform_array);
     $mol_conform_handler(Uint8Array, $mol_conform_array);
     $mol_conform_handler(Uint16Array, $mol_conform_array);
@@ -1317,7 +1315,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete(Number.NaN);
+                        return cache.obsolete(Number.NaN);
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -1431,7 +1429,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this, key);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete();
+                        return cache.obsolete();
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -1704,6 +1702,31 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    var _a;
+    const TextDecoder = (_a = globalThis.TextDecoder) !== null && _a !== void 0 ? _a : $node.util.TextDecoder;
+    function $mol_charset_decode(value, code = 'utf8') {
+        return new TextDecoder(code).decode(value);
+    }
+    $.$mol_charset_decode = $mol_charset_decode;
+})($ || ($ = {}));
+//decode.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var _a;
+    const TextEncoder = (_a = globalThis.TextEncoder) !== null && _a !== void 0 ? _a : $node.util.TextEncoder;
+    const encoder = new TextEncoder();
+    function $mol_charset_encode(value) {
+        return encoder.encode(value);
+    }
+    $.$mol_charset_encode = $mol_charset_encode;
+})($ || ($ = {}));
+//encode.js.map
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_const(value) {
         var getter = (() => value);
         getter['()'] = value;
@@ -1717,59 +1740,50 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_compare_array(a, b) {
+        if (a === b)
+            return true;
+        if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
+            return false;
+        if (a.length !== b.length)
+            return false;
+        for (let i = 0; i < a.length; i++)
+            if (a[i] !== b[i])
+                return false;
+        return true;
+    }
+    $.$mol_compare_array = $mol_compare_array;
+})($ || ($ = {}));
+//array.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_file_not_found extends Error {
+    }
+    $.$mol_file_not_found = $mol_file_not_found;
     class $mol_file extends $.$mol_object {
         static absolute(path) {
-            return $mol_file.make({
-                path: $.$mol_const(path)
-            });
+            throw new Error('Not implemented yet');
         }
         static relative(path) {
-            return $mol_file.absolute($node.path.resolve(path).replace(/\\/g, '/'));
+            throw new Error('Not implemented yet');
         }
         path() {
             return '.';
         }
-        watcher() {
-            const watcher = $node.chokidar.watch(this.path(), {
-                persistent: true,
-                ignored: /(^\.|___$)/,
-                depth: 0,
-                ignoreInitial: true,
-            });
-            const handler = (type, path) => $.$mol_fiber_unlimit(() => {
-                const file = $mol_file.relative(path.replace(/\\/g, '/'));
-                file.reset();
-                if (type === 'change')
-                    return;
-                file.parent().reset();
-            });
-            watcher.on('all', handler);
-            watcher.on('error', (error) => {
-                this.stat(error, $.$mol_mem_force_cache);
-            });
-            return {
-                destructor() {
-                    watcher.removeAllListeners();
-                }
-            };
+        parent() {
+            return this.resolve('..');
         }
         reset() {
             try {
                 this.stat(undefined, $.$mol_mem_force_cache);
-                return true;
             }
             catch (error) {
-                if (error.code !== 'ENOENT')
-                    return $.$mol_fail_hidden(error);
-                return false;
+                if (error instanceof $mol_file_not_found)
+                    return;
+                return $.$mol_fail_hidden(error);
             }
-        }
-        stat(next, force) {
-            const path = this.path();
-            let stat;
-            stat = next !== null && next !== void 0 ? next : $node.fs.statSync(path);
-            this.parent().watcher();
-            return stat;
         }
         version() {
             return this.stat().mtime.getTime().toString(36).toUpperCase();
@@ -1780,70 +1794,177 @@ var $;
                 this.stat();
             }
             catch (error) {
-                if (error.code === 'ENOENT')
+                if (error instanceof $mol_file_not_found)
                     exists = false;
                 else
                     return $.$mol_fail_hidden(error);
             }
-            if (next === undefined) {
+            if (next === undefined)
                 return exists;
-            }
-            else {
-                if (next === exists)
-                    return exists;
-                if (next) {
-                    this.parent().exists(true);
-                    $node.fs.mkdirSync(this.path());
-                }
-                else {
-                    $node.fs.unlinkSync(this.path());
-                }
-                this.stat(undefined, $.$mol_mem_force_cache);
-                return next;
-            }
-        }
-        parent() {
-            return this.resolve('..');
+            if (next === exists)
+                return exists;
+            if (next)
+                this.parent().exists(true);
+            this.ensure(next);
+            this.reset();
+            return next;
         }
         type() {
-            const stat = this.stat();
-            if (stat.isFile())
-                return 'file';
-            if (stat.isDirectory())
-                return 'dir';
-            if (stat.isBlockDevice())
-                return 'blocks';
-            if (stat.isCharacterDevice())
-                return 'chars';
-            if (stat.isSymbolicLink())
-                return 'link';
-            if (stat.isFIFO())
-                return 'fifo';
-            if (stat.isSocket())
-                return 'socket';
-            throw new Error(`Unknown file type ${this.path()}`);
+            return this.stat().type;
         }
         name() {
-            return $node.path.basename(this.path());
+            return this.path().replace(/^.*\//, '');
         }
         ext() {
             const match = /((?:\.\w+)+)$/.exec(this.path());
             return match ? match[1].substring(1) : '';
         }
-        content(next, force) {
+        text(next, force) {
+            return $.$mol_charset_decode(this.buffer(next === undefined ? undefined : $.$mol_charset_encode(next), force));
+        }
+        fail(error) {
+            this.buffer(error, $.$mol_mem_force_fail);
+            this.stat(error, $.$mol_mem_force_fail);
+        }
+        buffer_cached(buffer) {
+            const ctime = new Date();
+            const stat = {
+                type: 'file',
+                size: buffer.length,
+                ctime,
+                atime: ctime,
+                mtime: ctime
+            };
+            this.buffer(buffer, $.$mol_mem_force_cache);
+            this.stat(stat, $.$mol_mem_force_cache);
+        }
+        text_cached(content) {
+            this.buffer_cached($.$mol_charset_encode(content));
+        }
+        find(include, exclude) {
+            const found = [];
+            const sub = this.sub();
+            for (const child of sub) {
+                const child_path = child.path();
+                if (exclude && child_path.match(exclude))
+                    continue;
+                if (!include || child_path.match(include))
+                    found.push(child);
+                if (child.type() === 'dir') {
+                    const sub_child = child.find(include, exclude);
+                    for (const child of sub_child)
+                        found.push(child);
+                }
+            }
+            return found;
+        }
+    }
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_file, "absolute", null);
+    $.$mol_file = $mol_file;
+})($ || ($ = {}));
+//file.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function stat_convert(stat) {
+        let type;
+        if (stat.isDirectory())
+            type = 'dir';
+        if (stat.isFile())
+            type = 'file';
+        if (stat.isSymbolicLink())
+            type = 'link';
+        if (!type)
+            return $.$mol_fail(new Error(`Unsupported file type`));
+        return {
+            type,
+            size: stat.size,
+            atime: stat.atime,
+            mtime: stat.mtime,
+            ctime: stat.ctime
+        };
+    }
+    function buffer_normalize(buf) {
+        return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+    }
+    class $mol_file_node extends $.$mol_file {
+        static absolute(path) {
+            return this.make({
+                path: $.$mol_const(path)
+            });
+        }
+        static relative(path) {
+            return this.absolute($node.path.resolve(path).replace(/\\/g, '/'));
+        }
+        watcher() {
+            const watcher = $node.chokidar.watch(this.path(), {
+                persistent: true,
+                ignored: /(^\.|___$)/,
+                depth: 0,
+                ignoreInitial: true,
+                awaitWriteFinish: {
+                    stabilityThreshold: 100,
+                },
+            });
+            const { magenta, magentaBright } = $node.colorette;
+            const handler = (type, path) => $.$mol_fiber_unlimit(() => {
+                const file = $.$mol_file.relative(path.replace(/\\/g, '/'));
+                if (type === 'change') {
+                    const cached = $.$mol_mem_cached(() => file.buffer());
+                    const actual = buffer_normalize($node.fs.readFileSync(file.path()));
+                    if ($.$mol_compare_array(cached, actual))
+                        return;
+                    console.log(magenta(`$mol_file ${type} ${magentaBright(file.relate())}`));
+                    file.reset();
+                    file.buffer(actual, $.$mol_mem_force_cache);
+                }
+                else {
+                    console.log(magenta(`$mol_file ${type} ${magentaBright(file.relate())}`));
+                    file.reset();
+                    file.parent().reset();
+                }
+            });
+            watcher.on('all', handler);
+            watcher.on('error', (error) => {
+                this.stat(error, $.$mol_mem_force_fail);
+            });
+            return {
+                destructor() {
+                    watcher.removeAllListeners();
+                }
+            };
+        }
+        stat(next, force) {
+            let stat = next;
+            try {
+                stat = next !== null && next !== void 0 ? next : stat_convert($node.fs.statSync(this.path()));
+            }
+            catch (error) {
+                if (error.code === 'ENOENT')
+                    error = new $.$mol_file_not_found(`File not found: ${this.path()}`);
+                return $.$mol_fail_hidden(error);
+            }
+            this.parent().watcher();
+            return stat;
+        }
+        ensure(next) {
+            if (next)
+                $node.fs.mkdirSync(this.path());
+            else
+                $node.fs.unlinkSync(this.path());
+            return true;
+        }
+        buffer(next, force) {
             if (next === undefined) {
                 this.stat();
-                return $node.fs.readFileSync(this.path());
+                return buffer_normalize($node.fs.readFileSync(this.path()));
             }
             this.parent().exists(true);
             $node.fs.writeFileSync(this.path(), next);
             return next;
-        }
-        reader() {
-            return $node.fs.createReadStream(this.path());
-        }
-        writer() {
-            return $node.fs.createWriteStream(this.path());
         }
         sub() {
             if (!this.exists())
@@ -1863,41 +1984,24 @@ var $;
         append(next) {
             $node.fs.appendFileSync(this.path(), next);
         }
-        find(include, exclude) {
-            let found = [];
-            this.sub().forEach(child => {
-                if (exclude && child.path().match(exclude))
-                    return;
-                if (!include || child.path().match(include))
-                    found.push(child);
-                if (child.type() === 'dir')
-                    found = found.concat(child.find(include, exclude));
-            });
-            return found;
-        }
     }
     __decorate([
         $.$mol_mem
-    ], $mol_file.prototype, "watcher", null);
+    ], $mol_file_node.prototype, "watcher", null);
     __decorate([
         $.$mol_mem
-    ], $mol_file.prototype, "stat", null);
+    ], $mol_file_node.prototype, "stat", null);
     __decorate([
         $.$mol_mem
-    ], $mol_file.prototype, "version", null);
+    ], $mol_file_node.prototype, "buffer", null);
     __decorate([
         $.$mol_mem
-    ], $mol_file.prototype, "type", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_file.prototype, "content", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_file.prototype, "sub", null);
+    ], $mol_file_node.prototype, "sub", null);
     __decorate([
         $.$mol_mem_key
-    ], $mol_file, "absolute", null);
-    $.$mol_file = $mol_file;
+    ], $mol_file_node, "absolute", null);
+    $.$mol_file_node = $mol_file_node;
+    $.$mol_file = $mol_file_node;
 })($ || ($ = {}));
 //file.node.js.map
 ;
@@ -1912,7 +2016,7 @@ var $;
             return $.$mol_state_local.value('locale', next) || $.$mol_dom_context.navigator.language.replace(/-.*/, '') || this.lang_default();
         }
         static source(lang) {
-            return JSON.parse($.$mol_file.relative(`web.locale=${lang}.json`).content().toString());
+            return JSON.parse($.$mol_file.relative(`web.locale=${lang}.json`).text().toString());
         }
         static texts(lang, next) {
             if (next)
@@ -2043,8 +2147,8 @@ var $;
             this.focused([event.target]);
         }
         static blur(event) {
-            const element = $.$mol_mem_cached(() => this.focused())[0];
-            if (element === event.target)
+            const elements = $.$mol_mem_cached(() => this.focused());
+            if (elements && elements[0] === event.target)
                 this.focused([]);
         }
     }
@@ -2060,6 +2164,16 @@ var $;
     $.$mol_view_selection = $mol_view_selection;
 })($ || ($ = {}));
 //selection.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_dom_qname(name) {
+        return name.replace(/\W/, '').replace(/^(?=\d+)/, '_');
+    }
+    $.$mol_dom_qname = $mol_dom_qname;
+})($ || ($ = {}));
+//qname.js.map
 ;
 "use strict";
 var $;
@@ -2193,7 +2307,20 @@ var $;
 var $;
 (function ($) {
     function $mol_func_name(func) {
-        return func.name;
+        let name = func.name;
+        if ((name === null || name === void 0 ? void 0 : name.length) > 1)
+            return name;
+        for (let key in $) {
+            try {
+                if ($[key] !== func)
+                    continue;
+                name = key;
+                Object.defineProperty(func, 'name', { value: name });
+                break;
+            }
+            catch (_a) { }
+        }
+        return name;
     }
     $.$mol_func_name = $mol_func_name;
     function $mol_func_name_from(target, source) {
@@ -2224,12 +2351,15 @@ var $;
 //extract.js.map
 ;
 "use strict";
+//pick.js.map
+;
+"use strict";
 //theme.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] , :root {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n@media (prefers-color-scheme: light) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t\t--mol_theme_field: white;\n\t}\n}\n\n@media (prefers-color-scheme: dark) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t\t--mol_theme_hover: #333;\n\t\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t\t--mol_theme_field: black;\n\t}\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t--mol_theme_field: white;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t--mol_theme_field: black;\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: rgb(204, 68, 50);\n\t--mol_theme_hover: rgb(165, 56, 42);\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n}\n");
+    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n@media (prefers-color-scheme: light) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t\t--mol_theme_field: white;\n\t}\n}\n\n@media (prefers-color-scheme: dark) {\n\t[mol_theme=\"$mol_theme_auto\"] {\n\t\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t\t--mol_theme_hover: #333;\n\t\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t\t--mol_theme_field: black;\n\t}\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsla( 0 , 60% , 50% , 0.75 );\n\t--mol_theme_field: white;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: rgba( 255 , 255 , 255 , .8 );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: rgba( 204 , 68 , 50 , .75 );\n\t--mol_theme_field: black;\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: rgb(204, 68, 50);\n\t--mol_theme_hover: rgb(165, 56, 42);\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n}\n");
 })($ || ($ = {}));
 //theme.css.js.map
 ;
@@ -2292,7 +2422,7 @@ var $;
             return this.$.$mol_view_state_key(suffix);
         }
         dom_name() {
-            return this.constructor.toString().replace('$', '') || 'div';
+            return $.$mol_dom_qname(this.constructor.toString()) || 'div';
         }
         dom_name_space() { return 'http://www.w3.org/1999/xhtml'; }
         sub() {
@@ -2312,6 +2442,9 @@ var $;
                 }
             });
             return min;
+        }
+        maximal_width() {
+            return this.minimal_width();
         }
         minimal_height() {
             let min = 0;
@@ -2585,10 +2718,93 @@ var $;
 //session.js.map
 ;
 "use strict";
-//exclude.js.map
+var $;
+(function ($) {
+    class $mol_decor {
+        constructor(value) {
+            this.value = value;
+        }
+        prefix() { return ''; }
+        valueOf() { return this.value; }
+        postfix() { return ''; }
+        toString() {
+            return `${this.prefix()}${this.valueOf()}${this.postfix()}`;
+        }
+    }
+    $.$mol_decor = $mol_decor;
+})($ || ($ = {}));
+//decor.js.map
 ;
 "use strict";
-//omit.js.map
+var $;
+(function ($) {
+    class $mol_style_unit extends $.$mol_decor {
+        constructor(value, literal) {
+            super(value);
+            this.literal = literal;
+        }
+        postfix() {
+            return this.literal;
+        }
+        static per(value) { return new $mol_style_unit(value, '%'); }
+        static px(value) { return new $mol_style_unit(value, 'px'); }
+        static mm(value) { return new $mol_style_unit(value, 'mm'); }
+        static cm(value) { return new $mol_style_unit(value, 'cm'); }
+        static Q(value) { return new $mol_style_unit(value, 'Q'); }
+        static in(value) { return new $mol_style_unit(value, 'in'); }
+        static pc(value) { return new $mol_style_unit(value, 'pc'); }
+        static pt(value) { return new $mol_style_unit(value, 'pt'); }
+        static cap(value) { return new $mol_style_unit(value, 'cap'); }
+        static ch(value) { return new $mol_style_unit(value, 'ch'); }
+        static em(value) { return new $mol_style_unit(value, 'em'); }
+        static rem(value) { return new $mol_style_unit(value, 'rem'); }
+        static ex(value) { return new $mol_style_unit(value, 'ex'); }
+        static ic(value) { return new $mol_style_unit(value, 'ic'); }
+        static lh(value) { return new $mol_style_unit(value, 'lh'); }
+        static rlh(value) { return new $mol_style_unit(value, 'rlh'); }
+        static vh(value) { return new $mol_style_unit(value, 'vh'); }
+        static vw(value) { return new $mol_style_unit(value, 'vw'); }
+        static vi(value) { return new $mol_style_unit(value, 'vi'); }
+        static vb(value) { return new $mol_style_unit(value, 'vb'); }
+        static vmin(value) { return new $mol_style_unit(value, 'vmin'); }
+        static vmax(value) { return new $mol_style_unit(value, 'vmax'); }
+    }
+    $.$mol_style_unit = $mol_style_unit;
+})($ || ($ = {}));
+//unit.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_style_func extends $.$mol_decor {
+        constructor(value, name) {
+            super(value);
+            this.name = name;
+        }
+        prefix() { return this.name + '('; }
+        postfix() { return ')'; }
+        static calc(value) {
+            return new $mol_style_func(value, 'calc');
+        }
+        static fit_content(value) {
+            return new $mol_style_func(value, 'fit-content');
+        }
+    }
+    $.$mol_style_func = $mol_style_func;
+})($ || ($ = {}));
+//func.js.map
+;
+"use strict";
+//result.js.map
+;
+"use strict";
+//error.js.map
+;
+"use strict";
+//override.js.map
+;
+"use strict";
+//properties.js.map
 ;
 "use strict";
 //class.js.map
@@ -2597,15 +2813,12 @@ var $;
 //element.js.map
 ;
 "use strict";
-//properties.js.map
-;
-"use strict";
-//definition.js.map
+//guard.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    function $mol_style_sheet(Component, config) {
+    function $mol_style_sheet(Component, config0) {
         let rules = [];
         const make_class = (prefix, suffix, config) => {
             const props = [];
@@ -2613,18 +2826,28 @@ var $;
                 if (/^[a-z]/.test(key)) {
                     const name = key.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase());
                     const val = config[key];
-                    props.push(`\t${name}: ${val};\n`);
+                    if (Array.isArray(val)) {
+                        props.push(`\t${name}: ${val.join(' ')};\n`);
+                    }
+                    else if (val.constructor === Object) {
+                        for (let suffix in val) {
+                            props.push(`\t${name}-${suffix}: ${val[suffix]};\n`);
+                        }
+                    }
+                    else {
+                        props.push(`\t${name}: ${val};\n`);
+                    }
                 }
                 else if (/^[A-Z]/.test(key)) {
                     make_class(prefix + '_' + key.toLowerCase(), suffix, config[key]);
                 }
                 else if (key[0] === '$') {
-                    make_class(prefix + '] ' + key.replace('$', '['), suffix, config[key]);
+                    make_class(prefix + '] [' + $.$mol_dom_qname(key), suffix, config[key]);
                 }
                 else if (key === '>') {
                     const types = config[key];
                     for (let type in types) {
-                        make_class(prefix + '] > ' + type.replace('$', '['), suffix, types[type]);
+                        make_class(prefix + '] > [' + $.$mol_dom_qname(type), suffix, types[type]);
                     }
                 }
                 else if (key === '@') {
@@ -2651,7 +2874,7 @@ var $;
                 rules.push(`${prefix}${suffix} {\n${props.reverse().join('')}}\n`);
             }
         };
-        make_class(Component.name.replace('$', '['), ']', config);
+        make_class('[' + $.$mol_dom_qname(Component.name), ']', config0);
         return rules.reverse().join('');
     }
     $.$mol_style_sheet = $mol_style_sheet;
@@ -3031,21 +3254,22 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        const { per, rem } = $.$mol_style_unit;
         $.$mol_style_define($$.$mol_scroll, {
             display: 'block',
             overflow: 'auto',
-            flex: '1 1 auto',
+            flex: 'auto',
             alignSelf: 'stretch',
             boxSizing: 'border-box',
             willChange: 'scroll-position',
             transform: 'translateZ(0)',
             boxShadow: `inset 0 0 0 .5px ${"var(--mol_theme_line)"}`,
-            maxHeight: '100%',
-            maxWidth: '100%',
+            maxHeight: per(100),
+            maxWidth: per(100),
             webkitOverflowScrolling: 'touch',
             '::-webkit-scrollbar': {
-                width: '.5rem',
-                height: '.5rem',
+                width: rem(.5),
+                height: rem(.5),
             },
             '::-webkit-scrollbar-corner': {
                 background: "var(--mol_theme_line)",
@@ -3059,8 +3283,8 @@ var $;
             '@media': {
                 'print': {
                     overflow: 'visible',
-                }
-            }
+                },
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -3178,15 +3402,17 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        const { per, rem } = $.$mol_style_unit;
+        const { calc } = $.$mol_style_func;
         $.$mol_style_define($$.$mol_page, {
             display: 'flex',
-            margin: '0',
+            margin: 0,
             flexDirection: 'column',
-            flex: '1 1 auto',
+            flex: 'auto',
             position: 'relative',
             alignSelf: 'stretch',
-            maxWidth: '100%',
-            maxHeight: '100%',
+            maxWidth: per(100),
+            maxHeight: per(100),
             boxSizing: 'border-box',
             background: "var(--mol_theme_back)",
             color: "var(--mol_theme_text)",
@@ -3200,15 +3426,19 @@ var $;
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'space-between',
-                flex: '0 0 auto',
+                flex: 'none',
                 position: 'relative',
-                margin: '0',
-                minHeight: 'calc( 1.5em + 2rem )',
-                padding: '.5rem',
+                margin: 0,
+                minHeight: calc(`1.5em + 2rem`),
+                padding: rem(.5),
             },
             Title: {
-                flex: '1000 1 50%',
-                padding: '.5rem',
+                flex: {
+                    grow: 1000,
+                    shrink: 1,
+                    basis: $.$mol_style_unit.per(50),
+                },
+                padding: rem(.5),
                 wordBreak: 'normal',
                 cursor: 'default',
                 ':empty': {
@@ -3216,7 +3446,7 @@ var $;
                 },
             },
             Tools: {
-                flex: '1 1 auto',
+                flex: 'auto',
                 display: 'flex',
                 justifyContent: 'flex-end',
                 ':empty': {
@@ -3224,16 +3454,20 @@ var $;
                 },
             },
             Body: {
-                flex: '1000 1 100%',
-                margin: '0',
+                flex: {
+                    grow: 1000,
+                    shrink: 1,
+                    basis: $.$mol_style_unit.per(100),
+                },
+                margin: 0,
             },
             Foot: {
                 display: 'flex',
                 justifyContent: 'space-between',
-                flex: '0 0 auto',
-                margin: '0',
+                flex: 'none',
+                margin: 0,
                 overflow: 'hidden',
-            }
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -3604,7 +3838,7 @@ var $;
     var $$;
     (function ($$) {
         class $mol_check extends $.$mol_check {
-            event_click(next) {
+            click(next) {
                 this.checked(!this.checked());
                 if (next)
                     next.preventDefault();
@@ -4353,6 +4587,63 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_paragraph extends $.$mol_view {
+        line_height() {
+            return 24;
+        }
+        letter_width() {
+            return 8;
+        }
+    }
+    $.$mol_paragraph = $mol_paragraph;
+})($ || ($ = {}));
+//paragraph.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_paragraph extends $.$mol_paragraph {
+            maximal_width() {
+                let width = 0;
+                const letter = this.letter_width();
+                for (const kid of this.sub()) {
+                    if (!kid)
+                        continue;
+                    if (kid instanceof $.$mol_view) {
+                        width += kid.maximal_width();
+                    }
+                    else if (typeof kid !== 'object') {
+                        width += String(kid).length * letter;
+                    }
+                }
+                return width;
+            }
+            minimal_width() {
+                return Math.max(Math.min(this.$.$mol_window.size().width, this.maximal_width()), this.letter_width());
+            }
+            minimal_height() {
+                return Math.ceil(this.maximal_width() / this.minimal_width()) * this.line_height();
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "maximal_width", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "minimal_width", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "minimal_height", null);
+        $$.$mol_paragraph = $mol_paragraph;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//paragraph.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_link extends $.$mol_view {
         dom_name() {
             return "a";
@@ -4449,12 +4740,13 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    const { rem } = $.$mol_style_unit;
     $.$mol_style_define($.$mol_link, {
         textDecoration: 'none',
         color: "var(--mol_theme_control)",
         stroke: 'currentColor',
         cursor: 'pointer',
-        padding: '.5rem',
+        padding: rem(.5),
         boxSizing: 'border-box',
         position: 'relative',
         ':hover': {
@@ -4610,10 +4902,7 @@ var $;
     $.$mol_text = $mol_text;
 })($ || ($ = {}));
 (function ($) {
-    class $mol_text_row extends $.$mol_view {
-        minimal_height() {
-            return 40;
-        }
+    class $mol_text_row extends $.$mol_paragraph {
         attr() {
             return (Object.assign(Object.assign({}, super.attr()), { "mol_text_type": this.type() }));
         }
@@ -4624,12 +4913,9 @@ var $;
     $.$mol_text_row = $mol_text_row;
 })($ || ($ = {}));
 (function ($) {
-    class $mol_text_header extends $.$mol_view {
+    class $mol_text_header extends $.$mol_paragraph {
         dom_name() {
             return "h";
-        }
-        minimal_height() {
-            return 50;
         }
         attr() {
             return (Object.assign(Object.assign({}, super.attr()), { "mol_text_header_level": this.level() }));
@@ -4650,7 +4936,7 @@ var $;
     $.$mol_text_header = $mol_text_header;
 })($ || ($ = {}));
 (function ($) {
-    class $mol_text_span extends $.$mol_view {
+    class $mol_text_span extends $.$mol_paragraph {
         dom_name() {
             return "span";
         }
@@ -6884,6 +7170,15 @@ var $;
 //exec.node.js.map
 ;
 "use strict";
+//assert.js.map
+;
+"use strict";
+//assert.test.js.map
+;
+"use strict";
+//writable.test.js.map
+;
+"use strict";
 var $;
 (function ($_1) {
     let $$;
@@ -6962,12 +7257,6 @@ var $;
     });
 })($ || ($ = {}));
 //test.test.js.map
-;
-"use strict";
-//assert.js.map
-;
-"use strict";
-//assert.test.js.map
 ;
 "use strict";
 //deep.js.map
@@ -8501,6 +8790,37 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
+        'decode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), str);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded, 'utf8'), str);
+        },
+        'decode empty string'() {
+            const encoded = new Uint8Array([]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), '');
+        },
+    });
+})($ || ($ = {}));
+//decode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'encode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
+        },
+    });
+})($ || ($ = {}));
+//encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
         'const returns stored value'() {
             const foo = { bar: $.$mol_const(Math.random()) };
             $.$mol_assert_equal(foo.bar(), foo.bar());
@@ -8509,6 +8829,24 @@ var $;
     });
 })($ || ($ = {}));
 //const.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class TestClass extends Uint8Array {
+    }
+    $.$mol_test({
+        'Uint8Array vs itself'() {
+            $.$mol_assert_ok($.$mol_compare_array(new Uint8Array, new Uint8Array));
+            $.$mol_assert_ok($.$mol_compare_array(new Uint8Array([0]), new Uint8Array([0])));
+            $.$mol_assert_not($.$mol_compare_array(new Uint8Array([0]), new Uint8Array([1])));
+        },
+        'Uint8Array vs subclassed array'() {
+            $.$mol_assert_not($.$mol_compare_array(new Uint8Array, new TestClass));
+        },
+    });
+})($ || ($ = {}));
+//array.test.js.map
 ;
 "use strict";
 var $;
@@ -8589,6 +8927,20 @@ var $;
     });
 })($ || ($ = {}));
 //autorun.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_func_name_test = (() => () => { })();
+    $.$mol_test({
+        'FQN of anon function'() {
+            $.$mol_assert_equal($.$mol_func_name_test.name, '');
+            $.$mol_assert_equal($.$mol_func_name($.$mol_func_name_test), '$mol_func_name_test');
+            $.$mol_assert_equal($.$mol_func_name_test.name, '$mol_func_name_test');
+        },
+    });
+})($ || ($ = {}));
+//name.test.js.map
 ;
 "use strict";
 //extract.test.js.map
@@ -8714,6 +9066,9 @@ var $;
 //session.test.js.map
 ;
 "use strict";
+//result.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     class $mol_style_sheet_test1 extends $.$mol_view {
@@ -8733,6 +9088,47 @@ var $;
                 display: 'block',
             });
             $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+        },
+        'various units'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px, per } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                width: per(50),
+                height: px(50),
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: 50%;\n\theight: 50px;\n}\n');
+        },
+        'various functions'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { calc, fit_content } = $.$mol_style_func;
+            const { px, per } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                width: calc(`${per(100)} - ${px(1)}`),
+                height: fit_content(per(50)),
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: calc(100% - 1px);\n\theight: fit-content(50%);\n}\n');
+        },
+        'property groups'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                flex: {
+                    grow: 5
+                }
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tflex-grow: 5;\n}\n');
+        },
+        'property shorthand'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                padding: [0, 'auto']
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tpadding: 0 auto;\n}\n');
         },
         'component block styles with pseudo class'() {
             class $mol_style_sheet_test extends $.$mol_view {
@@ -8961,6 +9357,12 @@ var $;
 //md.test.js.map
 ;
 "use strict";
+//equals.js.map
+;
+"use strict";
+//equals.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     function $mol_diff_path(...paths) {
@@ -9025,7 +9427,7 @@ var $;
             super(message);
             this.errors = errors;
             if (errors.length) {
-                const stacks = [...errors.map(error => error.stack), this.stack];
+                const stacks = [...errors.map(error => error.message), this.stack];
                 const diff = $.$mol_diff_path(...stacks.map(stack => {
                     if (!stack)
                         return [];
@@ -9041,12 +9443,6 @@ var $;
     $.$mol_error_mix = $mol_error_mix;
 })($ || ($ = {}));
 //mix.js.map
-;
-"use strict";
-//equals.js.map
-;
-"use strict";
-//equals.test.js.map
 ;
 "use strict";
 var $;

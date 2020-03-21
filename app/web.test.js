@@ -1,5 +1,14 @@
 function require( path ){ return $node[ path ] };
 "use strict";
+//assert.js.map
+;
+"use strict";
+//assert.test.js.map
+;
+"use strict";
+//writable.test.js.map
+;
+"use strict";
 var $;
 (function ($_1) {
     let $$;
@@ -78,12 +87,6 @@ var $;
     });
 })($ || ($ = {}));
 //test.test.js.map
-;
-"use strict";
-//assert.js.map
-;
-"use strict";
-//assert.test.js.map
 ;
 "use strict";
 //deep.js.map
@@ -1656,6 +1659,37 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
+        'decode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), str);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded, 'utf8'), str);
+        },
+        'decode empty string'() {
+            const encoded = new Uint8Array([]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), '');
+        },
+    });
+})($ || ($ = {}));
+//decode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'encode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
+        },
+    });
+})($ || ($ = {}));
+//encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
         'const returns stored value'() {
             const foo = { bar: $.$mol_const(Math.random()) };
             $.$mol_assert_equal(foo.bar(), foo.bar());
@@ -1753,6 +1787,20 @@ var $;
     });
 })($ || ($ = {}));
 //timeout.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_func_name_test = (() => () => { })();
+    $.$mol_test({
+        'FQN of anon function'() {
+            $.$mol_assert_equal($.$mol_func_name_test.name, '');
+            $.$mol_assert_equal($.$mol_func_name($.$mol_func_name_test), '$mol_func_name_test');
+            $.$mol_assert_equal($.$mol_func_name_test.name, '$mol_func_name_test');
+        },
+    });
+})($ || ($ = {}));
+//name.test.js.map
 ;
 "use strict";
 //extract.test.js.map
@@ -1878,6 +1926,9 @@ var $;
 //session.test.js.map
 ;
 "use strict";
+//result.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     class $mol_style_sheet_test1 extends $.$mol_view {
@@ -1897,6 +1948,47 @@ var $;
                 display: 'block',
             });
             $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+        },
+        'various units'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px, per } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                width: per(50),
+                height: px(50),
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: 50%;\n\theight: 50px;\n}\n');
+        },
+        'various functions'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { calc, fit_content } = $.$mol_style_func;
+            const { px, per } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                width: calc(`${per(100)} - ${px(1)}`),
+                height: fit_content(per(50)),
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: calc(100% - 1px);\n\theight: fit-content(50%);\n}\n');
+        },
+        'property groups'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                flex: {
+                    grow: 5
+                }
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tflex-grow: 5;\n}\n');
+        },
+        'property shorthand'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { px } = $.$mol_style_unit;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                padding: [0, 'auto']
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tpadding: 0 auto;\n}\n');
         },
         'component block styles with pseudo class'() {
             class $mol_style_sheet_test extends $.$mol_view {
@@ -2125,6 +2217,12 @@ var $;
 //md.test.js.map
 ;
 "use strict";
+//equals.js.map
+;
+"use strict";
+//equals.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     function $mol_diff_path(...paths) {
@@ -2189,7 +2287,7 @@ var $;
             super(message);
             this.errors = errors;
             if (errors.length) {
-                const stacks = [...errors.map(error => error.stack), this.stack];
+                const stacks = [...errors.map(error => error.message), this.stack];
                 const diff = $.$mol_diff_path(...stacks.map(stack => {
                     if (!stack)
                         return [];
@@ -2205,12 +2303,6 @@ var $;
     $.$mol_error_mix = $mol_error_mix;
 })($ || ($ = {}));
 //mix.js.map
-;
-"use strict";
-//equals.js.map
-;
-"use strict";
-//equals.test.js.map
 ;
 "use strict";
 var $;

@@ -14,24 +14,18 @@ module.exports;
 
 $node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
 ;
+"use strict"
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-;
-"use strict"
-/// Fake namespace for optional overrides
-///
-/// 	namespace $ { export var x = 1 , y = 1 } // defaults
-/// 	namespace $.$$ { export var x = 2 } // overrides
-/// 	namespace $.$$ { console.log( x , y ) } // usage
-///
-var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , global ) : global
+var globalThis = globalThis || global || self || this
+var $ = ( typeof module === 'object' ) ? Object.setPrototypeOf( module['export'+'s'] , globalThis ) : globalThis
 $.$$ = $
-
 $.$mol = $  // deprecated
 
 ;
@@ -294,6 +288,9 @@ var $;
     $.$mol_owning_catch = $mol_owning_catch;
 })($ || ($ = {}));
 //owning.js.map
+;
+"use strict";
+//writable.js.map
 ;
 "use strict";
 var $;
@@ -765,6 +762,7 @@ var $;
         }
         return source;
     }
+    $.$mol_conform_array = $mol_conform_array;
     $mol_conform_handler(Array, $mol_conform_array);
     $mol_conform_handler(Uint8Array, $mol_conform_array);
     $mol_conform_handler(Uint16Array, $mol_conform_array);
@@ -1532,7 +1530,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete(Number.NaN);
+                        return cache.obsolete(Number.NaN);
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
@@ -1646,7 +1644,7 @@ var $;
                 if (next === undefined) {
                     const cache = get_cache(this, key);
                     if (force === $.$mol_mem_force_cache)
-                        cache.obsolete();
+                        return cache.obsolete();
                     if ($.$mol_atom2.current)
                         return cache.get();
                     else
