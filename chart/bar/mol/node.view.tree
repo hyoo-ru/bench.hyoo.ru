@@ -11,6 +11,27 @@ $hyoo_bench_chart_bar_mol $mol_view
 		title <= graph_title!id \
 		series_y <= series!id /number
 
+$mol_chart $mol_view
+	gap_hor 48
+	gap_vert 24
+	gap_left <= gap_hor
+	gap_right <= gap_hor
+	gap_bottom <= gap_vert
+	gap_top <= gap_vert
+	graphs /$mol_plot_graph
+	sub /
+		<= Legend $mol_chart_legend
+			graphs <= graphs_colored
+		<= Plot $mol_plot_pane
+			gap_left <= gap_left
+			gap_right <= gap_right
+			gap_bottom <= gap_bottom
+			gap_top <= gap_top
+			graphs <= graphs
+			graphs_colored => graphs_colored
+			hue_base?val <= hue_base 140
+			hue_shift?val <= hue_shift 111
+
 $mol_plot_graph $mol_svg_group
 	series_x /number
 	series_y /number
@@ -265,27 +286,6 @@ $mol_touch $mol_plugin
 		mouseup?event <=> event_end?event null
 		mouseleave?event <=> event_leave?event null
 		wheel?event <=> event_wheel?event null
-
-$mol_chart $mol_view
-	gap_hor 48
-	gap_vert 24
-	gap_left <= gap_hor
-	gap_right <= gap_hor
-	gap_bottom <= gap_vert
-	gap_top <= gap_vert
-	graphs /$mol_plot_graph
-	sub /
-		<= Legend $mol_chart_legend
-			graphs <= graphs_colored
-		<= Plot $mol_plot_pane
-			gap_left <= gap_left
-			gap_right <= gap_right
-			gap_bottom <= gap_bottom
-			gap_top <= gap_top
-			graphs <= graphs
-			graphs_colored => graphs_colored
-			hue_base?val <= hue_base 140
-			hue_shift?val <= hue_shift 111
 
 $mol_plot_ruler $mol_plot_graph
 	step 0

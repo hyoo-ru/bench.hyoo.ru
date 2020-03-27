@@ -961,9 +961,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_svg_root extends $mol_svg {
         dom_name(): string;
         attr(): {
@@ -973,6 +970,9 @@ declare namespace $ {
         view_box(): string;
         aspect(): string;
     }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -1159,9 +1159,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_chart extends $mol_view {
         gap_hor(): number;
         gap_vert(): number;
@@ -1177,6 +1174,9 @@ declare namespace $ {
         hue_base(): number;
         hue_shift(): number;
     }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
