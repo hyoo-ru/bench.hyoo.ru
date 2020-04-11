@@ -16,7 +16,7 @@ declare namespace $ {
 
 declare namespace $ {
     let $mol_jsx_prefix: string;
-    let $mol_jsx_booked: Set<string>;
+    let $mol_jsx_booked: Set<string> | null;
     let $mol_jsx_document: JSX.ElementClass['ownerDocument'];
 }
 
