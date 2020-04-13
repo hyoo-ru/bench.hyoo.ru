@@ -854,6 +854,7 @@ declare namespace $ {
             shrink?: number | Common;
             basis?: Size;
             direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+            wrap?: 'wrap' | 'nowrap' | 'wrap-reverse' | Common;
         };
     }
     export {};
@@ -1295,21 +1296,6 @@ declare namespace $ {
         Path(): $mol_svg_path;
         path(): string;
     }
-}
-
-declare namespace $ {
-    class $mol_icon_tick extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_check_box extends $mol_check {
-        Icon(): $mol_icon_tick;
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -2021,6 +2007,21 @@ declare namespace $.$$ {
         suggest_selected(next?: string): void;
         sub(): ($mol_button_minor | $mol_select)[];
         event_clear(event?: Event): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_tick extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_check_box extends $mol_check {
+        Icon(): $mol_icon_tick;
     }
 }
 
