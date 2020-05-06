@@ -49,7 +49,7 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		selected_id( next? : number ) {
+		selected_id( next? : number | null ) {
 			this.items()
 			if( next === void 0 ) return null
 			return next

@@ -44,7 +44,7 @@ namespace $.$$ {
 				
 				window.addEventListener( 'message' , handle )
 				
-				sandbox.contentWindow.postMessage( command , '*' )
+				sandbox.contentWindow!.postMessage( command , '*' )
 
 			} ) ) )()
 
@@ -148,7 +148,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		result_col_sort( next? : string ) {
-			return $mol_state_arg.value( this.state_key( 'sort' ) , next )
+			return $mol_state_arg.value( this.state_key( 'sort' ) , next ) || ''
 		}
 		
 		@ $mol_mem
