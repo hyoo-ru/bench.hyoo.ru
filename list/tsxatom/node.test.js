@@ -1,12 +1,6 @@
 require( "source-map-support" ).install()
 ;
 process.on( 'unhandledRejection' , up => { throw up } );
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-Error.stackTraceLimit = Infinity;
-module.exports;
-//mol.js.map
-;
 "use strict"
 
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -23,6 +17,21 @@ $.$mol = $  // deprecated
 
 ;
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+Error.stackTraceLimit = Infinity;
+module.exports;
+//mol.js.map
+;
+"use strict";
+//deep.js.map
+;
+"use strict";
+var $;
+(function ($) {
+})($ || ($ = {}));
+//context.js.map
+;
+"use strict";
 var $node = new Proxy({}, { get(target, name, wrapper) {
         const path = require('path');
         const fs = require('fs');
@@ -31,12 +40,13 @@ var $node = new Proxy({}, { get(target, name, wrapper) {
             return require(name);
         let dir = path.resolve('.');
         const suffix = `./node_modules/${name}`;
+        const $$ = $;
         while (!fs.existsSync(path.join(dir, suffix))) {
             const parent = path.resolve(dir, '..');
             if (parent === dir) {
-                $.$mol_exec('.', 'npm', 'install', name);
+                $$.$mol_exec('.', 'npm', 'install', name);
                 try {
-                    $.$mol_exec('.', 'npm', 'install', '@types/' + name);
+                    $$.$mol_exec('.', 'npm', 'install', '@types/' + name);
                 }
                 catch (_a) { }
                 break;
@@ -52,18 +62,12 @@ var $node = new Proxy({}, { get(target, name, wrapper) {
 "use strict";
 var $;
 (function ($) {
-})($ || ($ = {}));
-//context.js.map
-;
-"use strict";
-var $;
-(function ($) {
     $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
 })($ || ($ = {}));
 //context.node.js.map
 ;
 "use strict";
-//deep.js.map
+//jsx d.js.map
 ;
 "use strict";
 var $;
@@ -76,9 +80,6 @@ var $;
     };
 })($ || ($ = {}));
 //jsx.js.map
-;
-"use strict";
-//jsx d.js.map
 ;
 "use strict";
 var $;
@@ -212,16 +213,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_fail_hidden(error) {
-        throw error;
-    }
-    $.$mol_fail_hidden = $mol_fail_hidden;
-})($ || ($ = {}));
-//hidden.js.map
-;
-"use strict";
-var $;
-(function ($) {
     let $$;
     (function ($$_1) {
     })($$ = $.$$ || ($.$$ = {}));
@@ -236,15 +227,44 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_log3_area_lazy(event) {
+        const self = this;
+        const stack = self.$mol_log3_stack;
+        const deep = stack.length;
+        let logged = false;
+        stack.push(() => {
+            logged = true;
+            self.$mol_log3_area.call(self, event);
+        });
+        return () => {
+            if (logged)
+                self.console.groupEnd();
+            if (stack.length > deep)
+                stack.length = deep;
+        };
+    }
+    $.$mol_log3_area_lazy = $mol_log3_area_lazy;
+    $.$mol_log3_stack = [];
+})($ || ($ = {}));
+//log3.js.map
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_owning_map = new WeakMap();
     function $mol_owning_allow(having) {
-        if (!having)
+        try {
+            if (!having)
+                return false;
+            if (typeof having !== 'object')
+                return false;
+            if (typeof having['destructor'] !== 'function')
+                return false;
+            return true;
+        }
+        catch (_a) {
             return false;
-        if (typeof having !== 'object')
-            return false;
-        if (typeof having['destructor'] !== 'function')
-            return false;
-        return true;
+        }
     }
     $.$mol_owning_allow = $mol_owning_allow;
     function $mol_owning_get(having, Owner) {
@@ -281,6 +301,16 @@ var $;
     $.$mol_owning_catch = $mol_owning_catch;
 })($ || ($ = {}));
 //owning.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_fail_hidden(error) {
+        throw error;
+    }
+    $.$mol_fail_hidden = $mol_fail_hidden;
+})($ || ($ = {}));
+//hidden.js.map
 ;
 "use strict";
 //writable.js.map
@@ -327,6 +357,377 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_deprecated(message) {
+        return (host, field, descr) => {
+            const value = descr.value;
+            let warned = false;
+            descr.value = function $mol_deprecated_wrapper(...args) {
+                if (!warned) {
+                    this.$.$mol_log3_warn({
+                        place: `${host.constructor.name}::${field}`,
+                        message: `Deprecated`,
+                        hint: message,
+                    });
+                    warned = true;
+                }
+                return value.call(this, ...args);
+            };
+        };
+    }
+    $.$mol_deprecated = $mol_deprecated;
+})($ || ($ = {}));
+//deprecated.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_tree_convert = Symbol('$mol_tree_convert');
+    class $mol_tree extends $.$mol_object2 {
+        constructor(config = {}) {
+            super();
+            this.type = config.type || '';
+            if (config.value !== undefined) {
+                var sub = $mol_tree.values(config.value);
+                if (config.type || sub.length > 1) {
+                    this.sub = [...sub, ...(config.sub || [])];
+                    this.data = config.data || '';
+                }
+                else {
+                    this.data = sub[0].data;
+                    this.sub = config.sub || [];
+                }
+            }
+            else {
+                this.data = config.data || '';
+                this.sub = config.sub || [];
+            }
+            this.baseUri = config.baseUri || '';
+            this.row = config.row || 0;
+            this.col = config.col || 0;
+            this.length = config.length || 0;
+        }
+        static values(str, baseUri) {
+            return str.split('\n').map((data, index) => new $mol_tree({
+                data: data,
+                baseUri: baseUri,
+                row: index + 1,
+                length: data.length,
+            }));
+        }
+        clone(config = {}) {
+            return new $mol_tree({
+                type: ('type' in config) ? config.type : this.type,
+                data: ('data' in config) ? config.data : this.data,
+                sub: ('sub' in config) ? config.sub : this.sub,
+                baseUri: ('baseUri' in config) ? config.baseUri : this.baseUri,
+                row: ('row' in config) ? config.row : this.row,
+                col: ('col' in config) ? config.col : this.col,
+                length: ('length' in config) ? config.length : this.length,
+                value: config.value
+            });
+        }
+        make(config) {
+            return new $mol_tree(Object.assign({ baseUri: this.baseUri, row: this.row, col: this.col, length: this.length }, config));
+        }
+        make_data(value, sub) {
+            return this.make({ value, sub });
+        }
+        make_struct(type, sub) {
+            return this.make({ type, sub });
+        }
+        static fromString(str, baseUri) {
+            var root = new $mol_tree({ baseUri: baseUri });
+            var stack = [root];
+            var row = 0;
+            var prefix = str.replace(/^\n?(\t*)[\s\S]*/, '$1');
+            var lines = str.replace(new RegExp('^\\t{0,' + prefix.length + '}', 'mg'), '').split('\n');
+            lines.forEach(line => {
+                ++row;
+                var chunks = /^(\t*)((?:[^\n\t\\ ]+ *)*)(\\[^\n]*)?(.*?)(?:$|\n)/m.exec(line);
+                if (!chunks || chunks[4])
+                    return this.$.$mol_fail(new Error(`Syntax error at ${baseUri}:${row}\n${line}`));
+                var indent = chunks[1];
+                var path = chunks[2];
+                var data = chunks[3];
+                var deep = indent.length;
+                var types = path ? path.replace(/ $/, '').split(/ +/) : [];
+                if (stack.length <= deep)
+                    return this.$.$mol_fail(new Error(`Too many tabs at ${baseUri}:${row}\n${line}`));
+                stack.length = deep + 1;
+                var parent = stack[deep];
+                let col = deep;
+                types.forEach(type => {
+                    if (!type)
+                        return this.$.$mol_fail(new Error(`Unexpected space symbol ${baseUri}:${row}\n${line}`));
+                    var next = new $mol_tree({ type, baseUri, row, col, length: type.length });
+                    const parent_sub = parent.sub;
+                    parent_sub.push(next);
+                    parent = next;
+                    col += type.length + 1;
+                });
+                if (data) {
+                    var next = new $mol_tree({ data: data.substring(1), baseUri, row, col, length: data.length });
+                    const parent_sub = parent.sub;
+                    parent_sub.push(next);
+                    parent = next;
+                }
+                stack.push(parent);
+            });
+            return root;
+        }
+        static fromJSON(json, baseUri = '') {
+            switch (true) {
+                case typeof json === 'boolean':
+                case typeof json === 'number':
+                case json === null:
+                    return new $mol_tree({
+                        type: String(json),
+                        baseUri: baseUri
+                    });
+                case typeof json === 'string':
+                    return new $mol_tree({
+                        value: json,
+                        baseUri: baseUri
+                    });
+                case Array.isArray(json):
+                    return new $mol_tree({
+                        type: "/",
+                        sub: json.map(json => $mol_tree.fromJSON(json, baseUri))
+                    });
+                case json instanceof Date:
+                    return new $mol_tree({
+                        value: json.toISOString(),
+                        baseUri: baseUri
+                    });
+                default:
+                    if (typeof json[$.$mol_tree_convert] === 'function') {
+                        return json[$.$mol_tree_convert]();
+                    }
+                    if (typeof json.toJSON === 'function') {
+                        return $mol_tree.fromJSON(json.toJSON());
+                    }
+                    if (json instanceof Error) {
+                        const { name, message, stack } = json;
+                        json = Object.assign(Object.assign({}, json), { name, message, stack });
+                    }
+                    var sub = [];
+                    for (var key in json) {
+                        if (json[key] === undefined)
+                            continue;
+                        const subsub = $mol_tree.fromJSON(json[key], baseUri);
+                        if (/^[^\n\t\\ ]+$/.test(key)) {
+                            var child = new $mol_tree({
+                                type: key,
+                                baseUri: baseUri,
+                                sub: [subsub],
+                            });
+                        }
+                        else {
+                            var child = new $mol_tree({
+                                value: key,
+                                baseUri: baseUri,
+                                sub: [subsub],
+                            });
+                        }
+                        sub.push(child);
+                    }
+                    return new $mol_tree({
+                        type: "*",
+                        sub: sub,
+                        baseUri: baseUri
+                    });
+            }
+        }
+        get uri() {
+            return this.baseUri + '#' + this.row + ':' + this.col;
+        }
+        toString(prefix = '') {
+            var output = '';
+            if (this.type.length) {
+                if (!prefix.length) {
+                    prefix = "\t";
+                }
+                output += this.type;
+                if (this.sub.length == 1) {
+                    return output + ' ' + this.sub[0].toString(prefix);
+                }
+                output += "\n";
+            }
+            else if (this.data.length || prefix.length) {
+                output += "\\" + this.data + "\n";
+            }
+            for (var child of this.sub) {
+                output += prefix;
+                output += child.toString(prefix + "\t");
+            }
+            return output;
+        }
+        toJSON() {
+            if (!this.type)
+                return this.value;
+            if (this.type === 'true')
+                return true;
+            if (this.type === 'false')
+                return false;
+            if (this.type === 'null')
+                return null;
+            if (this.type === '*') {
+                var obj = {};
+                for (var child of this.sub) {
+                    if (child.type === '-')
+                        continue;
+                    var key = child.type || child.clone({ sub: child.sub.slice(0, child.sub.length - 1) }).value;
+                    var val = child.sub[child.sub.length - 1].toJSON();
+                    if (val !== undefined)
+                        obj[key] = val;
+                }
+                return obj;
+            }
+            if (this.type === '/') {
+                var res = [];
+                this.sub.forEach(child => {
+                    if (child.type === '-')
+                        return;
+                    var val = child.toJSON();
+                    if (val !== undefined)
+                        res.push(val);
+                });
+                return res;
+            }
+            if (this.type === 'time') {
+                return new Date(this.value);
+            }
+            const numb = Number(this.type);
+            if (!Number.isNaN(numb) || this.type === 'NaN')
+                return numb;
+            throw new Error(`Unknown type (${this.type}) at ${this.uri}`);
+        }
+        get value() {
+            var values = [];
+            for (var child of this.sub) {
+                if (child.type)
+                    continue;
+                values.push(child.value);
+            }
+            return this.data + values.join("\n");
+        }
+        insert(value, ...path) {
+            if (path.length === 0)
+                return value;
+            const type = path[0];
+            if (typeof type === 'string') {
+                let replaced = false;
+                const sub = this.sub.map((item, index) => {
+                    if (item.type !== type)
+                        return item;
+                    replaced = true;
+                    return item.insert(value, ...path.slice(1));
+                });
+                if (!replaced)
+                    sub.push(new $mol_tree({ type }).insert(value, ...path.slice(1)));
+                return this.clone({ sub });
+            }
+            else if (typeof type === 'number') {
+                const sub = this.sub.slice();
+                sub[type] = (sub[type] || new $mol_tree).insert(value, ...path.slice(1));
+                return this.clone({ sub });
+            }
+            else {
+                return this.clone({ sub: ((this.sub.length === 0) ? [new $mol_tree()] : this.sub).map(item => item.insert(value, ...path.slice(1))) });
+            }
+        }
+        select(...path) {
+            var next = [this];
+            for (var type of path) {
+                if (!next.length)
+                    break;
+                var prev = next;
+                next = [];
+                for (var item of prev) {
+                    switch (typeof (type)) {
+                        case 'string':
+                            for (var child of item.sub) {
+                                if (!type || (child.type == type)) {
+                                    next.push(child);
+                                }
+                            }
+                            break;
+                        case 'number':
+                            if (type < item.sub.length)
+                                next.push(item.sub[type]);
+                            break;
+                        default: next.push(...item.sub);
+                    }
+                }
+            }
+            return new $mol_tree({ sub: next });
+        }
+        filter(path, value) {
+            var sub = this.sub.filter(function (item) {
+                var found = item.select(...path);
+                if (value == null) {
+                    return Boolean(found.sub.length);
+                }
+                else {
+                    return found.sub.some(child => child.value == value);
+                }
+            });
+            return new $mol_tree({ sub: sub });
+        }
+        transform(visit, stack = []) {
+            const sub_stack = [this, ...stack];
+            return visit(sub_stack, () => this.sub.map(node => node.transform(visit, sub_stack)).filter(n => n));
+        }
+        hack(context) {
+            const sub = [].concat(...this.sub.map(child => {
+                const handle = context[child.type] || context[''];
+                if (!handle)
+                    $.$mol_fail(child.error('Handler not defined'));
+                return handle(child, context);
+            }));
+            return this.clone({ sub });
+        }
+        error(message) {
+            return new Error(`${message}:\n${this} ${this.baseUri}:${this.row}:${this.col}`);
+        }
+    }
+    __decorate([
+        $.$mol_deprecated('Use $mol_tree:hack')
+    ], $mol_tree.prototype, "transform", null);
+    $.$mol_tree = $mol_tree;
+})($ || ($ = {}));
+//tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log3_node_make(level, output, type, color) {
+        return function $mol_log3_logger(event) {
+            if (!event.time)
+                event = Object.assign({ time: new Date().toISOString() }, event);
+            const tree = this.$mol_tree.fromJSON(event).clone({ type });
+            let str = tree.toString();
+            if (process[output].isTTY) {
+                str = $node.colorette[color + 'Bright'](str);
+            }
+            this.console[level](str);
+            const self = this;
+            return () => self.console.groupEnd();
+        };
+    }
+    $.$mol_log3_node_make = $mol_log3_node_make;
+    $.$mol_log3_come = $mol_log3_node_make('info', 'stdout', 'come', 'blue');
+    $.$mol_log3_done = $mol_log3_node_make('info', 'stdout', 'done', 'green');
+    $.$mol_log3_fail = $mol_log3_node_make('error', 'stderr', 'fail', 'red');
+    $.$mol_log3_warn = $mol_log3_node_make('warn', 'stderr', 'warn', 'yellow');
+    $.$mol_log3_rise = $mol_log3_node_make('log', 'stdout', 'rise', 'magenta');
+    $.$mol_log3_area = $mol_log3_node_make('log', 'stdout', 'area', 'cyan');
+})($ || ($ = {}));
+//log3.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_wrapper extends $.$mol_object2 {
         static run(task) {
             return this.func(task)();
@@ -360,313 +761,6 @@ var $;
     $.$mol_wrapper = $mol_wrapper;
 })($ || ($ = {}));
 //wrapper.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $['devtoolsFormatters'] = $['devtoolsFormatters'] || [];
-    function $mol_dev_format_register(config) {
-        $['devtoolsFormatters'].push(config);
-    }
-    $.$mol_dev_format_register = $mol_dev_format_register;
-    $.$mol_dev_format_head = Symbol('$mol_dev_format_head');
-    $.$mol_dev_format_body = Symbol('$mol_dev_format_body');
-    $mol_dev_format_register({
-        header: (val, config = false) => {
-            if (config)
-                return null;
-            if (!val)
-                return null;
-            if ($.$mol_dev_format_head in val) {
-                return val[$.$mol_dev_format_head]();
-            }
-            return null;
-        },
-        hasBody: val => val[$.$mol_dev_format_body],
-        body: val => val[$.$mol_dev_format_body](),
-    });
-    function $mol_dev_format_native(obj) {
-        if (typeof obj === 'undefined')
-            return $.$mol_dev_format_shade('undefined');
-        if (typeof obj !== 'object')
-            return obj;
-        return [
-            'object',
-            {
-                object: obj,
-                config: true,
-            },
-        ];
-    }
-    $.$mol_dev_format_native = $mol_dev_format_native;
-    function $mol_dev_format_auto(obj) {
-        if (obj == null)
-            return $.$mol_dev_format_shade(String(obj));
-        if (typeof obj === 'object' && $.$mol_dev_format_head in obj) {
-            return obj[$.$mol_dev_format_head]();
-        }
-        return [
-            'object',
-            {
-                object: obj,
-                config: false,
-            },
-        ];
-    }
-    $.$mol_dev_format_auto = $mol_dev_format_auto;
-    function $mol_dev_format_element(element, style, ...content) {
-        const styles = [];
-        for (let key in style)
-            styles.push(`${key} : ${style[key]}`);
-        return [
-            element,
-            {
-                style: styles.join(' ; '),
-            },
-            ...content,
-        ];
-    }
-    $.$mol_dev_format_element = $mol_dev_format_element;
-    function $mol_dev_format_span(style, ...content) {
-        return $mol_dev_format_element('span', Object.assign({ 'vertical-align': '8%' }, style), ...content);
-    }
-    $.$mol_dev_format_span = $mol_dev_format_span;
-    $.$mol_dev_format_div = $mol_dev_format_element.bind(null, 'div');
-    $.$mol_dev_format_ol = $mol_dev_format_element.bind(null, 'ol');
-    $.$mol_dev_format_li = $mol_dev_format_element.bind(null, 'li');
-    $.$mol_dev_format_table = $mol_dev_format_element.bind(null, 'table');
-    $.$mol_dev_format_tr = $mol_dev_format_element.bind(null, 'tr');
-    $.$mol_dev_format_td = $mol_dev_format_element.bind(null, 'td');
-    $.$mol_dev_format_accent = $mol_dev_format_span.bind(null, {
-        'color': 'magenta',
-    });
-    $.$mol_dev_format_strong = $mol_dev_format_span.bind(null, {
-        'font-weight': 'bold',
-    });
-    $.$mol_dev_format_string = $mol_dev_format_span.bind(null, {
-        'color': 'green',
-    });
-    $.$mol_dev_format_shade = $mol_dev_format_span.bind(null, {
-        'color': 'gray',
-    });
-    $.$mol_dev_format_indent = $.$mol_dev_format_div.bind(null, {
-        'margin-left': '13px'
-    });
-})($ || ($ = {}));
-//format.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_maybe(value) {
-        return (value == null) ? [] : [value];
-    }
-    $.$mol_maybe = $mol_maybe;
-})($ || ($ = {}));
-//maybe.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_log(path, ...values) {
-        if ($.$mol_log_filter() == null)
-            return;
-        path = String(path);
-        if (path.indexOf($.$mol_log_filter()) === -1)
-            return;
-        const context = $.$mol_log_context();
-        if (context)
-            context();
-        console.debug(path, ...values);
-        if ($.$mol_log_debug() == null)
-            return;
-        if (path.indexOf($.$mol_log_debug()) === -1)
-            return;
-        debugger;
-    }
-    $.$mol_log = $mol_log;
-})($ || ($ = {}));
-//log.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_log_group(name, task) {
-        const filter = $.$mol_log_filter();
-        if (filter == null)
-            return task;
-        return function $mol_log_group_wrapper(...args) {
-            let started = false;
-            let prev = $.$mol_log_context();
-            $.$mol_log_context(() => {
-                if (prev)
-                    prev();
-                started = true;
-                if (filter || prev)
-                    console.group(name);
-                else
-                    console.groupCollapsed(name);
-                $.$mol_log_context(prev = null);
-            });
-            try {
-                return task.apply(this, args);
-            }
-            finally {
-                if (started)
-                    console.groupEnd();
-                $.$mol_log_context(prev);
-            }
-        };
-    }
-    $.$mol_log_group = $mol_log_group;
-})($ || ($ = {}));
-//log_group.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let context = null;
-    function $mol_log_context(next = context) {
-        return context = next;
-    }
-    $.$mol_log_context = $mol_log_context;
-})($ || ($ = {}));
-//log_context.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let debug;
-    function $mol_log_debug(next = debug) {
-        return debug = next;
-    }
-    $.$mol_log_debug = $mol_log_debug;
-})($ || ($ = {}));
-//log_debug.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let filter;
-    $.$mol_log_filter = function $mol_log_filter(next = filter) {
-        return filter = next;
-    };
-})($ || ($ = {}));
-//log_filter.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_log2 extends $.$mol_wrapper {
-        constructor(host, id, args) {
-            super();
-            this.host = host;
-            this.id = id;
-            this.args = args;
-            this.stream = [];
-            this[Symbol.toStringTag] = host ? `${host}.${id}` : id;
-        }
-        static wrap(task) {
-            const Inner = this;
-            const wrapped = function (...args) {
-                const outer = $mol_log2.current;
-                const inner = $mol_log2.current = new Inner(this, task.name, args);
-                try {
-                    return task.call(this, ...args);
-                }
-                finally {
-                    $mol_log2.current = outer;
-                    inner.flush();
-                }
-            };
-            return wrapped;
-        }
-        flush() {
-            if (this.stream.length === 0)
-                return;
-            console.debug(this);
-        }
-        info(...values) {
-            this.stream.push(new $mol_log2_line(...$mol_log2.prefix, ...values));
-        }
-        [$.$mol_dev_format_head]() {
-            return $.$mol_dev_format_span({}, ...$.$mol_maybe(this.host).map($.$mol_dev_format_auto), '.', $.$mol_dev_format_strong(this.id), '(', ...this.args.map($.$mol_dev_format_auto), ') ', $.$mol_dev_format_auto(this.stream));
-        }
-        static info(...values) {
-            const excludes = $mol_log2.excludes;
-            if (!excludes)
-                return;
-            const skip = excludes.some((regexp, index) => {
-                return regexp && regexp.test(String(values[index])) || false;
-            });
-            if (skip)
-                return;
-            if (!$mol_log2.current) {
-                console.warn(new Error(`$mol_log.current is not defined. Wrap entry point to $mol_log!`));
-                $mol_log2.current = new $mol_log2(null, '$mol_log2_default', []);
-                console.debug($mol_log2.current);
-            }
-            $mol_log2.current.info(...values);
-        }
-    }
-    $mol_log2.current = null;
-    $mol_log2.excludes = null;
-    $mol_log2.prefix = [];
-    $.$mol_log2 = $mol_log2;
-    class $mol_log2_indent extends $.$mol_wrapper {
-        static wrap(task) {
-            const Inner = this;
-            const wrapped = function (...args) {
-                try {
-                    $mol_log2.prefix.push($.$mol_log2_token_indent);
-                    return task.call(this, ...args);
-                }
-                finally {
-                    $mol_log2.prefix.pop();
-                }
-            };
-            return wrapped;
-        }
-    }
-    $.$mol_log2_indent = $mol_log2_indent;
-    class $mol_log2_table extends $mol_log2 {
-        [$.$mol_dev_format_head]() {
-            return $.$mol_dev_format_span({}, $.$mol_dev_format_strong(`${this}(`), ...this.args.map($.$mol_dev_format_auto), $.$mol_dev_format_strong(`) `));
-        }
-        [$.$mol_dev_format_body]() {
-            return $.$mol_dev_format_table({}, ...this.stream.map($.$mol_dev_format_auto));
-        }
-    }
-    $.$mol_log2_table = $mol_log2_table;
-    class $mol_log2_hidden extends $mol_log2 {
-        flush() { }
-    }
-    $.$mol_log2_hidden = $mol_log2_hidden;
-    class $mol_log2_line extends Array {
-        constructor(...items) {
-            super(...items);
-        }
-        [$.$mol_dev_format_head]() {
-            return $.$mol_dev_format_tr({}, ...this.map(item => $.$mol_dev_format_td({}, $.$mol_dev_format_auto(item))));
-        }
-    }
-    $.$mol_log2_line = $mol_log2_line;
-    class $mol_log2_token extends Array {
-        constructor(...items) {
-            super(...items);
-        }
-        [$.$mol_dev_format_head]() {
-            return $.$mol_dev_format_accent(...this);
-        }
-    }
-    $.$mol_log2_token = $mol_log2_token;
-    $.$mol_log2_token_empty = new $mol_log2_token('');
-    $.$mol_log2_token_indent = new $mol_log2_token('\t');
-    $.$mol_log2_legend = new $mol_log2_table(null, '$mol_log2_legend', []);
-    if (!$mol_log2.excludes)
-        $.$mol_log2_legend.info($.$mol_log2_token_empty, 'Use `$mol_log2.excludes : null | RegExp[]` to toggle logs');
-})($ || ($ = {}));
-//log2.js.map
 ;
 "use strict";
 var $;
@@ -817,6 +911,100 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $['devtoolsFormatters'] = $['devtoolsFormatters'] || [];
+    function $mol_dev_format_register(config) {
+        $['devtoolsFormatters'].push(config);
+    }
+    $.$mol_dev_format_register = $mol_dev_format_register;
+    $.$mol_dev_format_head = Symbol('$mol_dev_format_head');
+    $.$mol_dev_format_body = Symbol('$mol_dev_format_body');
+    $mol_dev_format_register({
+        header: (val, config = false) => {
+            if (config)
+                return null;
+            if (!val)
+                return null;
+            if ($.$mol_dev_format_head in val) {
+                return val[$.$mol_dev_format_head]();
+            }
+            return null;
+        },
+        hasBody: val => val[$.$mol_dev_format_body],
+        body: val => val[$.$mol_dev_format_body](),
+    });
+    function $mol_dev_format_native(obj) {
+        if (typeof obj === 'undefined')
+            return $.$mol_dev_format_shade('undefined');
+        if (typeof obj !== 'object')
+            return obj;
+        return [
+            'object',
+            {
+                object: obj,
+                config: true,
+            },
+        ];
+    }
+    $.$mol_dev_format_native = $mol_dev_format_native;
+    function $mol_dev_format_auto(obj) {
+        if (obj == null)
+            return $.$mol_dev_format_shade(String(obj));
+        if (typeof obj === 'object' && $.$mol_dev_format_head in obj) {
+            return obj[$.$mol_dev_format_head]();
+        }
+        return [
+            'object',
+            {
+                object: obj,
+                config: false,
+            },
+        ];
+    }
+    $.$mol_dev_format_auto = $mol_dev_format_auto;
+    function $mol_dev_format_element(element, style, ...content) {
+        const styles = [];
+        for (let key in style)
+            styles.push(`${key} : ${style[key]}`);
+        return [
+            element,
+            {
+                style: styles.join(' ; '),
+            },
+            ...content,
+        ];
+    }
+    $.$mol_dev_format_element = $mol_dev_format_element;
+    function $mol_dev_format_span(style, ...content) {
+        return $mol_dev_format_element('span', Object.assign({ 'vertical-align': '8%' }, style), ...content);
+    }
+    $.$mol_dev_format_span = $mol_dev_format_span;
+    $.$mol_dev_format_div = $mol_dev_format_element.bind(null, 'div');
+    $.$mol_dev_format_ol = $mol_dev_format_element.bind(null, 'ol');
+    $.$mol_dev_format_li = $mol_dev_format_element.bind(null, 'li');
+    $.$mol_dev_format_table = $mol_dev_format_element.bind(null, 'table');
+    $.$mol_dev_format_tr = $mol_dev_format_element.bind(null, 'tr');
+    $.$mol_dev_format_td = $mol_dev_format_element.bind(null, 'td');
+    $.$mol_dev_format_accent = $mol_dev_format_span.bind(null, {
+        'color': 'magenta',
+    });
+    $.$mol_dev_format_strong = $mol_dev_format_span.bind(null, {
+        'font-weight': 'bold',
+    });
+    $.$mol_dev_format_string = $mol_dev_format_span.bind(null, {
+        'color': 'green',
+    });
+    $.$mol_dev_format_shade = $mol_dev_format_span.bind(null, {
+        'color': 'gray',
+    });
+    $.$mol_dev_format_indent = $.$mol_dev_format_div.bind(null, {
+        'margin-left': '13px'
+    });
+})($ || ($ = {}));
+//format.js.map
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_fiber_defer(calculate) {
         const fiber = new $mol_fiber;
         fiber.calculate = calculate;
@@ -826,7 +1014,11 @@ var $;
     }
     $.$mol_fiber_defer = $mol_fiber_defer;
     function $mol_fiber_func(calculate) {
-        console.warn('$mol_fiber_func is deprecated. Use $mol_fiber.func instead.');
+        $.$mol_ambient({}).$mol_log3_warn({
+            place: '$mol_fiber_func',
+            message: 'Deprecated',
+            hint: 'Use $mol_fiber.func instead',
+        });
         return $mol_fiber.func(calculate);
     }
     $.$mol_fiber_func = $mol_fiber_func;
@@ -834,6 +1026,7 @@ var $;
         const wrapper = function (...args) {
             const fiber = new $mol_fiber();
             fiber.calculate = calculate.bind(this, ...args);
+            fiber[Symbol.toStringTag] = wrapper[Symbol.toStringTag];
             return fiber.wake();
         };
         wrapper[Symbol.toStringTag] = calculate.name;
@@ -841,7 +1034,11 @@ var $;
     }
     $.$mol_fiber_root = $mol_fiber_root;
     function $mol_fiber_method(obj, name, descr) {
-        console.warn('$mol_fiber_method is deprecated. Use $mol_fiber.method instead.');
+        $.$mol_ambient({}).$mol_log3_warn({
+            place: '$mol_fiber_method',
+            message: 'Deprecated',
+            hint: 'Use $mol_fiber.method instead',
+        });
         return $mol_fiber.method(obj, name, descr);
     }
     $.$mol_fiber_method = $mol_fiber_method;
@@ -865,7 +1062,7 @@ var $;
             if (!master || master.constructor !== $mol_fiber) {
                 master = new $mol_fiber;
                 master.cursor = -3;
-                master.error = request.call(this, ...args).then($.$mol_log2.func((next) => master.push(next)), $.$mol_log2.func((error) => master.fail(error)));
+                master.error = request.call(this, ...args).then((next) => master.push(next), (error) => master.fail(error));
                 const prefix = slave ? `${slave}/${slave.cursor / 2}:` : '/';
                 master[Symbol.toStringTag] = prefix + (request.name || $mol_fiber_sync.name);
             }
@@ -983,6 +1180,10 @@ var $;
             $mol_fiber.schedule().then(() => this.wake());
         }
         wake() {
+            const unscoupe = this.$.$mol_log3_area_lazy({
+                place: this,
+                message: 'Wake'
+            });
             try {
                 if (this.cursor > -2)
                     return this.get();
@@ -992,16 +1193,31 @@ var $;
                     return;
                 $.$mol_fail_hidden(error);
             }
+            finally {
+                unscoupe();
+            }
         }
         push(value) {
             value = this.$.$mol_conform(value, this.value);
             if (this.error || !Object.is(this.value, value)) {
-                this.$.$mol_log2.info(this, $.$mol_fiber_token_changed1, value, $.$mol_fiber_token_changed2, this.error || this.value);
+                if ($mol_fiber.logs)
+                    this.$.$mol_log3_done({
+                        place: this,
+                        message: 'Changed',
+                        next: value,
+                        value: this.value,
+                        error: this.error,
+                    });
                 this.obsolete_slaves();
                 this.forget();
             }
             else {
-                this.$.$mol_log2.info(this, $.$mol_fiber_token_actualized, value);
+                if ($mol_fiber.logs)
+                    this.$.$mol_log3_done({
+                        place: this,
+                        message: 'Same value',
+                        value,
+                    });
             }
             this.error = null;
             this.value = value;
@@ -1010,14 +1226,24 @@ var $;
         }
         fail(error) {
             this.complete();
-            this.$.$mol_log2.info(this, $.$mol_fiber_token_failed, error);
+            if ($mol_fiber.logs)
+                this.$.$mol_log3_fail({
+                    place: this,
+                    message: error.message,
+                });
             this.error = error;
             this.obsolete_slaves();
             return error;
         }
         wait(promise) {
             this.error = promise;
-            this.$.$mol_log2.info(this, $.$mol_fiber_token_sleeped, promise);
+            if ($mol_fiber.logs)
+                this.$.$mol_log3_warn({
+                    place: this,
+                    message: `Wait`,
+                    hint: `Don't panic, it's normal`,
+                    promise,
+                });
             this.cursor = 0;
             return promise;
         }
@@ -1033,13 +1259,17 @@ var $;
             this.disobey(master_index);
         }
         pull() {
+            if ($mol_fiber.logs)
+                this.$.$mol_log3_come({
+                    place: this,
+                    message: 'Pull',
+                });
             this.push(this.calculate());
         }
         update() {
             const slave = $mol_fiber.current;
             try {
                 $mol_fiber.current = this;
-                this.$.$mol_log2.info(this, $.$mol_fiber_token_runned);
                 this.pull();
             }
             catch (error) {
@@ -1123,39 +1353,25 @@ var $;
         destructor() {
             if (!this.abort())
                 return;
-            this.$.$mol_log2.info(this, $.$mol_fiber_token_destructed);
+            if ($mol_fiber.logs)
+                this.$.$mol_log3_done({
+                    place: this,
+                    message: 'Destructed',
+                });
             this.complete();
         }
         [$.$mol_dev_format_head]() {
             return $.$mol_dev_format_native(this);
         }
     }
+    $mol_fiber.logs = false;
     $mol_fiber.quant = 16;
     $mol_fiber.deadline = 0;
     $mol_fiber.liveline = 0;
     $mol_fiber.current = null;
     $mol_fiber.scheduled = null;
     $mol_fiber.queue = [];
-    __decorate([
-        $.$mol_log2.method
-    ], $mol_fiber.prototype, "wake", null);
-    __decorate([
-        $.$mol_log2_indent.method
-    ], $mol_fiber.prototype, "update", null);
     $.$mol_fiber = $mol_fiber;
-    $.$mol_fiber_token_runned = new $.$mol_log2_token(' ► ');
-    $.$mol_fiber_token_changed1 = new $.$mol_log2_token(' ˸ ');
-    $.$mol_fiber_token_changed2 = new $.$mol_log2_token(' 🠈 ');
-    $.$mol_fiber_token_actualized = new $.$mol_log2_token(' ✓ ');
-    $.$mol_fiber_token_sleeped = new $.$mol_log2_token(' 💤 ');
-    $.$mol_fiber_token_failed = new $.$mol_log2_token(' 🔥 ');
-    $.$mol_fiber_token_destructed = new $.$mol_log2_token(' 🕱 ');
-    $.$mol_log2_legend.info($.$mol_fiber_token_runned, '$mol_fiber starts execution');
-    $.$mol_log2_legend.info(new $.$mol_log2_line($.$mol_fiber_token_changed1, $.$mol_fiber_token_changed2), '$mol_fiber value is changed to different value');
-    $.$mol_log2_legend.info($.$mol_fiber_token_actualized, 'Actual $mol_fiber value is same as before');
-    $.$mol_log2_legend.info($.$mol_fiber_token_sleeped, '$mol_fiber can not run now and awaits on promise');
-    $.$mol_log2_legend.info($.$mol_fiber_token_failed, '$mol_fiber is failed and will be throw an Error or Promise');
-    $.$mol_log2_legend.info($.$mol_fiber_token_destructed, '$mol_fiber fully destructed');
 })($ || ($ = {}));
 //fiber.js.map
 ;
@@ -1272,7 +1488,11 @@ var $;
         pull() {
             if (this.cursor === 0)
                 return super.pull();
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_revalidation);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_come({
+                    place: this,
+                    message: 'Check doubt masters',
+                });
             const masters = this.masters;
             for (let index = 0; index < masters.length; index += 2) {
                 const master = masters[index];
@@ -1288,10 +1508,18 @@ var $;
                 }
                 if (this.cursor !== 0)
                     continue;
-                this.$.$mol_log2.info(this, $.$mol_atom2_token_stumbled, this._error || this._value);
+                if ($mol_atom2.logs)
+                    this.$.$mol_log3_done({
+                        place: this,
+                        message: 'Obsoleted while checking',
+                    });
                 return super.pull();
             }
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_revalidated, this._error || this._value);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_done({
+                    place: this,
+                    message: 'Masters not changed',
+                });
             this.cursor = -2;
         }
         get value() { return this._value; }
@@ -1300,7 +1528,10 @@ var $;
             if (prev && this.$.$mol_owning_check(this, prev))
                 prev.destructor();
             if (next && this.$.$mol_owning_catch(this, next)) {
-                next[Symbol.toStringTag] = this[Symbol.toStringTag];
+                try {
+                    next[Symbol.toStringTag] = this[Symbol.toStringTag];
+                }
+                catch (_a) { }
                 next[$.$mol_object_field] = this[$.$mol_object_field];
             }
             this._value = next;
@@ -1335,7 +1566,12 @@ var $;
             return master.lead(this, master_index);
         }
         lead(slave, master_index) {
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_leaded, slave);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Leads',
+                    slave,
+                });
             const slave_index = this.slaves.length;
             this.slaves[slave_index] = slave;
             this.slaves[slave_index + 1] = master_index;
@@ -1344,7 +1580,12 @@ var $;
         dislead(slave_index) {
             if (slave_index < 0)
                 return;
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_disleaded, this.slaves[slave_index]);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Disleads',
+                    slave: this.slaves[slave_index],
+                });
             this.slaves[slave_index] = undefined;
             this.slaves[slave_index + 1] = undefined;
             $.$mol_array_trim(this.slaves);
@@ -1365,7 +1606,11 @@ var $;
             }
             if (this.cursor === 0)
                 return;
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_obsoleted, this._error || this._value);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Obsoleted',
+                });
             if (this.cursor !== -1)
                 this.doubt_slaves();
             this.cursor = 0;
@@ -1384,7 +1629,11 @@ var $;
             }
             if (this.cursor >= -1)
                 return;
-            this.$.$mol_log2.info(this, $.$mol_atom2_token_doubted, this._error || this._value);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Doubted',
+                });
             this.cursor = -1;
             this.doubt_slaves();
         }
@@ -1403,12 +1652,12 @@ var $;
             }
         }
         get fresh() {
-            return $.$mol_log2_hidden.func(() => {
+            return () => {
                 if (this.cursor !== -2)
                     return;
                 this.cursor = 0;
                 $.$mol_fiber_solid.run(() => this.update());
-            });
+            };
         }
         get alone() {
             return this.slaves.length === 0;
@@ -1423,39 +1672,27 @@ var $;
         destructor() {
             if (!this.abort())
                 return;
-            this.$.$mol_log2.info(this, $.$mol_fiber_token_destructed);
+            if ($mol_atom2.logs)
+                this.$.$mol_log3_rise({
+                    place: this,
+                    message: 'Destructed'
+                });
             this.cursor = -3;
             for (let index = 0; index < this.masters.length; index += 2) {
                 this.complete_master(index);
             }
         }
     }
+    $mol_atom2.logs = false;
     $mol_atom2.cached = false;
     $mol_atom2.reap_task = null;
     $mol_atom2.reap_queue = [];
-    __decorate([
-        $.$mol_log2_indent.method
-    ], $mol_atom2.prototype, "obsolete_slaves", null);
-    __decorate([
-        $.$mol_log2_indent.method
-    ], $mol_atom2.prototype, "doubt_slaves", null);
     $.$mol_atom2 = $mol_atom2;
-    $.$mol_atom2_token_revalidation = new $.$mol_log2_token(' ⏭ ');
-    $.$mol_atom2_token_stumbled = new $.$mol_log2_token(' ⏯ ');
-    $.$mol_atom2_token_revalidated = new $.$mol_log2_token(' ✔ ');
-    $.$mol_atom2_token_leaded = new $.$mol_log2_token(' ☍ ');
-    $.$mol_atom2_token_disleaded = new $.$mol_log2_token(' ☌ ');
-    $.$mol_atom2_token_obsoleted = new $.$mol_log2_token(' ✘ ');
-    $.$mol_atom2_token_doubted = new $.$mol_log2_token(' � ');
-    $.$mol_log2_legend.info($.$mol_atom2_token_revalidation, '$mol_atom2 starts masters cheking for changes');
-    $.$mol_log2_legend.info($.$mol_atom2_token_stumbled, '$mol_atom2 is obsoleted while masters checking');
-    $.$mol_log2_legend.info($.$mol_atom2_token_revalidated, '$mol_atom2 is actual becasue there is no changed masters');
-    $.$mol_log2_legend.info($.$mol_atom2_token_leaded, '$mol_atom2 leads some slave');
-    $.$mol_log2_legend.info($.$mol_atom2_token_disleaded, '$mol_atom2 disleads some slave');
-    $.$mol_log2_legend.info($.$mol_atom2_token_obsoleted, '$mol_atom2 is obsoleted because some master is changed');
-    $.$mol_log2_legend.info($.$mol_atom2_token_doubted, '$mol_atom2 is doubted because some master is doubted or obsoleted');
 })($ || ($ = {}));
 //atom2.js.map
+;
+"use strict";
+//result.js.map
 ;
 "use strict";
 var $;
@@ -1495,7 +1732,7 @@ var $;
     }
     $.$mol_mem_persist = $mol_mem_persist;
     function $mol_mem(proto, name, descr) {
-        const value = descr.value;
+        const orig = descr.value;
         const store = new WeakMap();
         Object.defineProperty(proto, name + "()", {
             get: function () {
@@ -1507,7 +1744,7 @@ var $;
             if (cache)
                 return cache;
             let cache2 = new $.$mol_atom2;
-            cache2.calculate = value.bind(host);
+            cache2.calculate = orig.bind(host);
             cache2[Symbol.toStringTag] = `${host}.${name}()`;
             cache2.abort = () => {
                 store.delete(host);
@@ -1519,24 +1756,25 @@ var $;
             store.set(host, cache2);
             return cache2;
         };
-        return Object.assign(Object.assign({}, descr || {}), { value(next, force) {
-                if (next === undefined) {
-                    const cache = get_cache(this);
-                    if (force === $.$mol_mem_force_cache)
-                        return cache.obsolete(Number.NaN);
-                    if ($.$mol_atom2.current)
-                        return cache.get();
-                    else
-                        return $.$mol_fiber.run(() => cache.get());
-                }
-                return $.$mol_fiber.run(() => {
-                    if (force === $.$mol_mem_force_fail)
-                        return get_cache(this).fail(next);
-                    if (force !== $.$mol_mem_force_cache)
-                        next = value.call(this, next);
-                    return get_cache(this).put(next);
-                });
-            } });
+        function value(next, force) {
+            if (next === undefined) {
+                const cache = get_cache(this);
+                if (force === $.$mol_mem_force_cache)
+                    return cache.obsolete(Number.NaN);
+                if ($.$mol_atom2.current)
+                    return cache.get();
+                else
+                    return $.$mol_fiber.run(() => cache.get());
+            }
+            return $.$mol_fiber.run(() => {
+                if (force === $.$mol_mem_force_fail)
+                    return get_cache(this).fail(next);
+                if (force !== $.$mol_mem_force_cache)
+                    next = orig.call(this, next);
+                return get_cache(this).put(next);
+            });
+        }
+        return Object.assign(Object.assign({}, descr || {}), { value: Object.assign(value, { orig }) });
     }
     $.$mol_mem = $mol_mem;
 })($ || ($ = {}));
@@ -1544,9 +1782,6 @@ var $;
 ;
 "use strict";
 //param.js.map
-;
-"use strict";
-//result.js.map
 ;
 "use strict";
 var $;
@@ -1557,7 +1792,7 @@ var $;
         if (typeof value !== 'object')
             return value;
         if (Array.isArray(value))
-            return value.join(' , ');
+            return value.map($mol_dict_key).join(' , ');
         if (Object.getPrototypeOf(Object.getPrototypeOf(value)) === null)
             return JSON.stringify(value);
         return value;
@@ -1624,7 +1859,7 @@ var $;
             if (cache)
                 return cache;
             let cache2 = new $.$mol_atom2;
-            cache2[Symbol.toStringTag] = `${host}.${name}(${JSON.stringify(key)})`;
+            cache2[Symbol.toStringTag] = `${host}.${name}(${$.$mol_dict_key(key)})`;
             cache2.calculate = value.bind(host, key);
             cache2.abort = () => {
                 dict.delete(key);
@@ -1699,7 +1934,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    let $hyoo_bench_list_tsxatom_item = class $hyoo_bench_list_tsxatom_item extends $.$mol_jsx_view {
+    let Item = class Item extends $.$mol_jsx_view {
         title() { return ''; }
         content() { return ''; }
         selected(next = false) { return next; }
@@ -1712,21 +1947,12 @@ var $;
     };
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench_list_tsxatom_item.prototype, "title", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_bench_list_tsxatom_item.prototype, "content", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_bench_list_tsxatom_item.prototype, "selected", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_bench_list_tsxatom_item.prototype, "valueOf", null);
-    $hyoo_bench_list_tsxatom_item = __decorate([
+    ], Item.prototype, "valueOf", null);
+    Item = __decorate([
         $.$mol_fiber.class
-    ], $hyoo_bench_list_tsxatom_item);
-    $.$hyoo_bench_list_tsxatom_item = $hyoo_bench_list_tsxatom_item;
-    let $hyoo_bench_list_tsxatom = class $hyoo_bench_list_tsxatom extends $.$mol_jsx_view {
+    ], Item);
+    $.Item = Item;
+    let List = class List extends $.$mol_jsx_view {
         constructor() {
             super();
             $.$mol_dom_context.addEventListener('message', event => {
@@ -1741,32 +1967,39 @@ var $;
             sample: '',
             items: []
         }) { return next; }
+        item(index) {
+            var _a;
+            return (_a = this.data().items[index]) !== null && _a !== void 0 ? _a : {};
+        }
         selected(next = -1) { return next; }
         item_selected(id, next) {
             return this.selected(next === undefined ? undefined : next ? id : -1) === id;
         }
         valueOf() { return super.valueOf(); }
         render() {
-            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data().items.map(item => ($.$mol_jsx_make($hyoo_bench_list_tsxatom_item, { id: '/item:' + item.id, title: () => item.title, content: () => item.content, selected: next => this.item_selected(item.id, next) })))));
+            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data().items.map((item, index) => ($.$mol_jsx_make(Item, { id: '/item:' + item.id, title: () => this.item(index).title, content: () => this.item(index).content, selected: next => this.item_selected(item.id, next) })))));
         }
     };
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench_list_tsxatom.prototype, "data", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_bench_list_tsxatom.prototype, "selected", null);
+    ], List.prototype, "data", null);
     __decorate([
         $.$mol_mem_key
-    ], $hyoo_bench_list_tsxatom.prototype, "item_selected", null);
+    ], List.prototype, "item", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_bench_list_tsxatom.prototype, "valueOf", null);
-    $hyoo_bench_list_tsxatom = __decorate([
+    ], List.prototype, "selected", null);
+    __decorate([
+        $.$mol_mem_key
+    ], List.prototype, "item_selected", null);
+    __decorate([
+        $.$mol_mem
+    ], List.prototype, "valueOf", null);
+    List = __decorate([
         $.$mol_fiber.class
-    ], $hyoo_bench_list_tsxatom);
-    $.$hyoo_bench_list_tsxatom = $hyoo_bench_list_tsxatom;
-    $.$mol_atom2_autorun(() => $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx_make($hyoo_bench_list_tsxatom, { id: "/list" })));
+    ], List);
+    $.List = List;
+    $.$mol_atom2_autorun(() => $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx_make(List, { id: "/list" })));
 })($ || ($ = {}));
 //index.js.map
 ;
@@ -1776,7 +2009,12 @@ var $;
     function $mol_exec(dir, command, ...args) {
         let [app, ...args0] = command.split(' ');
         args = [...args0, ...args];
-        console.info(`${$node.colorette.gray($node.path.relative('', dir))}> ${$node.colorette.blue(app)} ${$node.colorette.cyan(args.join(' '))}`);
+        this.$mol_log3_come({
+            place: '$mol_exec',
+            dir: $node.path.relative('', dir),
+            message: 'Run',
+            command: `${app} ${args.join(' ')}`,
+        });
         var res = $node['child_process'].spawnSync(app, args, {
             cwd: $node.path.resolve(dir),
             shell: true,
@@ -1792,13 +2030,102 @@ var $;
 //exec.node.js.map
 ;
 "use strict";
-//assert.js.map
-;
-"use strict";
 //assert.test.js.map
 ;
 "use strict";
+//assert.js.map
+;
+"use strict";
 //deep.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log(path, ...values) {
+        if ($.$mol_log_filter() == null)
+            return;
+        path = String(path);
+        if (path.indexOf($.$mol_log_filter()) === -1)
+            return;
+        const context = $.$mol_log_context();
+        if (context)
+            context();
+        console.debug(path, ...values);
+        if ($.$mol_log_debug() == null)
+            return;
+        if (path.indexOf($.$mol_log_debug()) === -1)
+            return;
+        debugger;
+    }
+    $.$mol_log = $mol_log;
+})($ || ($ = {}));
+//log.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    let context = null;
+    function $mol_log_context(next = context) {
+        return context = next;
+    }
+    $.$mol_log_context = $mol_log_context;
+})($ || ($ = {}));
+//log_context.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    let debug;
+    function $mol_log_debug(next = debug) {
+        return debug = next;
+    }
+    $.$mol_log_debug = $mol_log_debug;
+})($ || ($ = {}));
+//log_debug.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    let filter;
+    $.$mol_log_filter = function $mol_log_filter(next = filter) {
+        return filter = next;
+    };
+})($ || ($ = {}));
+//log_filter.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log_group(name, task) {
+        const filter = $.$mol_log_filter();
+        if (filter == null)
+            return task;
+        return function $mol_log_group_wrapper(...args) {
+            let started = false;
+            let prev = $.$mol_log_context();
+            $.$mol_log_context(() => {
+                if (prev)
+                    prev();
+                started = true;
+                if (filter || prev)
+                    console.group(name);
+                else
+                    console.groupCollapsed(name);
+                $.$mol_log_context(prev = null);
+            });
+            try {
+                return task.apply(this, args);
+            }
+            finally {
+                if (started)
+                    console.groupEnd();
+                $.$mol_log_context(prev);
+            }
+        };
+    }
+    $.$mol_log_group = $mol_log_group;
+})($ || ($ = {}));
+//log_group.js.map
 ;
 "use strict";
 var $;
@@ -1825,7 +2152,11 @@ var $;
                 await mock(context);
             await test(context);
         }
-        console.info('$mol_test completed', $_1.$mol_test_all.length);
+        $_1.$mol_ambient({}).$mol_log3_done({
+            place: '$mol_test',
+            message: 'Completed',
+            count: $_1.$mol_test_all.length,
+        });
     }
     $_1.$mol_test_run = $mol_test_run;
     let scheduled = false;
@@ -1836,7 +2167,7 @@ var $;
         setTimeout($_1.$mol_log_group('$mol_test', () => {
             scheduled = false;
             $mol_test_run();
-        }), 500);
+        }), 0);
     }
     $_1.$mol_test_schedule = $mol_test_schedule;
     $_1.$mol_test_mocks.push(context => {
@@ -1879,6 +2210,38 @@ var $;
     });
 })($ || ($ = {}));
 //test.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'must be false'() {
+            $.$mol_assert_not(0);
+        },
+        'must be true'() {
+            $.$mol_assert_ok(1);
+        },
+        'two must be equal'() {
+            $.$mol_assert_equal(2, 2);
+        },
+        'three must be equal'() {
+            $.$mol_assert_equal(2, 2, 2);
+        },
+        'two must be unique'() {
+            $.$mol_assert_unique([3], [3]);
+        },
+        'three must be unique'() {
+            $.$mol_assert_unique([3], [3], [3]);
+        },
+        'two must be alike'() {
+            $.$mol_assert_like([3], [3]);
+        },
+        'three must be alike'() {
+            $.$mol_assert_like([3], [3], [3]);
+        },
+    });
+})($ || ($ = {}));
+//assert.test.js.map
 ;
 "use strict";
 var $;
@@ -1958,7 +2321,7 @@ var $;
                         return val;
                     if ('outerHTML' in val)
                         return val.outerHTML;
-                    return val;
+                    return JSON.stringify(val);
                 };
                 return $.$mol_fail(new Error(`Not like\n${print(head)}\n---\n${print(value)}`));
             }
@@ -1967,38 +2330,6 @@ var $;
     $.$mol_assert_like = $mol_assert_like;
 })($ || ($ = {}));
 //assert.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'must be false'() {
-            $.$mol_assert_not(0);
-        },
-        'must be true'() {
-            $.$mol_assert_ok(1);
-        },
-        'two must be equal'() {
-            $.$mol_assert_equal(2, 2);
-        },
-        'three must be equal'() {
-            $.$mol_assert_equal(2, 2, 2);
-        },
-        'two must be unique'() {
-            $.$mol_assert_unique([3], [3]);
-        },
-        'three must be unique'() {
-            $.$mol_assert_unique([3], [3], [3]);
-        },
-        'two must be alike'() {
-            $.$mol_assert_like([3], [3]);
-        },
-        'three must be alike'() {
-            $.$mol_assert_like([3], [3], [3]);
-        },
-    });
-})($ || ($ = {}));
-//assert.test.js.map
 ;
 "use strict";
 var $;
@@ -2025,8 +2356,8 @@ var $;
             $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
         },
         'Define attributes'() {
-            const dom = $.$mol_jsx_make("div", { hidden: true, lang: "ru" });
-            $.$mol_assert_equal(dom.outerHTML, '<div hidden="" lang="ru"></div>');
+            const dom = $.$mol_jsx_make("div", { lang: "ru", hidden: true });
+            $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
         },
         'Define child nodes'() {
             const dom = $.$mol_jsx_make("div", null,
@@ -2065,6 +2396,20 @@ var $;
     });
 })($ || ($ = {}));
 //make.test.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_log3_come = () => { };
+        $.$mol_log3_done = () => { };
+        $.$mol_log3_fail = () => { };
+        $.$mol_log3_warn = () => { };
+        $.$mol_log3_rise = () => { };
+        $.$mol_log3_area = () => () => { };
+    });
+})($ || ($ = {}));
+//log3.test.js.map
 ;
 "use strict";
 //writable.test.js.map
@@ -2187,35 +2532,6 @@ var $;
     });
 })($ || ($ = {}));
 //wrapper.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'all cases of using maybe'() {
-            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
-            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
-            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
-        },
-    });
-})($ || ($ = {}));
-//maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        var _a;
-        $.$mol_log2 = (_a = class extends $_1.$mol_log2 {
-            },
-            _a.current = new $_1.$mol_log2(null, '$mol_log2_mock', []),
-            _a);
-    });
-})($ || ($ = {}));
-//log2.test.js.map
 ;
 "use strict";
 var $;
@@ -2425,6 +2741,13 @@ var $;
         await $_1.$mol_fiber_warp();
         $_1.$mol_fiber.deadline = Date.now() + 100;
     });
+    $_1.$mol_test({
+        'sync to async': async ($) => {
+            const sum = $_1.$mol_fiber_async((a, b) => a + b);
+            const res = await sum(1, 2);
+            $_1.$mol_assert_equal(res, 3);
+        },
+    });
 })($ || ($ = {}));
 //fiber.test.js.map
 ;
@@ -2478,6 +2801,67 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_defer extends $.$mol_object {
+        constructor(run) {
+            super();
+            this.run = run;
+            $mol_defer.add(this);
+        }
+        destructor() {
+            $mol_defer.drop(this);
+        }
+        static schedule() {
+            if (this.timer)
+                return;
+            this.timer = this.scheduleNative(() => {
+                this.timer = null;
+                this.run();
+            });
+        }
+        static unschedule() {
+            if (!this.timer)
+                return;
+            cancelAnimationFrame(this.timer);
+            this.timer = null;
+        }
+        static add(defer) {
+            this.all.push(defer);
+            this.schedule();
+        }
+        static drop(defer) {
+            var index = this.all.indexOf(defer);
+            if (index >= 0)
+                this.all.splice(index, 1);
+        }
+        static run() {
+            if (this.all.length === 0)
+                return;
+            this.schedule();
+            for (var defer; defer = this.all.shift();)
+                defer.run();
+        }
+    }
+    $mol_defer.all = [];
+    $mol_defer.timer = null;
+    $mol_defer.scheduleNative = (typeof requestAnimationFrame == 'function')
+        ? handler => requestAnimationFrame(handler)
+        : handler => setTimeout(handler, 16);
+    $.$mol_defer = $mol_defer;
+})($ || ($ = {}));
+//defer.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_after_timeout = $_1.$mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//timeout.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_after_timeout extends $.$mol_object2 {
         constructor(delay, task) {
             super();
@@ -2492,15 +2876,6 @@ var $;
     $.$mol_after_timeout = $mol_after_timeout;
 })($ || ($ = {}));
 //timeout.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        $.$mol_after_timeout = $_1.$mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-//timeout.test.js.map
 ;
 "use strict";
 var $;
@@ -2850,56 +3225,7 @@ var $;
 //atom2.test.js.map
 ;
 "use strict";
-var $;
-(function ($) {
-    class $mol_defer extends $.$mol_object {
-        constructor(run) {
-            super();
-            this.run = run;
-            $mol_defer.add(this);
-        }
-        destructor() {
-            $mol_defer.drop(this);
-        }
-        static schedule() {
-            if (this.timer)
-                return;
-            this.timer = this.scheduleNative(() => {
-                this.timer = null;
-                this.run();
-            });
-        }
-        static unschedule() {
-            if (!this.timer)
-                return;
-            cancelAnimationFrame(this.timer);
-            this.timer = null;
-        }
-        static add(defer) {
-            this.all.push(defer);
-            this.schedule();
-        }
-        static drop(defer) {
-            var index = this.all.indexOf(defer);
-            if (index >= 0)
-                this.all.splice(index, 1);
-        }
-        static run() {
-            if (this.all.length === 0)
-                return;
-            this.schedule();
-            for (var defer; defer = this.all.shift();)
-                defer.run();
-        }
-    }
-    $mol_defer.all = [];
-    $mol_defer.timer = null;
-    $mol_defer.scheduleNative = (typeof requestAnimationFrame == 'function')
-        ? handler => requestAnimationFrame(handler)
-        : handler => setTimeout(handler, 16);
-    $.$mol_defer = $mol_defer;
-})($ || ($ = {}));
-//defer.js.map
+//result.test.js.map
 ;
 "use strict";
 var $;
@@ -3017,19 +3343,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_const(value) {
-        var getter = (() => value);
-        getter['()'] = value;
-        getter[Symbol.toStringTag] = value;
-        return getter;
-    }
-    $.$mol_const = $mol_const;
-})($ || ($ = {}));
-//const.js.map
-;
-"use strict";
-var $;
-(function ($) {
     $.$mol_test({
         'const returns stored value'() {
             const foo = { bar: $.$mol_const(Math.random()) };
@@ -3039,6 +3352,19 @@ var $;
     });
 })($ || ($ = {}));
 //const.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_const(value) {
+        var getter = (() => value);
+        getter['()'] = value;
+        getter[Symbol.toStringTag] = value;
+        return getter;
+    }
+    $.$mol_const = $mol_const;
+})($ || ($ = {}));
+//const.js.map
 ;
 "use strict";
 var $;
@@ -3210,9 +3536,6 @@ var $;
 //param.test.js.map
 ;
 "use strict";
-//result.test.js.map
-;
-"use strict";
 var $;
 (function ($) {
     $.$mol_test({
@@ -3353,109 +3676,155 @@ var $;
 //key.test.js.map
 ;
 "use strict";
+//equals.test.js.map
+;
+"use strict";
 //equals.js.map
 ;
 "use strict";
-//equals.test.js.map
+var $;
+(function ($_1) {
+    $_1.$mol_test({
+        'tree parsing'() {
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("foo\nbar\n").sub.length, 2);
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("foo\nbar\n").sub[1].type, "bar");
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("foo\n\n\n").sub.length, 1);
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("=foo\n\\bar\n").sub.length, 2);
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("=foo\n\\bar\n").sub[1].data, "bar");
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("foo bar \\pol").sub[0].sub[0].sub[0].data, "pol");
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString("foo bar\n\t\\pol\n\t\\men").sub[0].sub[0].sub[1].data, "men");
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('foo bar \\text\n').toString(), 'foo bar \\text\n');
+        },
+        'inserting'() {
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b c d').insert(new $_1.$mol_tree, 'a', 'b', 'c').toString(), 'a b \\\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b').insert(new $_1.$mol_tree, 'a', 'b', 'c', 'd').toString(), 'a b c \\\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b c d').insert(new $_1.$mol_tree, 0, 0, 0).toString(), 'a b \\\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b').insert(new $_1.$mol_tree, 0, 0, 0, 0).toString(), 'a b \\\n\t\\\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b c d').insert(new $_1.$mol_tree, null, null, null).toString(), 'a b \\\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromString('a b').insert(new $_1.$mol_tree, null, null, null, null).toString(), 'a b \\\n\t\\\n');
+        },
+        'fromJSON'() {
+            $_1.$mol_assert_equal($_1.$mol_tree.fromJSON([]).toString(), '/\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromJSON([false, true]).toString(), '/\n\tfalse\n\ttrue\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromJSON([0, 1, 2.3]).toString(), '/\n\t0\n\t1\n\t2.3\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromJSON(['', 'foo', 'bar\nbaz']).toString(), '/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n');
+            $_1.$mol_assert_equal($_1.$mol_tree.fromJSON({ 'foo': false, 'bar\nbaz': 'lol' }).toString(), '*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n');
+        },
+        'toJSON'() {
+            $_1.$mol_assert_equal(JSON.stringify($_1.$mol_tree.fromString('/\n').sub[0]), '[]');
+            $_1.$mol_assert_equal(JSON.stringify($_1.$mol_tree.fromString('/\n\tfalse\n\ttrue\n').sub[0]), '[false,true]');
+            $_1.$mol_assert_equal(JSON.stringify($_1.$mol_tree.fromString('/\n\t0\n\t1\n\t2.3\n').sub[0]), '[0,1,2.3]');
+            $_1.$mol_assert_equal(JSON.stringify($_1.$mol_tree.fromString('/\n\t\\\n\t\\foo\n\t\\\n\t\t\\bar\n\t\t\\baz\n').sub[0]), '["","foo","bar\\nbaz"]');
+            $_1.$mol_assert_equal(JSON.stringify($_1.$mol_tree.fromString('*\n\tfoo false\n\t\\\n\t\t\\bar\n\t\t\\baz\n\t\t\\lol\n').sub[0]), '{"foo":false,"bar\\nbaz":"lol"}');
+        },
+        'hack'() {
+            const res = $_1.$mol_tree.fromString(`foo bar xxx`).hack({
+                '': (tree, context) => [tree.hack(context)],
+                'bar': (tree, context) => [tree.hack(context).clone({ type: '777' })],
+            });
+            $_1.$mol_assert_equal(res.toString(), new $_1.$mol_tree({ type: 'foo 777 xxx' }).toString());
+        },
+        'errors handling'($) {
+            const errors = [];
+            class Tree extends $_1.$mol_tree {
+            }
+            Tree.$ = $.$mol_ambient({
+                $mol_fail: error => errors.push(error.message)
+            });
+            Tree.fromString(`
+				\t \tfoo
+				bar \\data
+			`, 'test');
+            $_1.$mol_assert_like(errors, ['Syntax error at test:2\n \tfoo']);
+        },
+    });
+})($ || ($ = {}));
+//tree.test.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    const a_stack = [];
-    const b_stack = [];
-    let cache = null;
-    function $mol_compare_deep(a, b) {
-        if (Object.is(a, b))
-            return true;
-        const a_type = typeof a;
-        const b_type = typeof b;
-        if (a_type !== b_type)
-            return false;
-        if (a_type === 'function')
-            return String(a) === String(b);
-        if (a_type !== 'object')
-            return false;
-        if (!a || !b)
-            return false;
-        if (a instanceof Error)
-            return false;
-        if (a['constructor'] !== b['constructor'])
-            return false;
-        if (a instanceof RegExp)
-            return Object.is(String(a), String(b));
-        const ref = a_stack.indexOf(a);
-        if (ref >= 0) {
-            return Object.is(b_stack[ref], b);
+    $.$mol_test({
+        'equal paths'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2, 3, 4],
+                suffix: [[], [], []],
+            });
+        },
+        'different suffix'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [3, 5], [5, 4]],
+            });
+        },
+        'one contains other'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [], [3]],
+            });
+        },
+        'fully different'() {
+            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
+            $.$mol_assert_like(diff, {
+                prefix: [],
+                suffix: [[1, 2], [3, 4], [5, 6]],
+            });
+        },
+    });
+})($ || ($ = {}));
+//path.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_diff_path(...paths) {
+        const limit = Math.min(...paths.map(path => path.length));
+        lookup: for (var i = 0; i < limit; ++i) {
+            const first = paths[0][i];
+            for (let j = 1; j < paths.length; ++j) {
+                if (paths[j][i] !== first)
+                    break lookup;
+            }
         }
-        if (!cache)
-            cache = new WeakMap;
-        let a_cache = cache.get(a);
-        if (a_cache) {
-            const b_cache = a_cache.get(b);
-            if (typeof b_cache === 'boolean')
-                return b_cache;
+        return {
+            prefix: paths[0].slice(0, i),
+            suffix: paths.map(path => path.slice(i)),
+        };
+    }
+    $.$mol_diff_path = $mol_diff_path;
+})($ || ($ = {}));
+//path.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_error_mix extends Error {
+        constructor(message, ...errors) {
+            super(message);
+            this.errors = errors;
+            if (errors.length) {
+                const stacks = [...errors.map(error => error.message), this.stack];
+                const diff = $.$mol_diff_path(...stacks.map(stack => {
+                    if (!stack)
+                        return [];
+                    return stack.split('\n').reverse();
+                }));
+                const head = diff.prefix.reverse().join('\n');
+                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
+                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
+                this.message += errors.map(error => '\n' + error.message).join('');
+            }
         }
-        else {
-            a_cache = new WeakMap();
-            cache.set(a, a_cache);
-        }
-        a_stack.push(a);
-        b_stack.push(b);
-        let result;
-        try {
-            if (a[Symbol.iterator]) {
-                const a_iter = a[Symbol.iterator]();
-                const b_iter = b[Symbol.iterator]();
-                while (true) {
-                    const a_next = a_iter.next();
-                    const b_next = b_iter.next();
-                    if (a_next.done !== a_next.done)
-                        return result = false;
-                    if (a_next.done)
-                        break;
-                    if (!$mol_compare_deep(a_next.value, b_next.value))
-                        return result = false;
-                }
-                return result = true;
-            }
-            let count = 0;
-            for (let key in a) {
-                try {
-                    if (!$mol_compare_deep(a[key], b[key]))
-                        return result = false;
-                }
-                catch (error) {
-                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
-                }
-                ++count;
-            }
-            for (let key in b) {
-                --count;
-                if (count < 0)
-                    return result = false;
-            }
-            const a_val = a['valueOf']();
-            if (Object.is(a_val, a))
-                return result = true;
-            const b_val = b['valueOf']();
-            if (!Object.is(a_val, b_val))
-                return result = false;
-            return result = true;
-        }
-        finally {
-            a_stack.pop();
-            b_stack.pop();
-            if (a_stack.length === 0) {
-                cache = null;
-            }
-            else {
-                a_cache.set(b, result);
-            }
+        toJSON() {
+            return this.message;
         }
     }
-    $.$mol_compare_deep = $mol_compare_deep;
+    $.$mol_error_mix = $mol_error_mix;
 })($ || ($ = {}));
-//deep.js.map
+//mix.js.map
 ;
 "use strict";
 var $;
@@ -3582,83 +3951,100 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_diff_path(...paths) {
-        const limit = Math.min(...paths.map(path => path.length));
-        lookup: for (var i = 0; i < limit; ++i) {
-            const first = paths[0][i];
-            for (let j = 1; j < paths.length; ++j) {
-                if (paths[j][i] !== first)
-                    break lookup;
+    const a_stack = [];
+    const b_stack = [];
+    let cache = null;
+    function $mol_compare_deep(a, b) {
+        if (Object.is(a, b))
+            return true;
+        const a_type = typeof a;
+        const b_type = typeof b;
+        if (a_type !== b_type)
+            return false;
+        if (a_type === 'function')
+            return String(a) === String(b);
+        if (a_type !== 'object')
+            return false;
+        if (!a || !b)
+            return false;
+        if (a instanceof Error)
+            return false;
+        if (a['constructor'] !== b['constructor'])
+            return false;
+        if (a instanceof RegExp)
+            return Object.is(String(a), String(b));
+        const ref = a_stack.indexOf(a);
+        if (ref >= 0) {
+            return Object.is(b_stack[ref], b);
+        }
+        if (!cache)
+            cache = new WeakMap;
+        let a_cache = cache.get(a);
+        if (a_cache) {
+            const b_cache = a_cache.get(b);
+            if (typeof b_cache === 'boolean')
+                return b_cache;
+        }
+        else {
+            a_cache = new WeakMap();
+            cache.set(a, a_cache);
+        }
+        a_stack.push(a);
+        b_stack.push(b);
+        let result;
+        try {
+            if (a[Symbol.iterator]) {
+                const a_iter = a[Symbol.iterator]();
+                const b_iter = b[Symbol.iterator]();
+                while (true) {
+                    const a_next = a_iter.next();
+                    const b_next = b_iter.next();
+                    if (a_next.done !== a_next.done)
+                        return result = false;
+                    if (a_next.done)
+                        break;
+                    if (!$mol_compare_deep(a_next.value, b_next.value))
+                        return result = false;
+                }
+                return result = true;
+            }
+            let count = 0;
+            for (let key in a) {
+                try {
+                    if (!$mol_compare_deep(a[key], b[key]))
+                        return result = false;
+                }
+                catch (error) {
+                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
+                }
+                ++count;
+            }
+            for (let key in b) {
+                --count;
+                if (count < 0)
+                    return result = false;
+            }
+            const a_val = a['valueOf']();
+            if (Object.is(a_val, a))
+                return result = true;
+            const b_val = b['valueOf']();
+            if (!Object.is(a_val, b_val))
+                return result = false;
+            return result = true;
+        }
+        finally {
+            a_stack.pop();
+            b_stack.pop();
+            if (a_stack.length === 0) {
+                cache = null;
+            }
+            else {
+                a_cache.set(b, result);
             }
         }
-        return {
-            prefix: paths[0].slice(0, i),
-            suffix: paths.map(path => path.slice(i)),
-        };
     }
-    $.$mol_diff_path = $mol_diff_path;
+    $.$mol_compare_deep = $mol_compare_deep;
 })($ || ($ = {}));
-//path.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'equal paths'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2, 3, 4],
-                suffix: [[], [], []],
-            });
-        },
-        'different suffix'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [3, 5], [5, 4]],
-            });
-        },
-        'one contains other'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [], [3]],
-            });
-        },
-        'fully different'() {
-            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
-            $.$mol_assert_like(diff, {
-                prefix: [],
-                suffix: [[1, 2], [3, 4], [5, 6]],
-            });
-        },
-    });
-})($ || ($ = {}));
-//path.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_error_mix extends Error {
-        constructor(message, ...errors) {
-            super(message);
-            this.errors = errors;
-            if (errors.length) {
-                const stacks = [...errors.map(error => error.message), this.stack];
-                const diff = $.$mol_diff_path(...stacks.map(stack => {
-                    if (!stack)
-                        return [];
-                    return stack.split('\n').reverse();
-                }));
-                const head = diff.prefix.reverse().join('\n');
-                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
-                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
-                this.message += errors.map(error => '\n' + error.message).join('');
-            }
-        }
-    }
-    $.$mol_error_mix = $mol_error_mix;
-})($ || ($ = {}));
-//mix.js.map
+//deep.js.map
 
 //# sourceMappingURL=node.test.js.map

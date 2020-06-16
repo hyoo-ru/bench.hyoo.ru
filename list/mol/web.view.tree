@@ -1,61 +1,3 @@
-$hyoo_bench_list_mol $mol_scroll
-	sub /
-		<= List $mol_list
-			rows <= rows /
-	Row!id $hyoo_bench_list_mol_row
-		checked?val <=> row_selected!id?val false
-		title <= row_title!id \
-		content <= row_content!id \
-
-$hyoo_bench_list_mol_row $mol_check
-	selected?val false
-	minimal_height 56
-	sub /
-		<= Title $mol_view
-			sub / <= title \
-		<= Content $mol_view
-			sub / <= content \
-
-$mol_check $mol_button_minor
-	attr *
-		^
-		mol_check_checked <= checked?val false
-		aria-checked <= checked?val false
-		role \checkbox
-	sub /
-		<= Icon null
-		<= label /
-			<= Title $mol_view
-				sub /
-					<= title \
-
-$mol_button $mol_view
-	enabled true
-	minimal_height 40
-	click?event null
-	event_click?event null
-	event *
-		^
-		click?event <=> event_activate?event null
-		keypress?event <=> event_key_press?event null 
-	attr *
-		^
-		disabled <= disabled false
-		role \button
-		tabindex <= tab_index 0
-		title <= hint \
-	sub /$mol_view_content
-		<= title
-
-$mol_button_typed $mol_button
-
-$mol_button_major $mol_button_typed
-	attr *
-		^
-		mol_theme \$mol_theme_accent
-
-$mol_button_minor $mol_button_typed
-
 $mol_scroll $mol_view
 	minimal_height 0
 	_event_scroll_timer?val null
@@ -77,3 +19,56 @@ $mol_list $mol_view
 	view_window /
 		0
 		0
+
+$mol_button $mol_view
+	enabled true
+	minimal_height 40
+	click?event null
+	event_click?event null
+	event *
+		^
+		click?event <=> event_activate?event null
+		keypress?event <=> event_key_press?event null 
+	attr *
+		^
+		disabled <= disabled false
+		role \button
+		tabindex <= tab_index 0
+		title <= hint \
+	sub /$mol_view_content
+		<= title
+
+$mol_button_typed $mol_button
+
+$mol_button_minor $mol_button_typed
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked?val false
+		aria-checked <= checked?val false
+		role \checkbox
+	sub /
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$hyoo_bench_list_mol $mol_scroll
+	sub /
+		<= List $mol_list
+			rows <= rows /
+	Row!id $hyoo_bench_list_mol_row
+		checked?val <=> row_selected!id?val false
+		title <= row_title!id \
+		content <= row_content!id \
+
+$hyoo_bench_list_mol_row $mol_check
+	selected?val false
+	minimal_height 56
+	sub /
+		<= Title $mol_view
+			sub / <= title \
+		<= Content $mol_view
+			sub / <= content \

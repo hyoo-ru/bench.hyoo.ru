@@ -1,17 +1,4 @@
 function require( path ){ return $node[ path ] };
-
-var $node = $node || {}
-void function( module ) { var exports = module.exports = this; function require( id ) { return $node[ id.replace( /^.\// , "../mol/" ) ] }; 
-;
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-Error.stackTraceLimit = Infinity;
-module.exports;
-//mol.js.map
-;
-
-$node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
-;
 "use strict"
 
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -27,6 +14,22 @@ $.$$ = $
 $.$mol = $  // deprecated
 
 ;
+
+var $node = $node || {}
+void function( module ) { var exports = module.exports = this; function require( id ) { return $node[ id.replace( /^.\// , "../mol/" ) ] }; 
+;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+Error.stackTraceLimit = Infinity;
+module.exports;
+//mol.js.map
+;
+
+$node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
+;
+"use strict";
+//deep.js.map
+;
 "use strict";
 var $;
 (function ($) {
@@ -41,7 +44,7 @@ var $;
 //context.web.js.map
 ;
 "use strict";
-//deep.js.map
+//jsx d.js.map
 ;
 "use strict";
 var $;
@@ -54,9 +57,6 @@ var $;
     };
 })($ || ($ = {}));
 //jsx.js.map
-;
-"use strict";
-//jsx d.js.map
 ;
 "use strict";
 var $;
@@ -206,13 +206,18 @@ var $;
 (function ($) {
     $.$mol_owning_map = new WeakMap();
     function $mol_owning_allow(having) {
-        if (!having)
+        try {
+            if (!having)
+                return false;
+            if (typeof having !== 'object')
+                return false;
+            if (typeof having['destructor'] !== 'function')
+                return false;
+            return true;
+        }
+        catch (_a) {
             return false;
-        if (typeof having !== 'object')
-            return false;
-        if (typeof having['destructor'] !== 'function')
-            return false;
-        return true;
+        }
     }
     $.$mol_owning_allow = $mol_owning_allow;
     function $mol_owning_get(having, Owner) {
@@ -353,7 +358,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_bench_list_tsx_item extends $.$mol_jsx_view {
+    class Item extends $.$mol_jsx_view {
         constructor() {
             super(...arguments);
             this.title = '';
@@ -367,8 +372,8 @@ var $;
                 $.$mol_jsx_make("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
         }
     }
-    $.$hyoo_bench_list_tsx_item = $hyoo_bench_list_tsx_item;
-    class $hyoo_bench_list_tsx extends $.$mol_jsx_view {
+    $.Item = Item;
+    class List extends $.$mol_jsx_view {
         constructor() {
             super(...arguments);
             this.data = {
@@ -385,10 +390,10 @@ var $;
             this.valueOf();
         }
         render() {
-            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx_make($hyoo_bench_list_tsx_item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
+            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx_make(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
         }
     }
-    $.$hyoo_bench_list_tsx = $hyoo_bench_list_tsx;
+    $.List = List;
 })($ || ($ = {}));
 //index.js.map
 ;

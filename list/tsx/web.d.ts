@@ -2,22 +2,16 @@ declare namespace $ { }
 export = $;
 
 declare namespace $ {
-    var $mol_dom_context: typeof globalThis;
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     type $mol_type_partial_deep<Val> = {
         [field in keyof Val]?: $mol_type_partial_deep<Val[field]>;
     };
 }
 
 declare namespace $ {
-    let $mol_jsx_prefix: string;
-    let $mol_jsx_booked: Set<string> | null;
-    let $mol_jsx_document: JSX.ElementClass['ownerDocument'];
+    var $mol_dom_context: typeof globalThis;
+}
+
+declare namespace $ {
 }
 
 declare namespace JSX {
@@ -40,6 +34,12 @@ declare namespace JSX {
     }
     interface ElementChildrenAttribute {
     }
+}
+
+declare namespace $ {
+    let $mol_jsx_prefix: string;
+    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_document: JSX.ElementClass['ownerDocument'];
 }
 
 declare namespace $ {
@@ -121,15 +121,15 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_bench_list_tsx_item extends $mol_jsx_view {
+    class Item extends $mol_jsx_view {
         title: string;
         content: string;
         selected: boolean;
         onSelect(): void;
         render(): JSX.Element;
     }
-    class $hyoo_bench_list_tsx extends $mol_jsx_view {
-        static render(props: Pick<$hyoo_bench_list_tsx, 'data' | 'selected'>): JSX.Element;
+    class List extends $mol_jsx_view {
+        static render(props: Pick<List, 'data' | 'selected'>): JSX.Element;
         data: {
             sample: string;
             items: {

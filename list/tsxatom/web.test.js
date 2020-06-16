@@ -1,12 +1,123 @@
 function require( path ){ return $node[ path ] };
 "use strict";
-//assert.js.map
-;
-"use strict";
 //assert.test.js.map
 ;
 "use strict";
+//assert.js.map
+;
+"use strict";
 //deep.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log(path, ...values) {
+        if ($.$mol_log_filter() == null)
+            return;
+        path = String(path);
+        if (path.indexOf($.$mol_log_filter()) === -1)
+            return;
+        const context = $.$mol_log_context();
+        if (context)
+            context();
+        console.debug(path, ...values);
+        if ($.$mol_log_debug() == null)
+            return;
+        if (path.indexOf($.$mol_log_debug()) === -1)
+            return;
+        debugger;
+    }
+    $.$mol_log = $mol_log;
+})($ || ($ = {}));
+//log.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    let context = null;
+    function $mol_log_context(next = context) {
+        return context = next;
+    }
+    $.$mol_log_context = $mol_log_context;
+})($ || ($ = {}));
+//log_context.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log_debug(next) {
+        if (next !== undefined) {
+            if (next == null) {
+                sessionStorage.removeItem('$mol_log_debug()');
+            }
+            else {
+                sessionStorage.setItem('$mol_log_debug()', next);
+            }
+        }
+        return sessionStorage.getItem('$mol_log_debug()');
+    }
+    $.$mol_log_debug = $mol_log_debug;
+})($ || ($ = {}));
+//log_debug.web.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    let filter = undefined;
+    $.$mol_log_filter = function $mol_log_filter(next) {
+        if (next !== undefined) {
+            if (next == null) {
+                sessionStorage.removeItem('$mol_log_filter()');
+            }
+            else {
+                sessionStorage.setItem('$mol_log_filter()', next);
+            }
+            filter = next;
+        }
+        if (filter !== undefined)
+            return filter;
+        return filter = sessionStorage.getItem('$mol_log_filter()');
+    };
+    if (typeof sessionStorage === 'undefined')
+        $.$mol_log_filter = (next = null) => filter = next;
+    if ($.$mol_log_filter() == null)
+        console.info('Use $mol_log_filter( needle : string|null ) to toggle logs');
+})($ || ($ = {}));
+//log_filter.web.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log_group(name, task) {
+        const filter = $.$mol_log_filter();
+        if (filter == null)
+            return task;
+        return function $mol_log_group_wrapper(...args) {
+            let started = false;
+            let prev = $.$mol_log_context();
+            $.$mol_log_context(() => {
+                if (prev)
+                    prev();
+                started = true;
+                if (filter || prev)
+                    console.group(name);
+                else
+                    console.groupCollapsed(name);
+                $.$mol_log_context(prev = null);
+            });
+            try {
+                return task.apply(this, args);
+            }
+            finally {
+                if (started)
+                    console.groupEnd();
+                $.$mol_log_context(prev);
+            }
+        };
+    }
+    $.$mol_log_group = $mol_log_group;
+})($ || ($ = {}));
+//log_group.js.map
 ;
 "use strict";
 var $;
@@ -33,7 +144,11 @@ var $;
                 await mock(context);
             await test(context);
         }
-        console.info('$mol_test completed', $_1.$mol_test_all.length);
+        $_1.$mol_ambient({}).$mol_log3_done({
+            place: '$mol_test',
+            message: 'Completed',
+            count: $_1.$mol_test_all.length,
+        });
     }
     $_1.$mol_test_run = $mol_test_run;
     let scheduled = false;
@@ -44,7 +159,7 @@ var $;
         setTimeout($_1.$mol_log_group('$mol_test', () => {
             scheduled = false;
             $mol_test_run();
-        }), 500);
+        }), 0);
     }
     $_1.$mol_test_schedule = $mol_test_schedule;
     $_1.$mol_test_mocks.push(context => {
@@ -87,6 +202,38 @@ var $;
     });
 })($ || ($ = {}));
 //test.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'must be false'() {
+            $.$mol_assert_not(0);
+        },
+        'must be true'() {
+            $.$mol_assert_ok(1);
+        },
+        'two must be equal'() {
+            $.$mol_assert_equal(2, 2);
+        },
+        'three must be equal'() {
+            $.$mol_assert_equal(2, 2, 2);
+        },
+        'two must be unique'() {
+            $.$mol_assert_unique([3], [3]);
+        },
+        'three must be unique'() {
+            $.$mol_assert_unique([3], [3], [3]);
+        },
+        'two must be alike'() {
+            $.$mol_assert_like([3], [3]);
+        },
+        'three must be alike'() {
+            $.$mol_assert_like([3], [3], [3]);
+        },
+    });
+})($ || ($ = {}));
+//assert.test.js.map
 ;
 "use strict";
 var $;
@@ -166,7 +313,7 @@ var $;
                         return val;
                     if ('outerHTML' in val)
                         return val.outerHTML;
-                    return val;
+                    return JSON.stringify(val);
                 };
                 return $.$mol_fail(new Error(`Not like\n${print(head)}\n---\n${print(value)}`));
             }
@@ -175,38 +322,6 @@ var $;
     $.$mol_assert_like = $mol_assert_like;
 })($ || ($ = {}));
 //assert.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'must be false'() {
-            $.$mol_assert_not(0);
-        },
-        'must be true'() {
-            $.$mol_assert_ok(1);
-        },
-        'two must be equal'() {
-            $.$mol_assert_equal(2, 2);
-        },
-        'three must be equal'() {
-            $.$mol_assert_equal(2, 2, 2);
-        },
-        'two must be unique'() {
-            $.$mol_assert_unique([3], [3]);
-        },
-        'three must be unique'() {
-            $.$mol_assert_unique([3], [3], [3]);
-        },
-        'two must be alike'() {
-            $.$mol_assert_like([3], [3]);
-        },
-        'three must be alike'() {
-            $.$mol_assert_like([3], [3], [3]);
-        },
-    });
-})($ || ($ = {}));
-//assert.test.js.map
 ;
 "use strict";
 var $;
@@ -233,8 +348,8 @@ var $;
             $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
         },
         'Define attributes'() {
-            const dom = $.$mol_jsx_make("div", { hidden: true, lang: "ru" });
-            $.$mol_assert_equal(dom.outerHTML, '<div hidden="" lang="ru"></div>');
+            const dom = $.$mol_jsx_make("div", { lang: "ru", hidden: true });
+            $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
         },
         'Define child nodes'() {
             const dom = $.$mol_jsx_make("div", null,
@@ -273,6 +388,20 @@ var $;
     });
 })($ || ($ = {}));
 //make.test.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_log3_come = () => { };
+        $.$mol_log3_done = () => { };
+        $.$mol_log3_fail = () => { };
+        $.$mol_log3_warn = () => { };
+        $.$mol_log3_rise = () => { };
+        $.$mol_log3_area = () => () => { };
+    });
+})($ || ($ = {}));
+//log3.test.js.map
 ;
 "use strict";
 //writable.test.js.map
@@ -395,35 +524,6 @@ var $;
     });
 })($ || ($ = {}));
 //wrapper.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'all cases of using maybe'() {
-            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
-            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
-            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
-        },
-    });
-})($ || ($ = {}));
-//maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        var _a;
-        $.$mol_log2 = (_a = class extends $_1.$mol_log2 {
-            },
-            _a.current = new $_1.$mol_log2(null, '$mol_log2_mock', []),
-            _a);
-    });
-})($ || ($ = {}));
-//log2.test.js.map
 ;
 "use strict";
 var $;
@@ -633,6 +733,13 @@ var $;
         await $_1.$mol_fiber_warp();
         $_1.$mol_fiber.deadline = Date.now() + 100;
     });
+    $_1.$mol_test({
+        'sync to async': async ($) => {
+            const sum = $_1.$mol_fiber_async((a, b) => a + b);
+            const res = await sum(1, 2);
+            $_1.$mol_assert_equal(res, 3);
+        },
+    });
 })($ || ($ = {}));
 //fiber.test.js.map
 ;
@@ -686,6 +793,67 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_defer extends $.$mol_object {
+        constructor(run) {
+            super();
+            this.run = run;
+            $mol_defer.add(this);
+        }
+        destructor() {
+            $mol_defer.drop(this);
+        }
+        static schedule() {
+            if (this.timer)
+                return;
+            this.timer = this.scheduleNative(() => {
+                this.timer = null;
+                this.run();
+            });
+        }
+        static unschedule() {
+            if (!this.timer)
+                return;
+            cancelAnimationFrame(this.timer);
+            this.timer = null;
+        }
+        static add(defer) {
+            this.all.push(defer);
+            this.schedule();
+        }
+        static drop(defer) {
+            var index = this.all.indexOf(defer);
+            if (index >= 0)
+                this.all.splice(index, 1);
+        }
+        static run() {
+            if (this.all.length === 0)
+                return;
+            this.schedule();
+            for (var defer; defer = this.all.shift();)
+                defer.run();
+        }
+    }
+    $mol_defer.all = [];
+    $mol_defer.timer = null;
+    $mol_defer.scheduleNative = (typeof requestAnimationFrame == 'function')
+        ? handler => requestAnimationFrame(handler)
+        : handler => setTimeout(handler, 16);
+    $.$mol_defer = $mol_defer;
+})($ || ($ = {}));
+//defer.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_after_frame = $_1.$mol_after_mock_commmon;
+    });
+})($ || ($ = {}));
+//frame.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_after_frame extends $.$mol_object2 {
         constructor(task) {
             super();
@@ -699,15 +867,6 @@ var $;
     $.$mol_after_frame = $mol_after_frame;
 })($ || ($ = {}));
 //frame.web.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        $.$mol_after_frame = $_1.$mol_after_mock_commmon;
-    });
-})($ || ($ = {}));
-//frame.test.js.map
 ;
 "use strict";
 var $;
@@ -1035,56 +1194,7 @@ var $;
 //atom2.test.js.map
 ;
 "use strict";
-var $;
-(function ($) {
-    class $mol_defer extends $.$mol_object {
-        constructor(run) {
-            super();
-            this.run = run;
-            $mol_defer.add(this);
-        }
-        destructor() {
-            $mol_defer.drop(this);
-        }
-        static schedule() {
-            if (this.timer)
-                return;
-            this.timer = this.scheduleNative(() => {
-                this.timer = null;
-                this.run();
-            });
-        }
-        static unschedule() {
-            if (!this.timer)
-                return;
-            cancelAnimationFrame(this.timer);
-            this.timer = null;
-        }
-        static add(defer) {
-            this.all.push(defer);
-            this.schedule();
-        }
-        static drop(defer) {
-            var index = this.all.indexOf(defer);
-            if (index >= 0)
-                this.all.splice(index, 1);
-        }
-        static run() {
-            if (this.all.length === 0)
-                return;
-            this.schedule();
-            for (var defer; defer = this.all.shift();)
-                defer.run();
-        }
-    }
-    $mol_defer.all = [];
-    $mol_defer.timer = null;
-    $mol_defer.scheduleNative = (typeof requestAnimationFrame == 'function')
-        ? handler => requestAnimationFrame(handler)
-        : handler => setTimeout(handler, 16);
-    $.$mol_defer = $mol_defer;
-})($ || ($ = {}));
-//defer.js.map
+//result.test.js.map
 ;
 "use strict";
 var $;
@@ -1202,19 +1312,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_const(value) {
-        var getter = (() => value);
-        getter['()'] = value;
-        getter[Symbol.toStringTag] = value;
-        return getter;
-    }
-    $.$mol_const = $mol_const;
-})($ || ($ = {}));
-//const.js.map
-;
-"use strict";
-var $;
-(function ($) {
     $.$mol_test({
         'const returns stored value'() {
             const foo = { bar: $.$mol_const(Math.random()) };
@@ -1224,6 +1321,19 @@ var $;
     });
 })($ || ($ = {}));
 //const.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_const(value) {
+        var getter = (() => value);
+        getter['()'] = value;
+        getter[Symbol.toStringTag] = value;
+        return getter;
+    }
+    $.$mol_const = $mol_const;
+})($ || ($ = {}));
+//const.js.map
 ;
 "use strict";
 var $;
@@ -1395,9 +1505,6 @@ var $;
 //param.test.js.map
 ;
 "use strict";
-//result.test.js.map
-;
-"use strict";
 var $;
 (function ($) {
     $.$mol_test({
@@ -1538,109 +1645,95 @@ var $;
 //key.test.js.map
 ;
 "use strict";
-//equals.js.map
+//equals.test.js.map
 ;
 "use strict";
-//equals.test.js.map
+//equals.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    const a_stack = [];
-    const b_stack = [];
-    let cache = null;
-    function $mol_compare_deep(a, b) {
-        if (Object.is(a, b))
-            return true;
-        const a_type = typeof a;
-        const b_type = typeof b;
-        if (a_type !== b_type)
-            return false;
-        if (a_type === 'function')
-            return String(a) === String(b);
-        if (a_type !== 'object')
-            return false;
-        if (!a || !b)
-            return false;
-        if (a instanceof Error)
-            return false;
-        if (a['constructor'] !== b['constructor'])
-            return false;
-        if (a instanceof RegExp)
-            return Object.is(String(a), String(b));
-        const ref = a_stack.indexOf(a);
-        if (ref >= 0) {
-            return Object.is(b_stack[ref], b);
+    $.$mol_test({
+        'equal paths'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2, 3, 4],
+                suffix: [[], [], []],
+            });
+        },
+        'different suffix'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [3, 5], [5, 4]],
+            });
+        },
+        'one contains other'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [], [3]],
+            });
+        },
+        'fully different'() {
+            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
+            $.$mol_assert_like(diff, {
+                prefix: [],
+                suffix: [[1, 2], [3, 4], [5, 6]],
+            });
+        },
+    });
+})($ || ($ = {}));
+//path.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_diff_path(...paths) {
+        const limit = Math.min(...paths.map(path => path.length));
+        lookup: for (var i = 0; i < limit; ++i) {
+            const first = paths[0][i];
+            for (let j = 1; j < paths.length; ++j) {
+                if (paths[j][i] !== first)
+                    break lookup;
+            }
         }
-        if (!cache)
-            cache = new WeakMap;
-        let a_cache = cache.get(a);
-        if (a_cache) {
-            const b_cache = a_cache.get(b);
-            if (typeof b_cache === 'boolean')
-                return b_cache;
+        return {
+            prefix: paths[0].slice(0, i),
+            suffix: paths.map(path => path.slice(i)),
+        };
+    }
+    $.$mol_diff_path = $mol_diff_path;
+})($ || ($ = {}));
+//path.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_error_mix extends Error {
+        constructor(message, ...errors) {
+            super(message);
+            this.errors = errors;
+            if (errors.length) {
+                const stacks = [...errors.map(error => error.message), this.stack];
+                const diff = $.$mol_diff_path(...stacks.map(stack => {
+                    if (!stack)
+                        return [];
+                    return stack.split('\n').reverse();
+                }));
+                const head = diff.prefix.reverse().join('\n');
+                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
+                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
+                this.message += errors.map(error => '\n' + error.message).join('');
+            }
         }
-        else {
-            a_cache = new WeakMap();
-            cache.set(a, a_cache);
-        }
-        a_stack.push(a);
-        b_stack.push(b);
-        let result;
-        try {
-            if (a[Symbol.iterator]) {
-                const a_iter = a[Symbol.iterator]();
-                const b_iter = b[Symbol.iterator]();
-                while (true) {
-                    const a_next = a_iter.next();
-                    const b_next = b_iter.next();
-                    if (a_next.done !== a_next.done)
-                        return result = false;
-                    if (a_next.done)
-                        break;
-                    if (!$mol_compare_deep(a_next.value, b_next.value))
-                        return result = false;
-                }
-                return result = true;
-            }
-            let count = 0;
-            for (let key in a) {
-                try {
-                    if (!$mol_compare_deep(a[key], b[key]))
-                        return result = false;
-                }
-                catch (error) {
-                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
-                }
-                ++count;
-            }
-            for (let key in b) {
-                --count;
-                if (count < 0)
-                    return result = false;
-            }
-            const a_val = a['valueOf']();
-            if (Object.is(a_val, a))
-                return result = true;
-            const b_val = b['valueOf']();
-            if (!Object.is(a_val, b_val))
-                return result = false;
-            return result = true;
-        }
-        finally {
-            a_stack.pop();
-            b_stack.pop();
-            if (a_stack.length === 0) {
-                cache = null;
-            }
-            else {
-                a_cache.set(b, result);
-            }
+        toJSON() {
+            return this.message;
         }
     }
-    $.$mol_compare_deep = $mol_compare_deep;
+    $.$mol_error_mix = $mol_error_mix;
 })($ || ($ = {}));
-//deep.js.map
+//mix.js.map
 ;
 "use strict";
 var $;
@@ -1767,83 +1860,100 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_diff_path(...paths) {
-        const limit = Math.min(...paths.map(path => path.length));
-        lookup: for (var i = 0; i < limit; ++i) {
-            const first = paths[0][i];
-            for (let j = 1; j < paths.length; ++j) {
-                if (paths[j][i] !== first)
-                    break lookup;
+    const a_stack = [];
+    const b_stack = [];
+    let cache = null;
+    function $mol_compare_deep(a, b) {
+        if (Object.is(a, b))
+            return true;
+        const a_type = typeof a;
+        const b_type = typeof b;
+        if (a_type !== b_type)
+            return false;
+        if (a_type === 'function')
+            return String(a) === String(b);
+        if (a_type !== 'object')
+            return false;
+        if (!a || !b)
+            return false;
+        if (a instanceof Error)
+            return false;
+        if (a['constructor'] !== b['constructor'])
+            return false;
+        if (a instanceof RegExp)
+            return Object.is(String(a), String(b));
+        const ref = a_stack.indexOf(a);
+        if (ref >= 0) {
+            return Object.is(b_stack[ref], b);
+        }
+        if (!cache)
+            cache = new WeakMap;
+        let a_cache = cache.get(a);
+        if (a_cache) {
+            const b_cache = a_cache.get(b);
+            if (typeof b_cache === 'boolean')
+                return b_cache;
+        }
+        else {
+            a_cache = new WeakMap();
+            cache.set(a, a_cache);
+        }
+        a_stack.push(a);
+        b_stack.push(b);
+        let result;
+        try {
+            if (a[Symbol.iterator]) {
+                const a_iter = a[Symbol.iterator]();
+                const b_iter = b[Symbol.iterator]();
+                while (true) {
+                    const a_next = a_iter.next();
+                    const b_next = b_iter.next();
+                    if (a_next.done !== a_next.done)
+                        return result = false;
+                    if (a_next.done)
+                        break;
+                    if (!$mol_compare_deep(a_next.value, b_next.value))
+                        return result = false;
+                }
+                return result = true;
+            }
+            let count = 0;
+            for (let key in a) {
+                try {
+                    if (!$mol_compare_deep(a[key], b[key]))
+                        return result = false;
+                }
+                catch (error) {
+                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
+                }
+                ++count;
+            }
+            for (let key in b) {
+                --count;
+                if (count < 0)
+                    return result = false;
+            }
+            const a_val = a['valueOf']();
+            if (Object.is(a_val, a))
+                return result = true;
+            const b_val = b['valueOf']();
+            if (!Object.is(a_val, b_val))
+                return result = false;
+            return result = true;
+        }
+        finally {
+            a_stack.pop();
+            b_stack.pop();
+            if (a_stack.length === 0) {
+                cache = null;
+            }
+            else {
+                a_cache.set(b, result);
             }
         }
-        return {
-            prefix: paths[0].slice(0, i),
-            suffix: paths.map(path => path.slice(i)),
-        };
     }
-    $.$mol_diff_path = $mol_diff_path;
+    $.$mol_compare_deep = $mol_compare_deep;
 })($ || ($ = {}));
-//path.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'equal paths'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2, 3, 4],
-                suffix: [[], [], []],
-            });
-        },
-        'different suffix'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [3, 5], [5, 4]],
-            });
-        },
-        'one contains other'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [], [3]],
-            });
-        },
-        'fully different'() {
-            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
-            $.$mol_assert_like(diff, {
-                prefix: [],
-                suffix: [[1, 2], [3, 4], [5, 6]],
-            });
-        },
-    });
-})($ || ($ = {}));
-//path.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_error_mix extends Error {
-        constructor(message, ...errors) {
-            super(message);
-            this.errors = errors;
-            if (errors.length) {
-                const stacks = [...errors.map(error => error.message), this.stack];
-                const diff = $.$mol_diff_path(...stacks.map(stack => {
-                    if (!stack)
-                        return [];
-                    return stack.split('\n').reverse();
-                }));
-                const head = diff.prefix.reverse().join('\n');
-                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
-                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
-                this.message += errors.map(error => '\n' + error.message).join('');
-            }
-        }
-    }
-    $.$mol_error_mix = $mol_error_mix;
-})($ || ($ = {}));
-//mix.js.map
+//deep.js.map
 
 //# sourceMappingURL=web.test.js.map
