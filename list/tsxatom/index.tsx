@@ -2,15 +2,12 @@
 namespace $ {
 
 	@ $mol_fiber.class
-	export class $hyoo_bench_list_tsxatom_item extends $mol_jsx_view {
+	export class Item extends $mol_jsx_view {
 
-		@ $mol_mem
 		title() { return '' }
 
-		@ $mol_mem
 		content() { return '' }
 
-		@ $mol_mem
 		selected( next = false ) { return next }
 
 		@ $mol_mem
@@ -39,7 +36,7 @@ namespace $ {
 	}
 
 	@ $mol_fiber.class
-	export class $hyoo_bench_list_tsxatom extends $mol_jsx_view {
+	export class List extends $mol_jsx_view {
 
 		constructor() {
 			
@@ -66,6 +63,11 @@ namespace $ {
 				content : string
 			}[]	
 		} ) { return next }
+
+		@ $mol_mem_key
+		item( index : number ) {
+			return this.data().items[ index ] ?? {}
+		}
 		
 		@ $mol_mem
 		selected( next = -1 ) { return next }
@@ -80,11 +82,11 @@ namespace $ {
 
 		render() { return (
 			<div classList={[ 'list' ]} >
-				{ ... this.data().items.map( item => (
-					<$hyoo_bench_list_tsxatom_item
+				{ ... this.data().items.map( (item,index) => (
+					<Item
 						id={ '/item:' + item.id }
-						title={ ()=> item.title }
-						content={ ()=> item.content }
+						title={ ()=> this.item(index).title }
+						content={ ()=> this.item(index).content }
 						selected={ next => this.item_selected( item.id , next ) }
 					/>
 				) ) }
@@ -95,7 +97,7 @@ namespace $ {
 
 	$mol_atom2_autorun( ()=>
 		$mol_jsx_attach( $mol_dom_context.document , ()=>
-			<$hyoo_bench_list_tsxatom id="/list" />
+			<List id="/list" />
 		)
 	)
 

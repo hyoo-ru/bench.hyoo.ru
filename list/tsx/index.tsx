@@ -1,7 +1,7 @@
 /** @jsx $mol_jsx_make */
 namespace $ {
 
-	export class $hyoo_bench_list_tsx_item extends $mol_jsx_view {
+	export class Item extends $mol_jsx_view {
 		
 		title = ''
 		content = ''
@@ -31,9 +31,9 @@ namespace $ {
 
 	}
 
-	export class $hyoo_bench_list_tsx extends $mol_jsx_view {
+	export class List extends $mol_jsx_view {
 
-		static render( props : Pick< $hyoo_bench_list_tsx , 'data' | 'selected' > ) {
+		static render( props : Pick< List , 'data' | 'selected' > ) {
 			return $mol_jsx_attach( $mol_dom_context.document , ()=> <this id="/list" { ...props } /> )
 		}
 
@@ -56,7 +56,7 @@ namespace $ {
 		render() { return (
 			<div classList={[ 'list' ]} >
 				{ ... this.data.items.map( item => (
-					<$hyoo_bench_list_tsx_item
+					<Item
 						id={ '/item:' + item.id }
 						title={ item.title }
 						content={ item.content }
