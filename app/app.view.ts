@@ -4,7 +4,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		bench( next? : string ) {
-			return $mol_state_arg.value( this.state_key( 'bench' ) , next ) || '//bench.hyoo.ru/list/'
+			return $mol_state_arg.value( 'bench' , next ) || '//bench.hyoo.ru/list/'
 		}
 		
 		@ $mol_mem
@@ -53,6 +53,7 @@ namespace $.$$ {
 		@ $mol_mem
 		meta() {
 			type meta = {
+				source : string
 				title : { [ lang : string ] : string }
 				descr : { [ lang : string ] : string }
 				samples : { [ sample : string ] : {
@@ -70,6 +71,10 @@ namespace $.$$ {
 			}
 			return this.command_result< meta >( [ 'meta' ] )
 		}
+
+		source_link() {
+			return this.meta().source || super.source_link()
+		}
 		
 		@ $mol_mem
 		samples_all( next? : string[] ) {
@@ -78,7 +83,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		samples( next? : string[] ) : string[] {
-			const arg = $mol_state_arg.value( this.state_key( 'sample' ) , next && next.join( '~' ) ) as string
+			const arg = $mol_state_arg.value( 'sample' , next && next.join( '~' ) ) as string
 			const all = this.samples_all()
 			return arg ? arg.split( '~' ).sort().filter( name => all.indexOf( name ) >= 0 ) : []
 		}
@@ -108,7 +113,7 @@ namespace $.$$ {
 			}
 			
 			this.steps().forEach( step => {
-				result[ step ] = this.command_result<string>([ step , sample_id, this.param_dict() ]).valueOf()
+				result[ step ] = this.command_result<string>([ step , sample_id, this.param_dict() ])
 			} )
 			
 			return result
@@ -148,7 +153,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		result_col_sort( next? : string ) {
-			return $mol_state_arg.value( this.state_key( 'sort' ) , next ) || ''
+			return $mol_state_arg.value( 'sort' , next ) || ''
 		}
 		
 		@ $mol_mem
@@ -190,7 +195,7 @@ namespace $.$$ {
 
 		@ $mol_mem_key
 		param_value( id : string, next? : any) {
-			let next_2 = $mol_state_arg.value( this.state_key( id ) , next )
+			let next_2 = $mol_state_arg.value( id , next )
 			return next_2 || this.meta().params[ id ].default
 		}
 
@@ -203,7 +208,7 @@ namespace $.$$ {
 			const param_dict = {}
 			const params = this.params()
 
-			for (let param of params  ) {
+			for (let param of params ) {
 				param_dict[param] = this.param_value(param)
 			}
 			return param_dict
