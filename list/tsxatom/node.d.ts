@@ -187,12 +187,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_after_tick extends $mol_object2 {
+    class $mol_after_timeout extends $mol_object2 {
+        delay: number;
         task: () => void;
-        promise: any;
-        cancelled: boolean;
-        constructor(task: () => void);
+        id: any;
+        constructor(delay: number, task: () => void);
         destructor(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_after_frame extends $mol_after_timeout {
+        task: () => void;
+        constructor(task: () => void);
     }
 }
 
@@ -271,7 +278,7 @@ declare namespace $ {
         static deadline: number;
         static liveline: number;
         static current: $mol_fiber<any> | null;
-        static scheduled: $mol_after_tick | null;
+        static scheduled: $mol_after_frame | null;
         static queue: (() => PromiseLike<any>)[];
         static tick(): Promise<void>;
         static schedule(): Promise<any>;
