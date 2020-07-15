@@ -14,6 +14,16 @@ $mol_book2 $mol_scroll
 	minimal_width 0
 	Placeholder $mol_view
 
+$mol_speck $mol_view
+	attr *
+		^
+		mol_theme \$mol_theme_accent
+	style *
+		^
+		minHeight \1em
+	sub /
+		<= value null
+
 $mol_button $mol_view
 	enabled true
 	minimal_height 40
@@ -28,9 +38,10 @@ $mol_button $mol_view
 		disabled <= disabled false
 		role \button
 		tabindex <= tab_index 0
-		title <= hint \
+		title <= hint_or_error <= hint \
 	sub /$mol_view_content
 		<= title
+	Speck $mol_speck
 
 $mol_page $mol_view
 	sub /
@@ -100,11 +111,18 @@ $mol_button_typed $mol_button
 
 $mol_button_minor $mol_button_typed
 
-$mol_dimmer $mol_view
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 8
+
+$mol_dimmer $mol_paragraph
 	haystack \
 	needle \
 	sub <= parts /$mol_view_content
-	Low!id $mol_view
+	Low!id $mol_paragraph
+		sub /
+			<= string!id \
+	High!id $mol_paragraph
 		sub /
 			<= string!id \
 
@@ -278,6 +296,9 @@ $mol_link_source $mol_link
 		<= Icon $mol_icon_github_circle
 
 $mol_float $mol_view
+	style *
+		^
+		minHeight \auto
 
 $mol_check $mol_button_minor
 	attr *
@@ -352,10 +373,6 @@ $mol_grid_cell $mol_view
 	minimal_height 40
 
 $mol_grid_number $mol_grid_cell
-
-$mol_paragraph $mol_view
-	line_height 24
-	letter_width 8
 
 $mol_image $mol_view
 	dom_name \img
@@ -516,10 +533,6 @@ $mol_number $mol_view
 
 $hyoo_bench_app $mol_book2
 	pages /
-		<= Sandbox_page $mol_page
-			title <= sandbox_title @ \Sandbox
-			Body <= Sandbox $mol_scroll
-				dom_name \iframe
 		<= Addon_page $mol_page
 			title <= addon_title @ \Samples
 			tools /
@@ -542,6 +555,10 @@ $hyoo_bench_app $mol_book2
 					col_head_title!id
 						<= result_col_title!id \
 					col_sort?val <=> result_col_sort?val \
+		<= Sandbox_page $mol_page
+			title <= sandbox_title @ \Sandbox
+			Body <= Sandbox $mol_scroll
+				dom_name \iframe
 	-
 	Menu_option!id $mol_check_box
 		minimal_height 36

@@ -1488,6 +1488,10 @@ var $;
             master.slaves[slave_index] = master_index;
             this.masters.push(master, this.masters[cursor + 1]);
         }
+        subscribe(promise) {
+            const fresh = this.fresh;
+            return promise.then(fresh, fresh);
+        }
         get() {
             if ($mol_atom2.cached)
                 return this.value;
@@ -1703,6 +1707,9 @@ var $;
 //atom2.js.map
 ;
 "use strict";
+//param.js.map
+;
+"use strict";
 //result.js.map
 ;
 "use strict";
@@ -1790,9 +1797,6 @@ var $;
     $.$mol_mem = $mol_mem;
 })($ || ($ = {}));
 //mem.js.map
-;
-"use strict";
-//param.js.map
 ;
 "use strict";
 var $;
@@ -3196,6 +3200,9 @@ var $;
 //atom2.test.js.map
 ;
 "use strict";
+//param.test.js.map
+;
+"use strict";
 //result.test.js.map
 ;
 "use strict";
@@ -3502,9 +3509,6 @@ var $;
     });
 })($ || ($ = {}));
 //view.test.js.map
-;
-"use strict";
-//param.test.js.map
 ;
 "use strict";
 var $;

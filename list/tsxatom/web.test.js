@@ -1168,6 +1168,9 @@ var $;
 //atom2.test.js.map
 ;
 "use strict";
+//param.test.js.map
+;
+"use strict";
 //result.test.js.map
 ;
 "use strict";
@@ -1474,9 +1477,6 @@ var $;
     });
 })($ || ($ = {}));
 //view.test.js.map
-;
-"use strict";
-//param.test.js.map
 ;
 "use strict";
 var $;
