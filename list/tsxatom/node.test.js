@@ -1843,7 +1843,7 @@ var $;
     function $mol_dict_key(value) {
         if (!value)
             return JSON.stringify(value);
-        if (typeof value !== 'object')
+        if (typeof value !== 'object' && typeof value !== 'function')
             return JSON.stringify(value);
         if (Array.isArray(value))
             return JSON.stringify(value);
@@ -1909,14 +1909,15 @@ var $;
             let dict = store.get(host);
             if (!dict)
                 store.set(host, dict = new $.$mol_dict);
-            let cache = dict.get(key);
+            const key_str = $.$mol_dict_key(key);
+            let cache = dict.get(key_str);
             if (cache)
                 return cache;
             let cache2 = new $.$mol_atom2;
-            cache2[Symbol.toStringTag] = `${host}.${name}(${$.$mol_dict_key(key)})`;
+            cache2[Symbol.toStringTag] = `${host}.${name}(${key_str})`;
             cache2.calculate = value.bind(host, key);
             cache2.abort = () => {
-                dict.delete(key);
+                dict.delete(key_str);
                 if (dict.size === 0)
                     store.delete(host);
                 cache2.forget();
@@ -1924,7 +1925,7 @@ var $;
             };
             $.$mol_owning_catch(host, cache2);
             cache2[$.$mol_object_field] = name;
-            dict.set(key, cache2);
+            dict.set(key_str, cache2);
             return cache2;
         };
         return {
@@ -2094,95 +2095,6 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    function $mol_log(path, ...values) {
-        if ($.$mol_log_filter() == null)
-            return;
-        path = String(path);
-        if (path.indexOf($.$mol_log_filter()) === -1)
-            return;
-        const context = $.$mol_log_context();
-        if (context)
-            context();
-        console.debug(path, ...values);
-        if ($.$mol_log_debug() == null)
-            return;
-        if (path.indexOf($.$mol_log_debug()) === -1)
-            return;
-        debugger;
-    }
-    $.$mol_log = $mol_log;
-})($ || ($ = {}));
-//log.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let context = null;
-    function $mol_log_context(next = context) {
-        return context = next;
-    }
-    $.$mol_log_context = $mol_log_context;
-})($ || ($ = {}));
-//log_context.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let debug;
-    function $mol_log_debug(next = debug) {
-        return debug = next;
-    }
-    $.$mol_log_debug = $mol_log_debug;
-})($ || ($ = {}));
-//log_debug.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let filter;
-    $.$mol_log_filter = function $mol_log_filter(next = filter) {
-        return filter = next;
-    };
-})($ || ($ = {}));
-//log_filter.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_log_group(name, task) {
-        const filter = $.$mol_log_filter();
-        if (filter == null)
-            return task;
-        return function $mol_log_group_wrapper(...args) {
-            let started = false;
-            let prev = $.$mol_log_context();
-            $.$mol_log_context(() => {
-                if (prev)
-                    prev();
-                started = true;
-                if (filter || prev)
-                    console.group(name);
-                else
-                    console.groupCollapsed(name);
-                $.$mol_log_context(prev = null);
-            });
-            try {
-                return task.apply(this, args);
-            }
-            finally {
-                if (started)
-                    console.groupEnd();
-                $.$mol_log_context(prev);
-            }
-        };
-    }
-    $.$mol_log_group = $mol_log_group;
-})($ || ($ = {}));
-//log_group.js.map
-;
-"use strict";
-var $;
 (function ($_1) {
     let $$;
     (function ($$) {
@@ -2192,7 +2104,7 @@ var $;
         for (let name in set) {
             const code = set[name];
             const test = (typeof code === 'string') ? new Function('', code) : code;
-            $_1.$mol_test_all.push($_1.$mol_log_group(name, test));
+            $_1.$mol_test_all.push(test);
         }
         $mol_test_schedule();
     }
@@ -2218,10 +2130,10 @@ var $;
         if (scheduled)
             return;
         scheduled = true;
-        setTimeout($_1.$mol_log_group('$mol_test', () => {
+        setTimeout(() => {
             scheduled = false;
             $mol_test_run();
-        }), 0);
+        }, 0);
     }
     $_1.$mol_test_schedule = $mol_test_schedule;
     $_1.$mol_test_mocks.push(context => {
@@ -3000,12 +2912,14 @@ var $;
             App.value = 2;
             $_1.$mol_assert_equal(App.value, 2);
         },
-        'Instant actualization'() {
+        'Instant actualization'($) {
             class Source extends $_1.$mol_object2 {
                 constructor() {
                     super(...arguments);
+                    this.$ = $;
                     this.value = 1;
                 }
+                destructor() { }
             }
             __decorate([
                 $_1.$mol_atom2_field
@@ -3014,6 +2928,7 @@ var $;
                 static get source() { return Source.create(); }
                 static get value() { return this.source.value + 1; }
             }
+            App.$ = $;
             __decorate([
                 $_1.$mol_atom2_field
             ], App, "source", null);
@@ -3024,10 +2939,11 @@ var $;
             App.source.value = 2;
             $_1.$mol_assert_equal(App.value, 3);
         },
-        'Access to cached value'() {
+        'Access to cached value'($) {
             class App extends $_1.$mol_object2 {
                 static get value() { return 1; }
             }
+            App.$ = $;
             __decorate([
                 $_1.$mol_atom2_field
             ], App, "value", null);
@@ -3035,10 +2951,11 @@ var $;
             $_1.$mol_assert_equal(App.value, 1);
             $_1.$mol_assert_equal($_1.$mol_atom2_value(() => App.value), 1);
         },
-        'Do not recalc slaves on equal changes'() {
+        'Do not recalc slaves on equal changes'($) {
             class App extends $_1.$mol_object2 {
                 static get result() { return this.first[0] + this.counter++; }
             }
+            App.$ = $;
             App.first = [1];
             App.counter = 0;
             __decorate([
@@ -3051,11 +2968,12 @@ var $;
             App.first = [1];
             $_1.$mol_assert_equal(App.result, 1);
         },
-        'Do not recalc grand slave on equal direct slave result '() {
+        'Do not recalc grand slave on equal direct slave result '($) {
             class App extends $_1.$mol_object2 {
                 static get second() { return Math.abs(this.first); }
                 static get result() { return this.second + ++this.counter; }
             }
+            App.$ = $;
             App.first = 1;
             App.counter = 0;
             __decorate([
@@ -3071,7 +2989,7 @@ var $;
             App.first = -1;
             $_1.$mol_assert_equal(App.result, 2);
         },
-        'Recalc when [not changed master] changes [following master]'() {
+        'Recalc when [not changed master] changes [following master]'($) {
             class App extends $_1.$mol_object2 {
                 static get second() {
                     this.third = this.first;
@@ -3079,6 +2997,7 @@ var $;
                 }
                 static get result() { return this.second + this.third + ++this.counter; }
             }
+            App.$ = $;
             App.first = 1;
             App.third = 0;
             App.counter = 0;
@@ -3098,13 +3017,14 @@ var $;
             App.first = 5;
             $_1.$mol_assert_equal(App.result, 7);
         },
-        'Branch switching'() {
+        'Branch switching'($) {
             class App extends $_1.$mol_object2 {
                 static get second() { return 2; }
                 static get result() {
                     return (this.condition ? this.first : this.second) + this.counter++;
                 }
             }
+            App.$ = $;
             App.first = 1;
             App.condition = true;
             App.counter = 0;
@@ -3126,7 +3046,7 @@ var $;
             App.first = 10;
             $_1.$mol_assert_equal(App.result, 3);
         },
-        'Forbidden self invalidation'() {
+        'Forbidden self invalidation'($) {
             class App extends $_1.$mol_object2 {
                 static get second() { return this.first + 1; }
                 static get result() {
@@ -3134,6 +3054,7 @@ var $;
                     return this.first++;
                 }
             }
+            App.$ = $;
             App.first = 1;
             __decorate([
                 $_1.$mol_atom2_field
@@ -3146,13 +3067,14 @@ var $;
             ], App, "result", null);
             $_1.$mol_assert_fail(() => App.result);
         },
-        'Side effect inside computation'() {
+        'Side effect inside computation'($) {
             class App extends $_1.$mol_object2 {
                 static increase() { return ++this.first; }
                 static get result() {
                     return this.increase() + 1;
                 }
             }
+            App.$ = $;
             App.first = 1;
             __decorate([
                 $_1.$mol_atom2_field
@@ -3165,11 +3087,12 @@ var $;
             ], App, "result", null);
             $_1.$mol_assert_equal(App.result, 3);
         },
-        'Forbidden cyclic dependency'() {
+        'Forbidden cyclic dependency'($) {
             class App extends $_1.$mol_object2 {
                 static get first() { return this.second - 1; }
                 static get second() { return this.first + 1; }
             }
+            App.$ = $;
             __decorate([
                 $_1.$mol_atom2_field
             ], App, "first", null);
@@ -3178,11 +3101,12 @@ var $;
             ], App, "second", null);
             $_1.$mol_assert_fail(() => App.first);
         },
-        'Forget sub fibers on complete'() {
+        'Forget sub fibers on complete'($) {
             class App extends $_1.$mol_object2 {
                 static count() { return this.counter++; }
                 static get result() { return this.count() + this.data; }
             }
+            App.$ = $;
             App.counter = 0;
             App.data = 1;
             __decorate([
@@ -3198,7 +3122,7 @@ var $;
             App.data = 2;
             $_1.$mol_assert_equal(App.result, 3);
         },
-        async 'Automatic destroy owned value on self destruction'() {
+        async 'Automatic destroy owned value on self destruction'($) {
             let counter = 0;
             class Having extends $_1.$mol_object2 {
                 destructor() { counter++; }
@@ -3211,6 +3135,7 @@ var $;
                     return 0;
                 }
             }
+            App.$ = $;
             App.condition = true;
             __decorate([
                 $_1.$mol_atom2_field
@@ -3228,12 +3153,13 @@ var $;
             await $_1.$mol_fiber_warp();
             $_1.$mol_assert_equal(counter, 1);
         },
-        async 'Do not destroy putted value'() {
+        async 'Do not destroy putted value'($) {
             class App extends $_1.$mol_object2 {
                 static get target() {
                     return this.condition ? this.source : 0;
                 }
             }
+            App.$ = $;
             App.condition = true;
             __decorate([
                 $_1.$mol_atom2_field
@@ -3252,7 +3178,7 @@ var $;
             App.condition = true;
             $_1.$mol_assert_equal(App.target, 1);
         },
-        'Restore after error'() {
+        'Restore after error'($) {
             class App extends $_1.$mol_object2 {
                 static get broken() {
                     if (this.condition)
@@ -3261,6 +3187,7 @@ var $;
                 }
                 static get result() { return this.broken; }
             }
+            App.$ = $;
             App.condition = false;
             __decorate([
                 $_1.$mol_atom2_field
@@ -3280,6 +3207,7 @@ var $;
         async 'auto fresh only when alive'($) {
             let state = 1;
             const monitor = new $.$mol_atom2;
+            monitor.$ = $;
             monitor.calculate = () => {
                 new $.$mol_after_frame($_1.$mol_atom2.current.fresh);
                 return state;
@@ -3309,21 +3237,22 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    $.$mol_test({
-        'Property method'() {
-            class App extends $.$mol_object2 {
+(function ($_1) {
+    $_1.$mol_test({
+        'Property method'($) {
+            class App extends $_1.$mol_object2 {
                 static value(next = 1) { return next + 1; }
             }
+            App.$ = $;
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], App, "value", null);
-            $.$mol_assert_equal(App.value(), 2);
+            $_1.$mol_assert_equal(App.value(), 2);
             App.value(2);
-            $.$mol_assert_equal(App.value(), 3);
+            $_1.$mol_assert_equal(App.value(), 3);
         },
-        'auto sync of properties'() {
-            class X extends $.$mol_object2 {
+        'auto sync of properties'($) {
+            class X extends $_1.$mol_object2 {
                 foo(next) {
                     return next || 1;
                 }
@@ -3335,31 +3264,32 @@ var $;
                 }
             }
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], X.prototype, "foo", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], X.prototype, "bar", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], X.prototype, "xxx", null);
             const x = new X;
-            $.$mol_assert_equal(x.bar(), 2);
-            $.$mol_assert_equal(x.xxx(), 3);
+            x.$ = $;
+            $_1.$mol_assert_equal(x.bar(), 2);
+            $_1.$mol_assert_equal(x.xxx(), 3);
             x.foo(5);
-            $.$mol_assert_equal(x.xxx(), 7);
+            $_1.$mol_assert_equal(x.xxx(), 7);
         },
-        async 'must be deferred destroyed when no longer referenced'() {
+        async 'must be deferred destroyed when no longer referenced'($) {
             let foo;
             let foo_destroyed = false;
-            class B extends $.$mol_object2 {
+            class B extends $_1.$mol_object2 {
                 showing(next) {
                     if (next === void 0)
                         return true;
                     return next;
                 }
                 foo() {
-                    return foo = new class extends $.$mol_object {
+                    return foo = new class extends $_1.$mol_object {
                         destructor() {
                             foo_destroyed = true;
                         }
@@ -3370,30 +3300,31 @@ var $;
                 }
             }
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], B.prototype, "showing", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], B.prototype, "foo", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], B.prototype, "bar", null);
             var b = new B;
+            b.$ = $;
             var bar = b.bar();
-            $.$mol_assert_ok(bar);
+            $_1.$mol_assert_ok(bar);
             b.showing(false);
             b.bar();
-            await $.$mol_fiber_warp();
-            $.$mol_assert_ok(foo_destroyed);
-            $.$mol_assert_not(b.bar());
+            await $_1.$mol_fiber_warp();
+            $_1.$mol_assert_ok(foo_destroyed);
+            $_1.$mol_assert_not(b.bar());
             b.showing(true);
-            $.$mol_defer.run();
-            $.$mol_assert_unique(b.bar(), bar);
+            $_1.$mol_defer.run();
+            $_1.$mol_assert_unique(b.bar(), bar);
         },
-        async 'wait for data'() {
-            class Test extends $.$mol_object2 {
+        async 'wait for data'($) {
+            class Test extends $_1.$mol_object2 {
                 source() {
-                    return $.$mol_fiber_sync(() => new Promise(done => done('Jin')))();
+                    return $_1.$mol_fiber_sync(() => new Promise(done => done('Jin')))();
                 }
                 middle() {
                     return this.source();
@@ -3403,18 +3334,19 @@ var $;
                 }
             }
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], Test.prototype, "source", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], Test.prototype, "middle", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], Test.prototype, "target", null);
             const t = new Test;
-            $.$mol_assert_fail(() => t.target().valueOf(), Promise);
-            await $.$mol_fiber_warp();
-            $.$mol_assert_equal(t.target(), 'Jin');
+            t.$ = $;
+            $_1.$mol_assert_fail(() => t.target().valueOf(), Promise);
+            await $_1.$mol_fiber_warp();
+            $_1.$mol_assert_equal(t.target(), 'Jin');
         },
     });
 })($ || ($ = {}));
@@ -3471,6 +3403,7 @@ var $;
                     cache.forget();
                     return true;
                 };
+                $.$mol_owning_catch(host, cache);
                 store.set(host, cache);
             }
             return cache;
@@ -3488,39 +3421,41 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    $.$mol_test({
-        async 'Autorun'() {
-            class App extends $.$mol_object2 {
+(function ($_1) {
+    $_1.$mol_test({
+        async 'Autorun'($) {
+            class App extends $_1.$mol_object2 {
                 static get init() {
                     ++this.counter;
                     return this.state;
                 }
             }
+            App.$ = $;
             App.state = 1;
             App.counter = 0;
             __decorate([
-                $.$mol_atom2_field
+                $_1.$mol_atom2_field
             ], App, "state", void 0);
             __decorate([
-                $.$mol_atom2_field
+                $_1.$mol_atom2_field
             ], App, "init", null);
-            const autorun = $.$mol_atom2_autorun(() => App.init);
+            const autorun = $_1.$mol_atom2_autorun(() => App.init);
+            autorun.$ = $;
             try {
-                await $.$mol_fiber_warp();
-                $.$mol_assert_equal(App.counter, 1);
+                await $_1.$mol_fiber_warp();
+                $_1.$mol_assert_equal(App.counter, 1);
                 App.state = 2;
-                $.$mol_assert_equal(App.counter, 1);
-                await $.$mol_fiber_warp();
-                $.$mol_assert_equal(App.counter, 2);
+                $_1.$mol_assert_equal(App.counter, 1);
+                await $_1.$mol_fiber_warp();
+                $_1.$mol_assert_equal(App.counter, 2);
                 App.state = 3;
             }
             finally {
                 autorun.destructor();
             }
             App.state = 4;
-            await $.$mol_fiber_warp();
-            $.$mol_assert_equal(App.counter, 2);
+            await $_1.$mol_fiber_warp();
+            $_1.$mol_assert_equal(App.counter, 2);
         },
     });
 })($ || ($ = {}));
@@ -3528,85 +3463,87 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    $.$mol_test({
+(function ($_1) {
+    $_1.$mol_test({
         'Class as component'() {
-            class Foo extends $.$mol_jsx_view {
+            class Foo extends $_1.$mol_jsx_view {
                 constructor() {
                     super(...arguments);
                     this.title = '';
                 }
                 render() {
-                    return $.$mol_jsx_make("div", null,
+                    return $_1.$mol_jsx_make("div", null,
                         this.title,
                         " ",
                         this.childNodes.join('-'));
                 }
             }
-            const dom = $.$mol_jsx_make(Foo, { id: "/foo", title: "bar" },
+            const dom = $_1.$mol_jsx_make(Foo, { id: "/foo", title: "bar" },
                 "xxx",
                 123);
-            $.$mol_assert_equal(dom.outerHTML, '<div id="/foo">bar xxx-123</div>');
+            $_1.$mol_assert_equal(dom.outerHTML, '<div id="/foo">bar xxx-123</div>');
         },
         'View by element'() {
-            class Br extends $.$mol_jsx_view {
+            class Br extends $_1.$mol_jsx_view {
                 render() {
                     view = this;
-                    return $.$mol_jsx_make("br", { id: "/foo" });
+                    return $_1.$mol_jsx_make("br", { id: "/foo" });
                 }
             }
             let view;
-            $.$mol_assert_equal(Br.of($.$mol_jsx_make(Br, null)), view);
+            $_1.$mol_assert_equal(Br.of($_1.$mol_jsx_make(Br, null)), view);
         },
         'Attached view rerender'() {
-            const doc = $.$mol_dom_parse('<html><body id="/foo"></body></html>');
-            class Title extends $.$mol_jsx_view {
+            const doc = $_1.$mol_dom_parse('<html><body id="/foo"></body></html>');
+            class Title extends $_1.$mol_jsx_view {
                 constructor() {
                     super(...arguments);
                     this.value = 'foo';
                 }
                 render() {
-                    return $.$mol_jsx_make("div", null, this.value);
+                    return $_1.$mol_jsx_make("div", null, this.value);
                 }
             }
-            const dom = $.$mol_jsx_attach(doc, () => $.$mol_jsx_make(Title, { id: "/foo" }));
+            const dom = $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(Title, { id: "/foo" }));
             const title = Title.of(dom);
-            $.$mol_assert_equal(title.ownerDocument, doc);
-            $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
+            $_1.$mol_assert_equal(title.ownerDocument, doc);
+            $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
             title.value = 'bar';
             title.valueOf();
-            $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
+            $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
         },
-        async 'Reactive attached view'() {
-            const doc = $.$mol_dom_parse('<html><body id="/foo"></body></html>');
-            class Task {
+        async 'Reactive attached view'($) {
+            const doc = $_1.$mol_dom_parse('<html><body id="/foo"></body></html>');
+            class Task extends $_1.$mol_object2 {
                 title(next) { return next || 'foo'; }
             }
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], Task.prototype, "title", null);
-            class App extends $.$mol_jsx_view {
+            class App extends $_1.$mol_jsx_view {
                 task() { return new Task; }
                 valueOf() {
                     return super.valueOf();
                 }
                 render() {
-                    return $.$mol_jsx_make("div", null, this.task().title());
+                    return $_1.$mol_jsx_make("div", null, this.task().title());
                 }
             }
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], App.prototype, "task", null);
             __decorate([
-                $.$mol_mem
+                $_1.$mol_mem
             ], App.prototype, "valueOf", null);
             const task = new Task;
-            $.$mol_atom2_autorun(() => $.$mol_jsx_attach(doc, () => $.$mol_jsx_make(App, { id: "/foo", task: () => task })));
-            await $.$mol_fiber_warp();
-            $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
+            task.$ = $;
+            const autorun = $.$mol_atom2_autorun(() => $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(App, { "$": $, id: "/foo", task: () => task })));
+            autorun.$ = $;
+            await $_1.$mol_fiber_warp();
+            $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
             task.title('bar');
-            await $.$mol_fiber_warp();
-            $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
+            await $_1.$mol_fiber_warp();
+            $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
         },
     });
 })($ || ($ = {}));
@@ -3695,11 +3632,11 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    $.$mol_test({
-        'keyed reactive properties'() {
-            $.$mol_fiber_warp();
-            class Fib extends $.$mol_object2 {
+(function ($_1) {
+    $_1.$mol_test({
+        'keyed reactive properties'($) {
+            $_1.$mol_fiber_warp();
+            class Fib extends $_1.$mol_object2 {
                 static value(index, next) {
                     if (next)
                         return next;
@@ -3708,15 +3645,16 @@ var $;
                     return this.value(index - 1) + this.value(index - 2);
                 }
             }
+            Fib.$ = $;
             __decorate([
-                $.$mol_mem_key
+                $_1.$mol_mem_key
             ], Fib, "value", null);
-            $.$mol_assert_equal(Fib.value(10), 89);
+            $_1.$mol_assert_equal(Fib.value(10), 89);
             Fib.value(1, 2);
-            $.$mol_assert_equal(Fib.value(10), 144);
+            $_1.$mol_assert_equal(Fib.value(10), 144);
         },
-        'cached property with simple key'() {
-            class X extends $.$mol_object2 {
+        'cached property with simple key'($) {
+            class X extends $_1.$mol_object2 {
                 foo(id, next) {
                     if (next == null)
                         return new Number(123);
@@ -3724,29 +3662,31 @@ var $;
                 }
             }
             __decorate([
-                $.$mol_mem_key
+                $_1.$mol_mem_key
             ], X.prototype, "foo", null);
             const x = new X;
-            $.$mol_assert_equal(x.foo(0).valueOf(), 123);
-            $.$mol_assert_equal(x.foo(0), x.foo(0));
-            $.$mol_assert_unique(x.foo(0), x.foo(1));
+            x.$ = $;
+            $_1.$mol_assert_equal(x.foo(0).valueOf(), 123);
+            $_1.$mol_assert_equal(x.foo(0), x.foo(0));
+            $_1.$mol_assert_unique(x.foo(0), x.foo(1));
             x.foo(0, 321);
-            $.$mol_assert_equal(x.foo(0).valueOf(), 321);
+            $_1.$mol_assert_equal(x.foo(0).valueOf(), 321);
             x.foo(0, null);
-            $.$mol_assert_equal(x.foo(0).valueOf(), 123);
+            $_1.$mol_assert_equal(x.foo(0).valueOf(), 123);
         },
-        'cached property with complex key'() {
-            class X extends $.$mol_object2 {
+        'cached property with complex key'($) {
+            class X extends $_1.$mol_object2 {
                 foo(ids) {
                     return Math.random();
                 }
             }
             __decorate([
-                $.$mol_mem_key
+                $_1.$mol_mem_key
             ], X.prototype, "foo", null);
             const x = new X;
-            $.$mol_assert_equal(x.foo([0, 1]), x.foo([0, 1]));
-            $.$mol_assert_unique(x.foo([0, 1]), x.foo([0, 2]));
+            x.$ = $;
+            $_1.$mol_assert_equal(x.foo([0, 1]), x.foo([0, 1]));
+            $_1.$mol_assert_unique(x.foo([0, 1]), x.foo([0, 2]));
         },
     });
 })($ || ($ = {}));
