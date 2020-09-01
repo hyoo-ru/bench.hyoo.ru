@@ -46,6 +46,7 @@ jobs:
         mv hyoo/bench/chart/rope/index.html ./-/chart/rope
         mv hyoo/bench/chart/rope/anychart ./-/chart/rope
         mv hyoo/bench/chart/rope/canvasjs ./-/chart/rope
+        mv hyoo/bench/chart/rope/chartjs ./-/chart/rope
         mv hyoo/bench/chart/rope/hcharts ./-/chart/rope
         mv hyoo/bench/chart/rope/mol/- ./-/chart/rope/mol
     
