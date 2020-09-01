@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>	
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+<canvas id="test" style="height:100vh;width:100vw" width="400" height="400"></canvas>
+</div>
+</body>
+<script type="text/javascript">
+
+	window.addEventListener( 'message' , function( event ) {
+		window[ event.data[0] ].apply( null , event.data.slice( 1 ) )
+	} )
+	
+	var ctx = document.getElementById('test').getContext('2d');
+	
+	var chart = new Chart(ctx, {
+		type: 'line',
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+
+	function fill( data ) {
+		chart.data.labels = data.graphs[0].map( ( graph , index ) => index.toString() )
+		chart.data.datasets = data.graphs.map( ( graph , index ) => ({
+			lineTension: 0,
+			fill: false,
+			label:  `Graph #${ index }`,
+			data : graph.map( val => val * 10 ),
+			borderColor: [
+				`hsl(${ Math.floor( index * 360 / data.graphs.length ) }, 50%, 50%)`,
+			],
+			borderWidth: 2
+		}) )
+		chart.update({ duration : 0 })
+	}
+
+	function update( data ) {
+		fill( data )
+	}
+	
+	// window.onresize = function() {
+	// 	// chart.setSize( innerWidth , innerHeight , false )
+	// }
+	// window.onresize()
+
+</script>
+</html>
