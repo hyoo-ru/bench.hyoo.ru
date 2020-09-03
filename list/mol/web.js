@@ -2589,6 +2589,9 @@ var $;
         field() {
             return Object.assign(Object.assign({}, super.field()), { scrollTop: this.scroll_top(), scrollLeft: this.scroll_left(), tabIndex: this.tabindex() });
         }
+        event() {
+            return Object.assign(Object.assign({}, super.event()), { scroll: (event) => this.event_scroll(event) });
+        }
         scroll_top(val) {
             if (val !== undefined)
                 return val;
@@ -2601,9 +2604,6 @@ var $;
         }
         tabindex() {
             return -1;
-        }
-        event() {
-            return Object.assign(Object.assign({}, super.event()), { scroll: (event) => this.event_scroll(event) });
         }
         event_scroll(event) {
             if (event !== undefined)
@@ -2784,9 +2784,6 @@ var $;
         sub() {
             return this.rows();
         }
-        rows() {
-            return [];
-        }
         Empty() {
             const obj = new this.$.$mol_view();
             return obj;
@@ -2798,9 +2795,6 @@ var $;
             });
             return obj;
         }
-        gap_before() {
-            return 0;
-        }
         Gap_after() {
             const obj = new this.$.$mol_view();
             obj.style = () => ({
@@ -2808,14 +2802,20 @@ var $;
             });
             return obj;
         }
-        gap_after() {
-            return 0;
-        }
         view_window() {
             return [
                 0,
                 0
             ];
+        }
+        rows() {
+            return [];
+        }
+        gap_before() {
+            return 0;
+        }
+        gap_after() {
+            return 0;
         }
     }
     __decorate([
@@ -3074,30 +3074,8 @@ var $;
         event() {
             return Object.assign(Object.assign({}, super.event()), { click: (event) => this.event_activate(event), keypress: (event) => this.event_key_press(event) });
         }
-        event_activate(event) {
-            if (event !== undefined)
-                return event;
-            return null;
-        }
-        event_key_press(event) {
-            if (event !== undefined)
-                return event;
-            return null;
-        }
         attr() {
             return Object.assign(Object.assign({}, super.attr()), { disabled: this.disabled(), role: "button", tabindex: this.tab_index(), title: this.hint_or_error() });
-        }
-        disabled() {
-            return false;
-        }
-        tab_index() {
-            return 0;
-        }
-        hint_or_error() {
-            return this.hint();
-        }
-        hint() {
-            return "";
         }
         sub() {
             return [
@@ -3108,6 +3086,28 @@ var $;
             const obj = new this.$.$mol_speck();
             return obj;
         }
+        event_activate(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        event_key_press(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        disabled() {
+            return false;
+        }
+        tab_index() {
+            return 0;
+        }
+        hint() {
+            return "";
+        }
+        hint_or_error() {
+            return this.hint();
+        }
     }
     __decorate([
         $.$mol_mem
@@ -3117,13 +3117,13 @@ var $;
     ], $mol_button.prototype, "event_click", null);
     __decorate([
         $.$mol_mem
+    ], $mol_button.prototype, "Speck", null);
+    __decorate([
+        $.$mol_mem
     ], $mol_button.prototype, "event_activate", null);
     __decorate([
         $.$mol_mem
     ], $mol_button.prototype, "event_key_press", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_button.prototype, "Speck", null);
     $.$mol_button = $mol_button;
 })($ || ($ = {}));
 //button.view.tree.js.map
@@ -3344,24 +3344,22 @@ var $;
         attr() {
             return Object.assign(Object.assign({}, super.attr()), { mol_check_checked: this.checked(), "aria-checked": this.checked(), role: "checkbox" });
         }
-        checked(val) {
-            if (val !== undefined)
-                return val;
-            return false;
-        }
         sub() {
             return [
                 this.Icon(),
                 this.label()
             ];
         }
+        checked(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
         Icon() {
             return null;
         }
-        label() {
-            return [
-                this.Title()
-            ];
+        title() {
+            return "";
         }
         Title() {
             const obj = new this.$.$mol_view();
@@ -3370,8 +3368,10 @@ var $;
             ];
             return obj;
         }
-        title() {
-            return "";
+        label() {
+            return [
+                this.Title()
+            ];
         }
     }
     __decorate([
@@ -3436,19 +3436,19 @@ var $;
                 this.List()
             ];
         }
-        List() {
-            const obj = new this.$.$mol_list();
-            obj.rows = () => this.rows();
-            return obj;
-        }
-        rows() {
-            return [];
-        }
         Row(id) {
             const obj = new this.$.$hyoo_bench_list_mol_row();
             obj.checked = (val) => this.row_selected(id, val);
             obj.title = () => this.row_title(id);
             obj.content = () => this.row_content(id);
+            return obj;
+        }
+        rows() {
+            return [];
+        }
+        List() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => this.rows();
             return obj;
         }
         row_selected(id, val) {
@@ -3464,11 +3464,11 @@ var $;
         }
     }
     __decorate([
-        $.$mol_mem
-    ], $hyoo_bench_list_mol.prototype, "List", null);
-    __decorate([
         $.$mol_mem_key
     ], $hyoo_bench_list_mol.prototype, "Row", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_bench_list_mol.prototype, "List", null);
     __decorate([
         $.$mol_mem_key
     ], $hyoo_bench_list_mol.prototype, "row_selected", null);
@@ -3488,6 +3488,9 @@ var $;
                 this.Content()
             ];
         }
+        title() {
+            return "";
+        }
         Title() {
             const obj = new this.$.$mol_view();
             obj.sub = () => [
@@ -3495,7 +3498,7 @@ var $;
             ];
             return obj;
         }
-        title() {
+        content() {
             return "";
         }
         Content() {
@@ -3504,9 +3507,6 @@ var $;
                 this.content()
             ];
             return obj;
-        }
-        content() {
-            return "";
         }
     }
     __decorate([
@@ -3622,13 +3622,13 @@ var $;
         value(val) {
             return this.task_title_new(val);
         }
+        enabled() {
+            return this.head_complete_enabled();
+        }
         task_title_new(val) {
             if (val !== undefined)
                 return val;
             return "123";
-        }
-        enabled() {
-            return this.head_complete_enabled();
         }
         head_complete_enabled() {
             return false;
