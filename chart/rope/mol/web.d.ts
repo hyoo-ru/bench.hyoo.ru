@@ -1186,7 +1186,7 @@ declare namespace $ {
                 blur: Length;
                 spread: Length;
                 color: Color;
-            }[];
+            }[] | 'none' | Common;
         };
         font?: {
             style?: 'normal' | 'italic' | Common;
