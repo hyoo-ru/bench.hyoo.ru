@@ -9,7 +9,7 @@ Common benchmarking interface, that can be added to any of benchmarks.
 * [geometry](geometry) - Rendering of simple geometry by graphics libraries ([online](http://bench.hyoo.ru/geometry/#sort=render#))
 * [chart/rope](chart/rope) - Line graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/rope/#sort=fill/sample=hcharts~mol))
 * [chart/bar](chart/bar) - Bar graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/bar/#sort=fill/sample=hcharts~mol))
-* [todomvc](https://github.com/eigenmethod/todomvc/tree/master/benchmark) - ToDoMVC workflow by frameworks ([online](https://eigenmethod.github.io/todomvc/benchmark/#sample=angular2%7Eangularjs%7Eknockoutjs%7Emol%7Epolymer%7Ereact-alt%7Evanillajs%7Evue#sort=fill#))
+* [todomvc](https://github.com/hyoo-ru/todomvc/tree/master/benchmark) - ToDoMVC workflow by frameworks ([online](https://hyoo-ru/todomvc/benchmark/#sample=angular2%7Eangularjs%7Eknockoutjs%7Emol%7Epolymer%7Ereact-alt%7Evanillajs%7Evue#sort=fill#))
 * [Unified todomvc](https://github.com/zerkalica/utb) - ToDoMVC workflow by react-like libraries ([online](https://zerkalica.github.io/utb/benchmark/#sample=inferno-lom_atom~inferno-mobx~inferno-raw~inferno-reactive-di~preact-lom_atom~preact-mobx~preact-raw~preact-reactive-di~react-lom_atom~react-mobx~react-raw~react-reactive-di/sort=fill))
 
 ## Create your benchmark
