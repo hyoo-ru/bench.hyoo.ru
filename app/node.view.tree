@@ -311,6 +311,7 @@ $mol_link_source $mol_link
 $mol_page $mol_view
 	sub /
 		<= Head $mol_view
+			minimal_height 64
 			sub <= head /
 				<= Title $mol_view
 					sub /
