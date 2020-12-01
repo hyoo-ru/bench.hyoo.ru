@@ -23,9 +23,6 @@ module.exports;
 //mol.js.map
 ;
 "use strict";
-//deep.js.map
-;
-"use strict";
 var $;
 (function ($) {
 })($ || ($ = {}));
@@ -77,21 +74,6 @@ var $;
     $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
 })($ || ($ = {}));
 //context.node.js.map
-;
-"use strict";
-//jsx d.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElement: (name) => $.$mol_dom_context.document.createElement(name)
-    };
-})($ || ($ = {}));
-//jsx.js.map
 ;
 "use strict";
 var $;
@@ -159,9 +141,18 @@ var $;
 //children.js.map
 ;
 "use strict";
+//deep.js.map
+;
+"use strict";
 var $;
 (function ($) {
-    function $mol_jsx_make(Elem, props, ...childNodes) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElement: (name) => $.$mol_dom_context.document.createElement(name)
+    };
+    function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
         if ($.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
@@ -218,9 +209,9 @@ var $;
             node.id = guid;
         return node;
     }
-    $.$mol_jsx_make = $mol_jsx_make;
+    $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
-//make.js.map
+//jsx.js.map
 ;
 "use strict";
 var $;
@@ -441,9 +432,9 @@ var $;
         }
         onSelect() { }
         render() {
-            return ($.$mol_jsx_make("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
-                $.$mol_jsx_make("div", { id: "/title", classList: ['list-item-title'] }, this.title),
-                $.$mol_jsx_make("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
+            return ($.$mol_jsx("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
+                $.$mol_jsx("div", { id: "/title", classList: ['list-item-title'] }, this.title),
+                $.$mol_jsx("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
         }
     }
     $.Item = Item;
@@ -457,14 +448,14 @@ var $;
             this.selected = Number.NaN;
         }
         static render(props) {
-            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx_make(this, Object.assign({ id: "/list" }, props)));
+            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(this, Object.assign({ id: "/list" }, props)));
         }
         onItemSelect(item) {
             this.selected = item.id;
             this.valueOf();
         }
         render() {
-            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx_make(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
+            return ($.$mol_jsx("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
         }
     }
     $.List = List;
@@ -893,15 +884,6 @@ var $;
 //exec.node.js.map
 ;
 "use strict";
-//assert.test.js.map
-;
-"use strict";
-//assert.js.map
-;
-"use strict";
-//deep.test.js.map
-;
-"use strict";
 var $;
 (function ($_1) {
     let $$;
@@ -1106,70 +1088,79 @@ var $;
 //assert.js.map
 ;
 "use strict";
+//assert.test.js.map
+;
+"use strict";
+//assert.js.map
+;
+"use strict";
+//deep.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     $.$mol_test({
         'Make empty div'() {
-            $.$mol_assert_equal(($.$mol_jsx_make("div", null)).outerHTML, '<div></div>');
+            $.$mol_assert_equal(($.$mol_jsx("div", null)).outerHTML, '<div></div>');
         },
         'Define native field'() {
-            const dom = $.$mol_jsx_make("input", { value: '123' });
+            const dom = $.$mol_jsx("input", { value: '123' });
             $.$mol_assert_equal(dom.outerHTML, '<input value="123">');
             $.$mol_assert_equal(dom.value, '123');
         },
         'Define classes'() {
-            const dom = $.$mol_jsx_make("div", { classList: ['foo bar'] });
+            const dom = $.$mol_jsx("div", { classList: ['foo bar'] });
             $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
         },
         'Define styles'() {
-            const dom = $.$mol_jsx_make("div", { style: { color: 'red' } });
+            const dom = $.$mol_jsx("div", { style: { color: 'red' } });
             $.$mol_assert_equal(dom.outerHTML, '<div style="color: red;"></div>');
         },
         'Define dataset'() {
-            const dom = $.$mol_jsx_make("div", { dataset: { foo: 'bar' } });
+            const dom = $.$mol_jsx("div", { dataset: { foo: 'bar' } });
             $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
         },
         'Define attributes'() {
-            const dom = $.$mol_jsx_make("div", { lang: "ru", hidden: true });
+            const dom = $.$mol_jsx("div", { lang: "ru", hidden: true });
             $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
         },
         'Define child nodes'() {
-            const dom = $.$mol_jsx_make("div", null,
+            const dom = $.$mol_jsx("div", null,
                 "hello",
-                $.$mol_jsx_make("strong", null, "world"),
+                $.$mol_jsx("strong", null, "world"),
                 "!");
             $.$mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
         },
         'Function as component'() {
             const Button = ({ hint }, target) => {
-                return $.$mol_jsx_make("button", { title: hint }, target());
+                return $.$mol_jsx("button", { title: hint }, target());
             };
-            const dom = $.$mol_jsx_make(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
+            const dom = $.$mol_jsx(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
             $.$mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
         },
         'Nested guid generation'() {
             const Foo = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make(Bar, { id: "/bar" },
-                        $.$mol_jsx_make("img", { id: "/icon" })));
+                return $.$mol_jsx("div", null,
+                    $.$mol_jsx(Bar, { id: "/bar" },
+                        $.$mol_jsx("img", { id: "/icon" })));
             };
             const Bar = (props, icon) => {
-                return $.$mol_jsx_make("span", null, icon);
+                return $.$mol_jsx("span", null, icon);
             };
-            const dom = $.$mol_jsx_make(Foo, { id: "/foo" });
+            const dom = $.$mol_jsx(Foo, { id: "/foo" });
             $.$mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
         },
         'Fail on non unique ids'() {
             const App = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make("span", { id: "/bar" }),
-                    $.$mol_jsx_make("span", { id: "/bar" }));
+                return $.$mol_jsx("div", null,
+                    $.$mol_jsx("span", { id: "/bar" }),
+                    $.$mol_jsx("span", { id: "/bar" }));
             };
-            $.$mol_assert_fail(() => $.$mol_jsx_make(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
+            $.$mol_assert_fail(() => $.$mol_jsx(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
         },
     });
 })($ || ($ = {}));
-//make.test.js.map
+//jsx.test.js.map
 ;
 "use strict";
 var $;
@@ -1192,7 +1183,7 @@ var $;
     $.$mol_test({
         'Attach to document'() {
             const doc = $.$mol_dom_parse('<html><body id="/foo"></body></html>');
-            $.$mol_jsx_attach(doc, () => $.$mol_jsx_make("body", { id: "/foo" }, "bar"));
+            $.$mol_jsx_attach(doc, () => $.$mol_jsx("body", { id: "/foo" }, "bar"));
             $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
         },
     });
@@ -2121,7 +2112,7 @@ var $;
                     await $mol_fiber.tick();
                 });
             }
-            const promise = new this.$.Promise(done => this.queue.push(() => (done(), promise)));
+            const promise = new this.$.Promise(done => this.queue.push(() => (done(null), promise)));
             return promise;
         }
         get value() { return this._value; }
@@ -2729,10 +2720,11 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_atom2_value(task) {
+    function $mol_atom2_value(task, next) {
         const cached = $mol_atom2.cached;
         try {
             $mol_atom2.cached = true;
+            $mol_atom2.cached_next = next;
             return task();
         }
         finally {
@@ -2780,8 +2772,13 @@ var $;
             return promise.then(obsolete, obsolete);
         }
         get() {
-            if ($mol_atom2.cached)
+            if ($mol_atom2.cached) {
+                if ($mol_atom2.cached_next !== undefined) {
+                    this.push($mol_atom2.cached_next);
+                    $mol_atom2.cached_next = undefined;
+                }
                 return this.value;
+            }
             const value = super.get();
             if (value === undefined)
                 $.$mol_fail(new Error(`Not defined: ${this}`));
@@ -2987,6 +2984,7 @@ var $;
     }
     $mol_atom2.logs = false;
     $mol_atom2.cached = false;
+    $mol_atom2.cached_next = undefined;
     $mol_atom2.reap_task = null;
     $mol_atom2.reap_queue = [];
     $.$mol_atom2 = $mol_atom2;
@@ -3346,13 +3344,13 @@ var $;
                     this.title = '';
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null,
+                    return $_1.$mol_jsx("div", null,
                         this.title,
                         " ",
                         this.childNodes.join('-'));
                 }
             }
-            const dom = $_1.$mol_jsx_make(Foo, { id: "/foo", title: "bar" },
+            const dom = $_1.$mol_jsx(Foo, { id: "/foo", title: "bar" },
                 "xxx",
                 123);
             $_1.$mol_assert_equal(dom.outerHTML, '<div id="/foo">bar xxx-123</div>');
@@ -3361,11 +3359,11 @@ var $;
             class Br extends $_1.$mol_jsx_view {
                 render() {
                     view = this;
-                    return $_1.$mol_jsx_make("br", { id: "/foo" });
+                    return $_1.$mol_jsx("br", { id: "/foo" });
                 }
             }
             let view;
-            $_1.$mol_assert_equal(Br.of($_1.$mol_jsx_make(Br, null)), view);
+            $_1.$mol_assert_equal(Br.of($_1.$mol_jsx(Br, null)), view);
         },
         'Attached view rerender'() {
             const doc = $_1.$mol_dom_parse('<html><body id="/foo"></body></html>');
@@ -3375,10 +3373,10 @@ var $;
                     this.value = 'foo';
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null, this.value);
+                    return $_1.$mol_jsx("div", null, this.value);
                 }
             }
-            const dom = $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(Title, { id: "/foo" }));
+            const dom = $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx(Title, { id: "/foo" }));
             const title = Title.of(dom);
             $_1.$mol_assert_equal(title.ownerDocument, doc);
             $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
@@ -3400,7 +3398,7 @@ var $;
                     return super.valueOf();
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null, this.task().title());
+                    return $_1.$mol_jsx("div", null, this.task().title());
                 }
             }
             __decorate([
@@ -3411,7 +3409,7 @@ var $;
             ], App.prototype, "valueOf", null);
             const task = new Task;
             task.$ = $;
-            const autorun = $.$mol_atom2_autorun(() => $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(App, { "$": $, id: "/foo", task: () => task })));
+            const autorun = $.$mol_atom2_autorun(() => $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx(App, { "$": $, id: "/foo", task: () => task })));
             autorun.$ = $;
             await $_1.$mol_fiber_warp();
             $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
@@ -3422,12 +3420,6 @@ var $;
     });
 })($ || ($ = {}));
 //view.test.js.map
-;
-"use strict";
-//equals.test.js.map
-;
-"use strict";
-//equals.js.map
 ;
 "use strict";
 var $;
@@ -3634,39 +3626,39 @@ var $;
             $.$mol_assert_ok($.$mol_compare_deep(a, b));
         },
         'empty Element'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", null), $.$mol_jsx_make("div", null)));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null), $.$mol_jsx_make("span", null)));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", null), $.$mol_jsx("div", null)));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null), $.$mol_jsx("span", null)));
         },
         'Element with attributes'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", { dir: "rtl" })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", null)));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", { dir: "ltr" })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", { dir: "rtl" })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", null)));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", { dir: "ltr" })));
         },
         'Element with styles'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: { color: 'red' } })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: {} })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: { color: 'blue' } })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: { color: 'red' } })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: {} })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: { color: 'blue' } })));
         },
         'Element with content'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", null,
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null))));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null))));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "bar",
-                $.$mol_jsx_make("br", null))));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null))));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("hr", null))));
+                $.$mol_jsx("hr", null))));
         },
         'Element with handlers'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { onclick: () => 1 }), $.$mol_jsx_make("div", { onclick: () => 1 })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { onclick: () => 1 }), $.$mol_jsx_make("div", { onclick: () => 2 })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { onclick: () => 1 }), $.$mol_jsx("div", { onclick: () => 1 })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { onclick: () => 1 }), $.$mol_jsx("div", { onclick: () => 2 })));
         },
         'Date'() {
             $.$mol_assert_ok($.$mol_compare_deep(new Date(12345), new Date(12345)));
@@ -3794,5 +3786,11 @@ var $;
     $.$mol_compare_deep = $mol_compare_deep;
 })($ || ($ = {}));
 //deep.js.map
+;
+"use strict";
+//equals.test.js.map
+;
+"use strict";
+//equals.js.map
 
 //# sourceMappingURL=node.test.js.map

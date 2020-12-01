@@ -30,9 +30,6 @@ module.exports;
 $node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
 ;
 "use strict";
-//deep.js.map
-;
-"use strict";
 var $;
 (function ($) {
 })($ || ($ = {}));
@@ -84,21 +81,6 @@ var $;
     $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
 })($ || ($ = {}));
 //context.node.js.map
-;
-"use strict";
-//jsx d.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElement: (name) => $.$mol_dom_context.document.createElement(name)
-    };
-})($ || ($ = {}));
-//jsx.js.map
 ;
 "use strict";
 var $;
@@ -166,9 +148,18 @@ var $;
 //children.js.map
 ;
 "use strict";
+//deep.js.map
+;
+"use strict";
 var $;
 (function ($) {
-    function $mol_jsx_make(Elem, props, ...childNodes) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElement: (name) => $.$mol_dom_context.document.createElement(name)
+    };
+    function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
         if ($.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
@@ -225,9 +216,9 @@ var $;
             node.id = guid;
         return node;
     }
-    $.$mol_jsx_make = $mol_jsx_make;
+    $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
-//make.js.map
+//jsx.js.map
 ;
 "use strict";
 var $;
@@ -1240,7 +1231,7 @@ var $;
                     await $mol_fiber.tick();
                 });
             }
-            const promise = new this.$.Promise(done => this.queue.push(() => (done(), promise)));
+            const promise = new this.$.Promise(done => this.queue.push(() => (done(null), promise)));
             return promise;
         }
         get value() { return this._value; }
@@ -1506,10 +1497,11 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_atom2_value(task) {
+    function $mol_atom2_value(task, next) {
         const cached = $mol_atom2.cached;
         try {
             $mol_atom2.cached = true;
+            $mol_atom2.cached_next = next;
             return task();
         }
         finally {
@@ -1557,8 +1549,13 @@ var $;
             return promise.then(obsolete, obsolete);
         }
         get() {
-            if ($mol_atom2.cached)
+            if ($mol_atom2.cached) {
+                if ($mol_atom2.cached_next !== undefined) {
+                    this.push($mol_atom2.cached_next);
+                    $mol_atom2.cached_next = undefined;
+                }
                 return this.value;
+            }
             const value = super.get();
             if (value === undefined)
                 $.$mol_fail(new Error(`Not defined: ${this}`));
@@ -1764,6 +1761,7 @@ var $;
     }
     $mol_atom2.logs = false;
     $mol_atom2.cached = false;
+    $mol_atom2.cached_next = undefined;
     $mol_atom2.reap_task = null;
     $mol_atom2.reap_queue = [];
     $.$mol_atom2 = $mol_atom2;
@@ -2024,9 +2022,9 @@ var $;
         selected(next = false) { return next; }
         valueOf() { return super.valueOf(); }
         render() {
-            return ($.$mol_jsx_make("div", { classList: [`list-item list-item-selected-${this.selected()}`], onclick: $.$mol_fiber_root(() => this.selected(true)) },
-                $.$mol_jsx_make("div", { id: "/title", classList: ['list-item-title'] }, this.title()),
-                $.$mol_jsx_make("div", { id: "/content", classList: ['list-item-content'] }, this.content())));
+            return ($.$mol_jsx("div", { classList: [`list-item list-item-selected-${this.selected()}`], onclick: $.$mol_fiber_root(() => this.selected(true)) },
+                $.$mol_jsx("div", { id: "/title", classList: ['list-item-title'] }, this.title()),
+                $.$mol_jsx("div", { id: "/content", classList: ['list-item-content'] }, this.content())));
         }
     };
     __decorate([
@@ -2061,7 +2059,7 @@ var $;
         }
         valueOf() { return super.valueOf(); }
         render() {
-            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data().items.map((item, index) => ($.$mol_jsx_make(Item, { id: '/item:' + item.id, title: () => this.item(index).title, content: () => this.item(index).content, selected: next => this.item_selected(item.id, next) })))));
+            return ($.$mol_jsx("div", { classList: ['list'] }, this.data().items.map((item, index) => ($.$mol_jsx(Item, { id: '/item:' + item.id, title: () => this.item(index).title, content: () => this.item(index).content, selected: next => this.item_selected(item.id, next) })))));
         }
     };
     __decorate([
@@ -2083,7 +2081,7 @@ var $;
         $.$mol_fiber.class
     ], List);
     $.List = List;
-    $.$mol_atom2_autorun(() => $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx_make(List, { id: "/list" })));
+    $.$mol_atom2_autorun(() => $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(List, { id: "/list" })));
 })($ || ($ = {}));
 //index.js.map
 ;

@@ -338,11 +338,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_atom2_value<Value>(task: () => Value): Value | undefined;
+    function $mol_atom2_value<Value>(task: () => Value, next?: Value): Value | undefined;
     class $mol_atom2<Value = any> extends $mol_fiber<Value> {
         static logs: boolean;
         static get current(): $mol_atom2<any> | null;
         static cached: boolean;
+        static cached_next: any;
         static reap_task: $mol_fiber<any> | null;
         static reap_queue: $mol_atom2<any>[];
         static reap(atom: $mol_atom2): void;
@@ -399,7 +400,7 @@ declare namespace $ {
     function $mol_mem_persist(): void;
     function $mol_mem<Host extends object, Field extends keyof Host, Prop extends Extract<Host[Field], (next?: any) => any>>(proto: Host, name: Field, descr?: TypedPropertyDescriptor<Prop>): {
         value: ((this: Host, next?: $mol_type_param<Prop, 0> | undefined, force?: $mol_mem_force | undefined) => any) & {
-            orig: NonNullable<Prop>;
+            orig: Function;
         };
         enumerable?: boolean | undefined;
         configurable?: boolean | undefined;
@@ -595,6 +596,9 @@ declare namespace $ {
             [key: string]: (event: Event) => void;
         };
         plugins(): readonly $mol_view[];
+        view_find(check: (path: $mol_view, text?: string) => boolean, path?: $mol_view[]): Generator<$mol_view[]>;
+        force_render(path: Set<$mol_view>): void;
+        ensure_visible(view: $mol_view): Promise<void>;
     }
     type $mol_view_all = $mol_type_pick<$mol_ambient_context, typeof $mol_view>;
 }
@@ -1174,9 +1178,9 @@ declare namespace $ {
     export type $mol_style_properties = Partial<$mol_type_override<CSSStyleDeclaration, Overrides>>;
     type Common = 'inherit' | 'initial' | 'unset';
     type Color = keyof typeof $mol_colors | 'transparent' | 'currentcolor' | $mol_style_func<'hsla' | 'rgba' | 'var'>;
-    type Length = 0 | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc'>;
+    type Length = 0 | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc' | 'var'>;
     type Size = 'auto' | 'max-content' | 'min-content' | 'fit-content' | Length | Common;
-    type Directions<Value> = Value | [Value, Value] | {
+    type Directions<Value> = Value | readonly [Value, Value] | {
         top?: Value;
         right?: Value;
         bottom?: Value;
@@ -1185,11 +1189,12 @@ declare namespace $ {
     type Span_align = 'none' | 'start' | 'end' | 'center';
     type Snap_axis = 'x' | 'y' | 'block' | 'inline' | 'both';
     type Overflow = 'visible' | 'hidden' | 'clip' | 'scroll' | 'auto' | 'overlay' | Common;
+    type ContainRule = 'size' | 'layout' | 'style' | 'paint';
     interface Overrides {
-        alignContent?: 'baseline' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'normal' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | ['first' | 'last', 'baseline'] | ['safe' | 'unsafe', 'start' | 'end' | 'flex-start' | 'flex-end'] | Common;
+        alignContent?: 'baseline' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'normal' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | readonly ['first' | 'last', 'baseline'] | readonly ['safe' | 'unsafe', 'start' | 'end' | 'flex-start' | 'flex-end'] | Common;
         background?: 'none' | {
             color?: Color | Common;
-            image?: [$mol_style_func<'url'>][];
+            image?: readonly (readonly [$mol_style_func<'url'>])[];
         };
         box?: {
             shadow?: readonly {
@@ -1214,16 +1219,17 @@ declare namespace $ {
             y?: Overflow | Common;
             anchor?: 'auto' | 'none' | Common;
         };
+        contain?: 'none' | 'strict' | 'content' | ContainRule | readonly ContainRule[] | Common;
         whiteSpace?: 'normal' | 'nowrap' | 'break-spaces' | 'pre' | 'pre-wrap' | 'pre-line' | Common;
         webkitOverflowScrolling?: 'auto' | 'touch';
         scrollbar?: {
-            color?: [Color, Color] | 'dark' | 'light' | 'auto' | Common;
+            color?: readonly [Color, Color] | 'dark' | 'light' | 'auto' | Common;
         };
         scroll?: {
             snap?: {
-                type: 'none' | Snap_axis | [Snap_axis, 'mandatory' | 'proximity'] | Common;
+                type: 'none' | Snap_axis | readonly [Snap_axis, 'mandatory' | 'proximity'] | Common;
                 stop: 'normal' | 'always' | Common;
-                align: Span_align | [Span_align, Span_align] | Common;
+                align: Span_align | readonly [Span_align, Span_align] | Common;
             };
         };
         width?: Size;
@@ -1234,6 +1240,15 @@ declare namespace $ {
         maxHeight?: Size;
         margin?: Directions<Length | 'auto'>;
         padding?: Directions<Length | 'auto'>;
+        position?: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
+        top?: Length | 'auto' | Common;
+        right?: Length | 'auto' | Common;
+        bottom?: Length | 'auto' | Common;
+        left?: Length | 'auto' | Common;
+        border?: {
+            radius?: Length | [Length, Length];
+            style?: 'none' | 'hidden' | 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' | Common;
+        };
         flex?: 'none' | 'auto' | {
             grow?: number | Common;
             shrink?: number | Common;
@@ -1242,6 +1257,7 @@ declare namespace $ {
             wrap?: 'wrap' | 'nowrap' | 'wrap-reverse' | Common;
         };
         zIndex: number;
+        opacity: number;
     }
     export {};
 }
@@ -1767,12 +1783,12 @@ declare namespace $ {
 declare var $node: any;
 
 declare namespace $ {
-    type $mol_charset_encoding = 'utf8' | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr';
-    function $mol_charset_decode(value: Uint8Array, code?: $mol_charset_encoding): string;
+    function $mol_charset_encode(value: string): Uint8Array;
 }
 
 declare namespace $ {
-    function $mol_charset_encode(value: string): Uint8Array;
+    type $mol_charset_encoding = 'utf8' | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr';
+    function $mol_charset_decode(value: Uint8Array, code?: $mol_charset_encoding): string;
 }
 
 declare namespace $ {
@@ -1872,6 +1888,7 @@ declare namespace $ {
         static source(lang: string): any;
         static texts(lang: string, next?: $mol_locale_dict): $mol_locale_dict;
         static text(key: string): string;
+        static warn(key: string): null;
     }
 }
 

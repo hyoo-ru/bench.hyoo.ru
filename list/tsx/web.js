@@ -28,9 +28,6 @@ module.exports;
 $node[ "../mol/mol" ] = $node[ "../mol/mol.js" ] = module.exports }.call( {} , {} )
 ;
 "use strict";
-//deep.js.map
-;
-"use strict";
 var $;
 (function ($) {
 })($ || ($ = {}));
@@ -42,21 +39,6 @@ var $;
     $.$mol_dom_context = self;
 })($ || ($ = {}));
 //context.web.js.map
-;
-"use strict";
-//jsx d.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElement: (name) => $.$mol_dom_context.document.createElement(name)
-    };
-})($ || ($ = {}));
-//jsx.js.map
 ;
 "use strict";
 var $;
@@ -124,9 +106,18 @@ var $;
 //children.js.map
 ;
 "use strict";
+//deep.js.map
+;
+"use strict";
 var $;
 (function ($) {
-    function $mol_jsx_make(Elem, props, ...childNodes) {
+    $.$mol_jsx_prefix = '';
+    $.$mol_jsx_booked = null;
+    $.$mol_jsx_document = {
+        getElementById: () => null,
+        createElement: (name) => $.$mol_dom_context.document.createElement(name)
+    };
+    function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
         if ($.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
@@ -183,9 +174,9 @@ var $;
             node.id = guid;
         return node;
     }
-    $.$mol_jsx_make = $mol_jsx_make;
+    $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
-//make.js.map
+//jsx.js.map
 ;
 "use strict";
 var $;
@@ -406,9 +397,9 @@ var $;
         }
         onSelect() { }
         render() {
-            return ($.$mol_jsx_make("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
-                $.$mol_jsx_make("div", { id: "/title", classList: ['list-item-title'] }, this.title),
-                $.$mol_jsx_make("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
+            return ($.$mol_jsx("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
+                $.$mol_jsx("div", { id: "/title", classList: ['list-item-title'] }, this.title),
+                $.$mol_jsx("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
         }
     }
     $.Item = Item;
@@ -422,14 +413,14 @@ var $;
             this.selected = Number.NaN;
         }
         static render(props) {
-            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx_make(this, Object.assign({ id: "/list" }, props)));
+            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(this, Object.assign({ id: "/list" }, props)));
         }
         onItemSelect(item) {
             this.selected = item.id;
             this.valueOf();
         }
         render() {
-            return ($.$mol_jsx_make("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx_make(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
+            return ($.$mol_jsx("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
         }
     }
     $.List = List;

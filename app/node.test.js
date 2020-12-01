@@ -390,7 +390,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: hsl( 0 , 0% , 0% );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsl( 290 , 100% , 40% );\n\t--mol_theme_field: white;\n\t--mol_theme_image: none;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: hsl( 0 , 0% , 80% );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: hsl( 60 , 100% , 70% );\n\t--mol_theme_field: black;\n\t--mol_theme_image: invert(1) hue-rotate(180deg);\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: hsla( 210 , 60% , 20% , 1 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: hsl( 15 , 60% , 50% );\n\t--mol_theme_hover: hsl( 15 , 60% , 40% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n\t--mol_theme_focus: black;\n}\n\n[mol_theme=\"$mol_theme_accent\"] [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: black;\n\t--mol_theme_text: white;\n}\n");
+    $.$mol_style_attach("mol/theme/theme.css", "[mol_theme] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tfill: var(--mol_theme_text);\n}\n\n[mol_theme=\"$mol_theme_light\"] , :root {\n\t--mol_theme_back: hsl( 210 , 50% , 99% );\n\t--mol_theme_hover: rgba( 0 , 0 , 0 , .05 );\n\t--mol_theme_current: hsl( 210 , 100% , 80% );\n\t--mol_theme_text: hsl( 0 , 0% , 0% );\n\t--mol_theme_control: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_shade: rgba( 0 , 0 , 0 , .5 );\n\t--mol_theme_line: rgba( 220 , 220 , 220 , 1 );\n\t--mol_theme_focus: hsl( 290 , 100% , 40% );\n\t--mol_theme_field: white;\n\t--mol_theme_image: none;\n}\n\n[mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10% );\n\t--mol_theme_hover: #333;\n\t--mol_theme_current: hsl( 210 , 100% , 30% );\n\t--mol_theme_text: hsl( 0 , 0% , 80% );\n\t--mol_theme_control: hsla( 210 , 60% , 70% , 1 );\n\t--mol_theme_shade: rgba( 255 , 255 , 255 , .5 );\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_focus: hsl( 60 , 100% , 70% );\n\t--mol_theme_field: black;\n\t--mol_theme_image: invert(1) hue-rotate(180deg);\n}\n\n[mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: hsla( 210 , 60% , 35% , 1 );\n\t--mol_theme_hover: hsla( 210 , 60% , 20% , 1 );\n\t--mol_theme_current: hsl( 210 , 100% , 20% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: white;\n\t--mol_theme_control: white;\n}\n\n[mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: hsl( 15 , 60% , 50% );\n\t--mol_theme_hover: hsl( 15 , 60% , 40% );\n\t--mol_theme_text: white;\n\t--mol_theme_line: rgba( 50 , 50 , 50 , 1 );\n\t--mol_theme_control: white;\n\t--mol_theme_focus: black;\n}\n\n[mol_theme=\"$mol_theme_accent\"] [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: black;\n\t--mol_theme_text: white;\n}\n");
 })($ || ($ = {}));
 //theme.css.js.map
 ;
@@ -416,7 +416,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/skin/skin.css", ":root {\n\t--mol_skin_font: 1rem/1.5rem \"-apple-system\", BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n\t--mol_skin_font_monospace: Monaco, monospace;\n}\n\n/* Deprecated, use mol_theme instead */\n:root {\n\n\t--mol_skin_outline: 0 0 0 1px var(--mol_theme_line);\n\t\n\t--mol_skin_base: #3a8ccb;\n\t--mol_skin_base_text: white;\n\t\n\t--mol_skin_current: var(--mol_skin_base);\n\t--mol_skin_current_text: white;\n\t--mol_skin_current_line: #1471b8;\n\t\n\t--mol_skin_button: var(--mol_skin_card);\n\t--mol_skin_hover: rgba( 0 , 0 , 0 , .05 );\n\t\n\t--mol_skin_round: 0px;\n\t\n\t--mol_skin_focus_line: rgba( 0 , 0 , 0 , .2 );\n\t--mol_skin_focus_outline: 0 0 0 1px var(--mol_skin_focus_line);\n\t\n\t--mol_skin_float: var(--mol_skin_focus_outline);\n\n\t--mol_skin_passive: #eee;\n\t--mol_skin_passive_text: rgba( 0 , 0 , 0 , .5 );\n\t\n\t--mol_skin_light: #fcfcfc;\n\t--mol_skin_light_line: rgba( 230 , 230 , 230 , .75 );\n\t--mol_skin_light_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_skin_light_hover: #f7f7f7;\n\t--mol_skin_light_outline: 0 0 0 1px var(--mol_theme_line);\n\n\t--mol_skin_card: var(--mol_theme_back);\n\t--mol_skin_card_text: var(--mol_theme_text);\n\t\n\t--mol_skin_accent: #dd0e3e;\n\t--mol_skin_accent_text: white;\n\t--mol_skin_accent_hover: #c50d37;\n\n\t--mol_skin_warn: rgba( 255 , 50 , 50 , 0.75 );\n\t--mol_skin_warn_text: white;\n\t--mol_skin_warn_hover: color( var(--mol_skin_warn) lightness(-5%) );\n\n\t--mol_skin_good: #96DAA9;\n\t--mol_skin_good_text: black;\n\n\t--mol_skin_bad: #CC5252;\n\t--mol_skin_bad_text: white;\n}\n");
+    $.$mol_style_attach("mol/skin/skin.css", ":root {\n\t--mol_skin_font: 16px/24px sans-serif;\n\t/* --mol_skin_font_monospace: Monaco, monospace; */\n\t--mol_skin_font_monospace: monospace;\n}\n\n/* Deprecated, use mol_theme instead */\n:root {\n\n\t--mol_skin_outline: 0 0 0 1px var(--mol_theme_line);\n\t\n\t--mol_skin_base: #3a8ccb;\n\t--mol_skin_base_text: white;\n\t\n\t--mol_skin_current: var(--mol_skin_base);\n\t--mol_skin_current_text: white;\n\t--mol_skin_current_line: #1471b8;\n\t\n\t--mol_skin_button: var(--mol_skin_card);\n\t--mol_skin_hover: rgba( 0 , 0 , 0 , .05 );\n\t\n\t--mol_skin_round: 0px;\n\t\n\t--mol_skin_focus_line: rgba( 0 , 0 , 0 , .2 );\n\t--mol_skin_focus_outline: 0 0 0 1px var(--mol_skin_focus_line);\n\t\n\t--mol_skin_float: var(--mol_skin_focus_outline);\n\n\t--mol_skin_passive: #eee;\n\t--mol_skin_passive_text: rgba( 0 , 0 , 0 , .5 );\n\t\n\t--mol_skin_light: #fcfcfc;\n\t--mol_skin_light_line: rgba( 230 , 230 , 230 , .75 );\n\t--mol_skin_light_text: rgba( 0 , 0 , 0 , .9 );\n\t--mol_skin_light_hover: #f7f7f7;\n\t--mol_skin_light_outline: 0 0 0 1px var(--mol_theme_line);\n\n\t--mol_skin_card: var(--mol_theme_back);\n\t--mol_skin_card_text: var(--mol_theme_text);\n\t\n\t--mol_skin_accent: #dd0e3e;\n\t--mol_skin_accent_text: white;\n\t--mol_skin_accent_hover: #c50d37;\n\n\t--mol_skin_warn: rgba( 255 , 50 , 50 , 0.75 );\n\t--mol_skin_warn_text: white;\n\t--mol_skin_warn_hover: color( var(--mol_skin_warn) lightness(-5%) );\n\n\t--mol_skin_good: #96DAA9;\n\t--mol_skin_good_text: black;\n\n\t--mol_skin_bad: #CC5252;\n\t--mol_skin_bad_text: white;\n}\n");
 })($ || ($ = {}));
 //skin.css.js.map
 ;
@@ -1307,7 +1307,7 @@ var $;
                     await $mol_fiber.tick();
                 });
             }
-            const promise = new this.$.Promise(done => this.queue.push(() => (done(), promise)));
+            const promise = new this.$.Promise(done => this.queue.push(() => (done(null), promise)));
             return promise;
         }
         get value() { return this._value; }
@@ -1522,10 +1522,11 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_atom2_value(task) {
+    function $mol_atom2_value(task, next) {
         const cached = $mol_atom2.cached;
         try {
             $mol_atom2.cached = true;
+            $mol_atom2.cached_next = next;
             return task();
         }
         finally {
@@ -1573,8 +1574,13 @@ var $;
             return promise.then(obsolete, obsolete);
         }
         get() {
-            if ($mol_atom2.cached)
+            if ($mol_atom2.cached) {
+                if ($mol_atom2.cached_next !== undefined) {
+                    this.push($mol_atom2.cached_next);
+                    $mol_atom2.cached_next = undefined;
+                }
                 return this.value;
+            }
             const value = super.get();
             if (value === undefined)
                 $.$mol_fail(new Error(`Not defined: ${this}`));
@@ -1780,6 +1786,7 @@ var $;
     }
     $mol_atom2.logs = false;
     $mol_atom2.cached = false;
+    $mol_atom2.cached_next = undefined;
     $mol_atom2.reap_task = null;
     $mol_atom2.reap_queue = [];
     $.$mol_atom2 = $mol_atom2;
@@ -2310,7 +2317,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: background-color, height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t135deg,\n\t\trgba(255,220,220,1),\n\t\trgba(255,220,220,1) 11px,\n\t\trgba(255,255,220,1) 10px,\n\t\trgba(255,255,220,1) 20px\n\t);\n\tbackground-size: 28px 28px;\n\tcolor: black;\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: 200vmax 0;\n\t}\n}\n\n@keyframes mol_view_wait_show {\n\tto {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t\t45deg,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 0% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 5% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 45% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 50% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 55% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 95% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 100%\n\t\t);\n\t\tbackground-size: 200vmax 200vmax;\n\t}\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait_show .5s .5s linear forwards , mol_view_wait_move 1s linear infinite;\n\topacity: .75;\n}\n");
+    $.$mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tcontain: style;\n\ttab-size: 4;\n}\n\n[mol_view]::selection {\n\tbackground: var(--mol_theme_current);\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t135deg,\n\t\trgb(162, 90, 90),\n\t\trgb(162, 90, 90) 11px,\n\t\trgb(255,255,220) 10px,\n\t\trgb(255,255,220) 20px\n\t);\n\tbackground-size: 28px 28px;\n\tcolor: black;\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: 200vmax 0;\n\t}\n}\n\n@keyframes mol_view_wait_show {\n\tto {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t\t45deg,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 0% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 5% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 45% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 50% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 55% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 95% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 100%\n\t\t);\n\t\tbackground-size: 200vmax 200vmax;\n\t}\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait_show .5s .5s linear forwards , mol_view_wait_move 1s linear infinite;\n\topacity: .75;\n}\n");
 })($ || ($ = {}));
 //view.css.js.map
 ;
@@ -2563,6 +2570,35 @@ var $;
         }
         [$.$mol_dev_format_head]() {
             return $.$mol_dev_format_span({}, $.$mol_dev_format_native(this), $.$mol_dev_format_shade('/'), $.$mol_dev_format_auto($.$mol_mem_cached(() => this.sub())));
+        }
+        *view_find(check, path = []) {
+            if (check(this))
+                return yield [...path, this];
+            for (const item of this.sub()) {
+                if (item instanceof $mol_view) {
+                    yield* item.view_find(check, [...path, this]);
+                }
+            }
+        }
+        force_render(path) {
+            const kids = this.sub();
+            const index = kids.findIndex(item => {
+                if (item instanceof $mol_view) {
+                    return path.has(item);
+                }
+                else {
+                    return false;
+                }
+            });
+            if (index >= 0) {
+                kids[index].force_render(path);
+            }
+        }
+        async ensure_visible(view) {
+            const path = this.view_find(v => v === view).next().value;
+            this.force_render(new Set(path));
+            await $.$mol_fiber_warp();
+            view.dom_node().scrollIntoView();
         }
     }
     $mol_view.watchers = new Set();
@@ -3000,15 +3036,21 @@ var $;
                 direction: 'column',
                 grow: 1,
                 shrink: 1,
+                basis: 0,
             },
             outline: 'none',
             alignSelf: 'stretch',
             boxSizing: 'border-box',
             willChange: 'scroll-position',
-            transform: 'translateZ(0)',
             maxHeight: per(100),
             maxWidth: per(100),
             webkitOverflowScrolling: 'touch',
+            contain: 'content',
+            '>': {
+                $mol_view: {
+                    transform: 'translateZ(0)',
+                },
+            },
             scrollbar: {
                 color: [$.$mol_theme.line, 'transparent'],
             },
@@ -3149,6 +3191,24 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$mol_style_attach("mol/gap/gap.css", ":root {\n\t--mol_gap_block: .75rem;\n\t--mol_gap_text: .5rem .75rem;\n}\n");
+})($ || ($ = {}));
+//gap.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    const { vary } = $.$mol_style_func;
+    $.$mol_gap = {
+        block: vary('--mol_gap_block'),
+        text: vary('--mol_gap_text'),
+    };
+})($ || ($ = {}));
+//gap.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_speck extends $.$mol_view {
         attr() {
             return Object.assign(Object.assign({}, super.attr()), { mol_theme: "$mol_theme_accent" });
@@ -3197,7 +3257,7 @@ var $;
             return null;
         }
         event() {
-            return Object.assign(Object.assign({}, super.event()), { click: (event) => this.event_activate(event), keypress: (event) => this.event_key_press(event) });
+            return Object.assign(Object.assign({}, super.event()), { click: (event) => this.event_activate(event), keydown: (event) => this.event_key_press(event) });
         }
         attr() {
             return Object.assign(Object.assign({}, super.attr()), { disabled: this.disabled(), role: "button", tabindex: this.tab_index(), title: this.hint_or_error() });
@@ -3442,7 +3502,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/button/typed/typed.view.css", "[mol_button_typed] {\n\tdisplay: inline-block;\n\talign-content: center;\n\talign-items: center;\n\tvertical-align: middle;\n\ttext-align: center;\n\tpadding: .5rem .75rem;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_button_typed][disabled] {\n\tcolor: var(--mol_theme_text);\n\tpointer-events: none;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus {\n\tcursor: pointer;\n\tbackground-color: var(--mol_theme_hover);\n}\n");
+    $.$mol_style_attach("mol/button/typed/typed.view.css", "[mol_button_typed] {\n\tdisplay: inline-block;\n\talign-content: center;\n\talign-items: center;\n\tvertical-align: middle;\n\ttext-align: center;\n\tpadding: var(--mol_gap_text);\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_button_typed][disabled] {\n\tcolor: var(--mol_theme_text);\n\tpointer-events: none;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus {\n\tcursor: pointer;\n\tbackground-color: var(--mol_theme_hover);\n}\n");
 })($ || ($ = {}));
 //typed.view.css.js.map
 ;
@@ -3522,7 +3582,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: .5rem .75rem;\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
+    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: var(--mol_gap_text);\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
 })($ || ($ = {}));
 //check.css.js.map
 ;
@@ -3720,7 +3780,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/icon/icon.view.css", "[mol_icon] {\n\tfill: currentColor;\n\tstroke: none;\n\twidth: 1em;\n\theight: 1em;\n\tflex: 0 0 auto;\n\tvertical-align: top;\n\twill-change: transform;\n\tmargin: .25em 0;\n\tdisplay: inline-block;\n}\n");
+    $.$mol_style_attach("mol/icon/icon.view.css", "[mol_icon] {\n\tfill: currentColor;\n\tstroke: none;\n\twidth: 1em;\n\theight: 1em;\n\tflex: 0 0 auto;\n\tvertical-align: top;\n\tmargin: .25em 0;\n\tdisplay: inline-block;\n}\n");
 })($ || ($ = {}));
 //icon.view.css.js.map
 ;
@@ -3755,7 +3815,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/check/box/box.view.css", "[mol_check_box_icon] {\n\tborder-radius: var(--mol_skin_round);\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_check]:not([mol_check_checked]) > [mol_check_box_icon] {\n\tfill: transparent;\n}\n\n[mol_check]:not([disabled]) > [mol_check_box_icon] {\n\tbackground: var(--mol_theme_field);\n\tcolor: var(--mol_theme_text);\n}\n\n[mol_check_box_title] {\n\tmargin-left: .25rem;\n}\n");
+    $.$mol_style_attach("mol/check/box/box.view.css", "[mol_check_box_icon] {\n\tborder-radius: var(--mol_skin_round);\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_check]:not([mol_check_checked]) > [mol_check_box_icon] {\n\tfill: transparent;\n}\n\n[mol_check]:not([disabled]) > [mol_check_box_icon] {\n\tbackground: var(--mol_theme_field);\n\tcolor: var(--mol_theme_text);\n}\n\n[mol_check_box_title] {\n\tmargin-left: .25rem;\n}\n");
 })($ || ($ = {}));
 //box.view.css.js.map
 ;
@@ -3767,7 +3827,7 @@ var $;
             return true;
         }
         render_over() {
-            return 0.5;
+            return 0;
         }
         sub() {
             return this.rows();
@@ -3818,6 +3878,17 @@ var $;
     $.$mol_list = $mol_list;
 })($ || ($ = {}));
 //list.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_support_css_overflow_anchor() {
+        var _a, _b;
+        return (_b = (_a = this.$mol_dom_context.CSS) === null || _a === void 0 ? void 0 : _a.supports('overflow-anchor:auto')) !== null && _b !== void 0 ? _b : false;
+    }
+    $.$mol_support_css_overflow_anchor = $mol_support_css_overflow_anchor;
+})($ || ($ = {}));
+//css.js.map
 ;
 "use strict";
 var $;
@@ -3891,9 +3962,7 @@ var $;
                 return (rows.length === 0) ? [this.Empty()] : rows;
             }
             render_visible_only() {
-                if (!$.$mol_dom_context.CSS)
-                    return false;
-                return $.$mol_dom_context.CSS.supports('overflow-anchor:auto');
+                return this.$.$mol_support_css_overflow_anchor();
             }
             view_window() {
                 var _a, _b, _c, _d, _e, _f;
@@ -3906,7 +3975,7 @@ var $;
                 let max2 = max = Math.min(max, kids.length);
                 let min2 = min = Math.max(0, Math.min(min, max - 1));
                 const anchoring = this.render_visible_only();
-                const window_height = this.$.$mol_window.size().height;
+                const window_height = this.$.$mol_window.size().height + 40;
                 const over = Math.ceil(window_height * this.render_over());
                 const limit_top = -over;
                 const limit_bottom = window_height + over;
@@ -3934,11 +4003,11 @@ var $;
                 }
                 let top2 = top;
                 let bottom2 = bottom;
-                if (anchoring && (top <= limit_top)) {
+                if (anchoring && (top <= limit_top) && (bottom2 < limit_bottom)) {
                     min2 = max;
                     top2 = bottom;
                 }
-                if (bottom >= limit_bottom) {
+                if ((bottom >= limit_bottom) && (top2 >= limit_top)) {
                     max2 = min;
                     bottom2 = top;
                 }
@@ -3985,13 +4054,21 @@ var $;
                     }
                 }, 0);
             }
+            force_render(path) {
+                const kids = this.rows();
+                const index = kids.findIndex(item => path.has(item));
+                if (index >= 0) {
+                    const win = this.view_window();
+                    if (index < win[0] || index >= win[1]) {
+                        $.$mol_mem_cached(() => this.view_window(), [index, index + 1]);
+                    }
+                    kids[index].force_render(path);
+                }
+            }
         }
         __decorate([
             $.$mol_mem
         ], $mol_list.prototype, "sub", null);
-        __decorate([
-            $.$mol_memo.method
-        ], $mol_list.prototype, "render_visible_only", null);
         __decorate([
             $.$mol_mem
         ], $mol_list.prototype, "view_window", null);
@@ -4018,7 +4095,7 @@ var $;
     class $mol_labeler extends $.$mol_list {
         rows() {
             return [
-                this.Title(),
+                this.Label(),
                 this.Content()
             ];
         }
@@ -4027,7 +4104,7 @@ var $;
                 this.title()
             ];
         }
-        Title() {
+        Label() {
             const obj = new this.$.$mol_view();
             obj.minimal_height = () => 24;
             obj.sub = () => this.label();
@@ -4045,7 +4122,7 @@ var $;
     }
     __decorate([
         $.$mol_mem
-    ], $mol_labeler.prototype, "Title", null);
+    ], $mol_labeler.prototype, "Label", null);
     __decorate([
         $.$mol_mem
     ], $mol_labeler.prototype, "Content", null);
@@ -4056,7 +4133,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/labeler/labeler.view.css", "[mol_labeler] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-items: stretch;\n\tcursor: inherit;\n}\n\n[mol_labeler_title] {\n\tcolor: var(--mol_theme_shade);\n\tfont-size: .875rem;\n\tpadding: 0 .75rem;\n}\n\n[mol_labeler_content] {\n\tdisplay: flex;\n}\n");
+    $.$mol_style_attach("mol/labeler/labeler.view.css", "[mol_labeler] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-items: stretch;\n\tcursor: inherit;\n}\n\n[mol_labeler_label] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_labeler_content] {\n\tdisplay: flex;\n}\n");
 })($ || ($ = {}));
 //labeler.view.css.js.map
 ;
@@ -4115,18 +4192,6 @@ var $;
 var $;
 (function ($) {
     var _a;
-    const TextDecoder = (_a = globalThis.TextDecoder) !== null && _a !== void 0 ? _a : $node.util.TextDecoder;
-    function $mol_charset_decode(value, code = 'utf8') {
-        return new TextDecoder(code).decode(value);
-    }
-    $.$mol_charset_decode = $mol_charset_decode;
-})($ || ($ = {}));
-//decode.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var _a;
     const TextEncoder = (_a = globalThis.TextEncoder) !== null && _a !== void 0 ? _a : $node.util.TextEncoder;
     const encoder = new TextEncoder();
     function $mol_charset_encode(value) {
@@ -4135,6 +4200,18 @@ var $;
     $.$mol_charset_encode = $mol_charset_encode;
 })($ || ($ = {}));
 //encode.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var _a;
+    const TextDecoder = (_a = globalThis.TextDecoder) !== null && _a !== void 0 ? _a : $node.util.TextDecoder;
+    function $mol_charset_decode(value, code = 'utf8') {
+        return new TextDecoder(code).decode(value);
+    }
+    $.$mol_charset_decode = $mol_charset_decode;
+})($ || ($ = {}));
+//decode.js.map
 ;
 "use strict";
 var $;
@@ -4208,7 +4285,8 @@ var $;
             return match ? match[1].substring(1) : '';
         }
         text(next, force) {
-            return $.$mol_charset_decode(this.buffer(next === undefined ? undefined : $.$mol_charset_encode(next), force));
+            const buffer = next === undefined ? undefined : $.$mol_charset_encode(next);
+            return $.$mol_charset_decode(this.buffer(buffer, force));
         }
         fail(error) {
             this.buffer(error, $.$mol_mem_force_fail);
@@ -4256,6 +4334,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $mol_file.prototype, "exists", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_file.prototype, "text", null);
     __decorate([
         $.$mol_mem_key
     ], $mol_file, "absolute", null);
@@ -4325,41 +4406,18 @@ var $;
                     stabilityThreshold: 100,
                 },
             });
-            const handler = (type, path) => $.$mol_fiber_unlimit(() => {
+            watcher
+                .on('all', (type, path) => {
                 const file = $.$mol_file.relative(path.replace(/\\/g, '/'));
+                file.reset();
                 if (type === 'change') {
-                    const cached = $.$mol_mem_cached(() => file.buffer());
-                    const path = file.path();
-                    let actual;
-                    try {
-                        actual = buffer_normalize($node.fs.readFileSync(path));
-                    }
-                    catch (e) {
-                        e.message += '\n' + path;
-                        return this.$.$mol_fail_hidden(e);
-                    }
-                    if (cached && $.$mol_compare_array(cached, actual))
-                        return;
-                    this.$.$mol_log3_rise({
-                        place: `$mol_file:watcher`,
-                        message: type,
-                        path: file.relate(),
-                    });
-                    file.reset();
-                    file.buffer(actual, $.$mol_mem_force_cache);
+                    file.buffer(undefined, $.$mol_mem_force_update);
                 }
                 else {
-                    this.$.$mol_log3_rise({
-                        place: `${this}.watcher()`,
-                        message: type,
-                        path: file.relate(),
-                    });
-                    file.reset();
                     file.parent().reset();
                 }
-            });
-            watcher.on('all', handler);
-            watcher.on('error', (error) => {
+            })
+                .on('error', (error) => {
                 this.stat(error, $.$mol_mem_force_fail);
             });
             return {
@@ -4371,6 +4429,7 @@ var $;
         stat(next, force) {
             let stat = next;
             const path = this.path();
+            this.parent().watcher();
             try {
                 stat = next !== null && next !== void 0 ? next : stat_convert($node.fs.statSync(path));
             }
@@ -4380,7 +4439,6 @@ var $;
                 error.message += '\n' + path;
                 return this.$.$mol_fail_hidden(error);
             }
-            this.parent().watcher();
             return stat;
         }
         ensure(next) {
@@ -4402,20 +4460,29 @@ var $;
             if (next === undefined) {
                 this.stat();
                 try {
-                    return buffer_normalize($node.fs.readFileSync(path));
+                    const prev = $.$mol_mem_cached(() => this.buffer());
+                    next = buffer_normalize($node.fs.readFileSync(path));
+                    if (prev !== undefined && !$.$mol_compare_array(prev, next)) {
+                        this.$.$mol_log3_rise({
+                            place: `$mol_file_node..buffer()`,
+                            message: 'Changed',
+                            path: this.relate(),
+                        });
+                    }
+                    return next;
                 }
-                catch (e) {
-                    e.message += '\n' + path;
-                    return this.$.$mol_fail_hidden(e);
+                catch (error) {
+                    error.message += '\n' + path;
+                    return this.$.$mol_fail_hidden(error);
                 }
             }
             this.parent().exists(true);
             try {
                 $node.fs.writeFileSync(path, next);
             }
-            catch (e) {
-                e.message += '\n' + path;
-                return this.$.$mol_fail_hidden(e);
+            catch (error) {
+                error.message += '\n' + path;
+                return this.$.$mol_fail_hidden(error);
             }
             return next;
         }
@@ -4505,9 +4572,13 @@ var $;
                 const text = this.texts(lang)[key];
                 if (text)
                     return text;
-                console.warn(`Not translated to "${lang}": ${key}`);
+                this.warn(key);
             }
             return `<${key}>`;
+        }
+        static warn(key) {
+            console.warn(`Not translated to "${this.lang()}": ${key}`);
+            return null;
         }
     }
     __decorate([
@@ -4525,6 +4596,9 @@ var $;
     __decorate([
         $.$mol_mem_key
     ], $mol_locale, "text", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_locale, "warn", null);
     $.$mol_locale = $mol_locale;
 })($ || ($ = {}));
 //locale.js.map
@@ -4541,7 +4615,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/bar/bar.view.css", "[mol_bar] {\n\tdisplay: flex;\n\tbox-shadow: inset 0 0 0 .5px var(--mol_theme_line);\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_bar] > * {\n\tborder-radius: 0;\n}\n\n[mol_bar] > *:first-child {\n\tborder-top-left-radius: var(--mol_skin_round);\n\tborder-bottom-left-radius: var(--mol_skin_round);\n}\n\n[mol_bar] > *:not(:first-child) {\n\tmargin-left: 1px;\n}\n\n[mol_bar] > *:last-child {\n\tborder-top-right-radius: var(--mol_skin_round);\n\tborder-bottom-right-radius: var(--mol_skin_round);\n}\n");
+    $.$mol_style_attach("mol/bar/bar.view.css", "[mol_bar] {\n\tdisplay: flex;\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_bar] > * {\n\tborder-radius: 0;\n}\n\n[mol_bar] > *:first-child {\n\tborder-top-left-radius: var(--mol_skin_round);\n\tborder-bottom-left-radius: var(--mol_skin_round);\n}\n\n[mol_bar] > *:not(:first-child) {\n\tmargin-left: 1px;\n}\n\n[mol_bar] > *:last-child {\n\tborder-top-right-radius: var(--mol_skin_round);\n\tborder-bottom-right-radius: var(--mol_skin_round);\n}\n");
 })($ || ($ = {}));
 //bar.view.css.js.map
 ;
@@ -4622,11 +4696,11 @@ var $;
                 if (event.defaultPrevented)
                     return;
                 let name = $.$mol_keyboard_code[event.keyCode];
-                if (this.mod_ctrl() && !event.ctrlKey)
+                if (this.mod_ctrl() !== event.ctrlKey)
                     return;
-                if (this.mod_alt() && !event.altKey)
+                if (this.mod_alt() !== event.altKey)
                     return;
-                if (this.mod_shift() && !event.shiftKey)
+                if (this.mod_shift() !== event.shiftKey)
                     return;
                 const handle = this.key()[name];
                 if (handle)
@@ -5031,7 +5105,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/string/string.view.css", "[mol_string] {\n\tbox-sizing: border-box;\n\toutline-offset: 0;\n\tborder: none;\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: nowrap;\n\toverflow: hidden;\n\tpadding: .5rem .75rem;\n\ttext-align: left;\n\tposition: relative;\n\tz-index: 0;\n\tfont: inherit;\n\tflex: 0 1 auto;\n\tbackground: var(--mol_theme_field);\n\tcolor: var(--mol_theme_text);\n\tbox-shadow: inset 0 0 0 .5px var(--mol_theme_line);\n}\n\n[mol_string]:disabled {\n\tbackground-color: transparent;\n}\n\n[mol_string]:focus {\n\toutline: none;\n\tz-index: 1;\n\tbox-shadow: inset 0 0 0 .5px var(--mol_theme_focus);\n}\n\n[mol_string]::-ms-clear {\n\tdisplay: none;\n}\n");
+    $.$mol_style_attach("mol/string/string.view.css", "[mol_string] {\n\tbox-sizing: border-box;\n\toutline-offset: 0;\n\tborder: none;\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: nowrap;\n\toverflow: hidden;\n\tpadding: var(--mol_gap_text);\n\ttext-align: left;\n\tposition: relative;\n\tz-index: 0;\n\tfont: inherit;\n\tflex: 0 1 auto;\n\tbackground: var(--mol_theme_field);\n\tcolor: var(--mol_theme_text);\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_string]:disabled {\n\tbackground-color: transparent;\n}\n\n[mol_string]:focus {\n\toutline: none;\n\tz-index: 1;\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_focus);\n}\n\n[mol_string]::-ms-clear {\n\tdisplay: none;\n}\n");
 })($ || ($ = {}));
 //string.view.css.js.map
 ;
@@ -5110,7 +5184,7 @@ var $;
                 return Math.max(Math.min(this.$.$mol_window.size().width, this.maximal_width()), this.letter_width());
             }
             minimal_height() {
-                return Math.ceil(this.maximal_width() / this.minimal_width()) * this.line_height();
+                return Math.max(1, Math.ceil(this.maximal_width() / this.minimal_width())) * this.line_height();
             }
         }
         __decorate([
@@ -5172,6 +5246,129 @@ var $;
 //dimmer.view.tree.js.map
 ;
 "use strict";
+//intersect.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_regexp extends RegExp {
+        constructor(source, flags = '', groups = []) {
+            super(source, flags);
+            this.groups = groups;
+        }
+        get parse() {
+            const self = this;
+            return function* (str, from = 0) {
+                while (from < str.length) {
+                    self.lastIndex = from;
+                    const res = self.exec(str);
+                    if (res === null) {
+                        yield { 0: str.substring(from) };
+                        return null;
+                    }
+                    if (from === self.lastIndex) {
+                        $.$mol_fail(new Error('Captured empty substring'));
+                    }
+                    const found = {};
+                    const skipped = str.slice(from, self.lastIndex - res[0].length);
+                    if (skipped)
+                        yield { 0: skipped };
+                    from = self.lastIndex;
+                    for (let i = 0; i < self.groups.length; ++i) {
+                        const group = self.groups[i];
+                        found[group] = found[group] || res[i + 1] || '';
+                    }
+                    yield found;
+                }
+            };
+        }
+        static repeat(source, min = 0, max = Number.POSITIVE_INFINITY) {
+            const regexp = $mol_regexp.from(source);
+            const upper = Number.isFinite(max) ? max : '';
+            return new $mol_regexp(`(?:${regexp.source}){${min},${upper}}?`, regexp.flags, regexp.groups);
+        }
+        static repeat_greedy(source, min = 0, max = Number.POSITIVE_INFINITY) {
+            const regexp = $mol_regexp.from(source);
+            const upper = Number.isFinite(max) ? max : '';
+            return new $mol_regexp(`(?:${regexp.source}){${min},${upper}}`, regexp.flags, regexp.groups);
+        }
+        static optional(source) {
+            return $mol_regexp.repeat_greedy(source, 0, 1);
+        }
+        static force_after(source) {
+            const regexp = $mol_regexp.from(source);
+            return new $mol_regexp(`(?=${regexp.source})`, regexp.flags, regexp.groups);
+        }
+        static forbid_after(source) {
+            const regexp = $mol_regexp.from(source);
+            return new $mol_regexp(`(?!${regexp.source})`, regexp.flags, regexp.groups);
+        }
+        static from(source, { ignoreCase, multiline } = {
+            ignoreCase: false,
+            multiline: false,
+        }) {
+            let flags = 'gu';
+            if (multiline)
+                flags += 'm';
+            if (ignoreCase)
+                flags += 'i';
+            if (typeof source === 'string') {
+                return new this(source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
+            }
+            else if (source instanceof RegExp) {
+                if (source instanceof $mol_regexp)
+                    return source;
+                const test = new $mol_regexp('|' + source.source);
+                const groups = Array.from({ length: test.exec('').length - 1 }, (_, i) => String(i + 1));
+                return new $mol_regexp(source.source, source.flags, groups);
+            }
+            if (Array.isArray(source)) {
+                const sources = [];
+                const groups = [];
+                let index = 0;
+                for (const item of source) {
+                    const regexp = $mol_regexp.from(item);
+                    sources.push(regexp.source);
+                    for (let group of regexp.groups) {
+                        if (Number(group) >= 0) {
+                            groups.push(String(index++));
+                        }
+                        else {
+                            groups.push(group);
+                        }
+                    }
+                }
+                return new this(`(?:${sources.join('')})`, flags, groups);
+            }
+            else {
+                const groups = [];
+                const chunks = Object.keys(source).map(name => {
+                    groups.push(name);
+                    const regexp = $mol_regexp.from(source[name]);
+                    groups.push(...regexp.groups);
+                    return `(${regexp.source})`;
+                });
+                return new this(`(?:${chunks.join('|')})`, flags, groups);
+            }
+        }
+        static char_code(code) {
+            return new this(`\\u${code.toString(16).padStart(4, '0')}`);
+        }
+    }
+    $mol_regexp.byte = $mol_regexp.from(/[\s\S]/);
+    $mol_regexp.digit = $mol_regexp.from(/\d/);
+    $mol_regexp.letter = $mol_regexp.from(/\w/);
+    $mol_regexp.space = $mol_regexp.from(/\s/);
+    $mol_regexp.word_break = $mol_regexp.from(/\b/);
+    $mol_regexp.line_end = $mol_regexp.from(/\r?\n/);
+    $mol_regexp.begin = $mol_regexp.from(/^/);
+    $mol_regexp.end = $mol_regexp.from(/$/);
+    $mol_regexp.or = $mol_regexp.from(/|/);
+    $.$mol_regexp = $mol_regexp;
+})($ || ($ = {}));
+//regexp.js.map
+;
+"use strict";
 var $;
 (function ($) {
     $.$mol_style_attach("mol/dimmer/dimmer.view.css", "[mol_dimmer] {\n\tdisplay: block;\n}\n\n[mol_dimmer_low] {\n\tdisplay: inline;\n\topacity: 0.66;\n}\n\n[mol_dimmer_high] {\n\tdisplay: inline;\n\tcolor: var(--mol_theme_focus);\n\ttext-shadow: 0 0;\n}\n");
@@ -5198,10 +5395,16 @@ var $;
                 return chunks;
             }
             strings() {
-                return this.haystack().split(new RegExp(`(${this.needle()})`, 'gi'));
+                const regexp = $.$mol_regexp.from({ needle: this.needle() }, { ignoreCase: true });
+                return this.haystack().split(regexp);
             }
             string(index) {
                 return this.strings()[index];
+            }
+            *view_find(check, path = []) {
+                if (check(this, this.haystack())) {
+                    yield [...path, this];
+                }
             }
         }
         __decorate([
@@ -5428,9 +5631,6 @@ var $;
                 return val;
             return "";
         }
-        minimal_height() {
-            return 40;
-        }
         Option_row(id) {
             const obj = new this.$.$mol_button_minor();
             obj.event_click = (event) => this.event_select(id, event);
@@ -5469,6 +5669,7 @@ var $;
             obj.value = (val) => this.filter_pattern(val);
             obj.hint = () => this.filter_hint();
             obj.submit = (event) => this.submit(event);
+            obj.enabled = () => this.enabled();
             return obj;
         }
         Trigger_icon() {
@@ -5490,7 +5691,6 @@ var $;
         }
         Option_label(id) {
             const obj = new this.$.$mol_dimmer();
-            obj.minimal_height = () => 40;
             obj.haystack = () => this.option_label(id);
             obj.needle = () => this.filter_pattern();
             return obj;
@@ -5560,6 +5760,9 @@ var $;
             if (event !== undefined)
                 return event;
             return null;
+        }
+        enabled() {
+            return true;
         }
     }
     __decorate([
@@ -5633,7 +5836,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/select/select.view.css", "[mol_select] {\n\tdisplay: flex;\n\tword-break: normal;\n\talign-self: flex-start;\n}\n\n[mol_select_anchor] {\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tjustify-content: space-between;\n}\n\n[mol_select_option_row] {\n\tmin-width: 100%;\n\tpadding: 0;\n\tjustify-content: flex-start;\n}\n\n[mol_select_bubble] {\n\tmin-width: 100%;\n}\n\n[mol_select_filter] {\n\tz-index: 2;\n\topacity: 1 !important;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n}\n\n[mol_select_option_label] {\n\tpadding: .5rem .75rem;\n\ttext-align: left;\n\tmin-height: 1.5em;\n\tdisplay: block;\n}\n\n[mol_select_clear_option_content] {\n\tpadding: .5em 1rem .5rem 0;\n\ttext-align: left;\n\tbox-shadow: var(--mol_theme_line);\n\tflex: 1 0 auto;\n}\n\n[mol_select_no_options] {\n\tpadding: .5em .75rem;\n\ttext-align: left;\n\tdisplay: block;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_select_trigger] {\n\tpadding: 0;\n\tflex: 1 1 auto;\n\tdisplay: flex;\n\tjustify-content: flex-end;\n}\n\n[mol_select_trigger_icon] {\n\ttransform: rotateZ(90deg);\n\tmargin: .5rem .5rem .5rem -.75rem;\n}\n:hover > [mol_select_trigger_icon] {\n\ttransform: rotateZ(90deg) scale(1.25);\n}\n\n[mol_select_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n");
+    $.$mol_style_attach("mol/select/select.view.css", "[mol_select] {\n\tdisplay: flex;\n\tword-break: normal;\n\talign-self: flex-start;\n}\n\n[mol_select_anchor] {\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tjustify-content: space-between;\n}\n\n[mol_select_option_row] {\n\tmin-width: 100%;\n\tpadding: 0;\n\tjustify-content: flex-start;\n}\n\n[mol_select_bubble] {\n\tmin-width: 100%;\n}\n\n[mol_select_filter] {\n\tz-index: 2;\n\topacity: 1 !important;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n}\n\n[mol_select_option_label] {\n\tpadding: var(--mol_gap_text);\n\ttext-align: left;\n\tmin-height: 1.5em;\n\tdisplay: block;\n}\n\n[mol_select_clear_option_content] {\n\tpadding: .5em 1rem .5rem 0;\n\ttext-align: left;\n\tbox-shadow: var(--mol_theme_line);\n\tflex: 1 0 auto;\n}\n\n[mol_select_no_options] {\n\tpadding: var(--mol_gap_text);\n\ttext-align: left;\n\tdisplay: block;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_select_trigger] {\n\tpadding: 0;\n\tflex: 1 1 auto;\n\tdisplay: flex;\n\tjustify-content: flex-end;\n}\n\n[mol_select_trigger_icon] {\n\ttransform: rotateZ(90deg);\n\tmargin: .5rem .5rem .5rem -.5rem;\n}\n:hover > [mol_select_trigger_icon] {\n\ttransform: rotateZ(90deg) scale(1.25);\n}\n\n[mol_select_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n");
 })($ || ($ = {}));
 //select.view.css.js.map
 ;
@@ -5793,6 +5996,9 @@ var $;
                 return event;
             return null;
         }
+        enabled() {
+            return true;
+        }
         Suggest() {
             const obj = new this.$.$mol_select();
             obj.value = (val) => this.suggest_selected(val);
@@ -5803,6 +6009,8 @@ var $;
             obj.options = () => this.suggests();
             obj.Trigger_icon = () => null;
             obj.submit = (event) => this.submit(event);
+            obj.No_options = () => null;
+            obj.enabled = () => this.enabled();
             return obj;
         }
         Clear_icon() {
@@ -6026,14 +6234,12 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    const { rem } = $.$mol_style_unit;
-    const { rgba } = $.$mol_style_func;
     $.$mol_style_define($.$mol_link, {
         textDecoration: 'none',
         color: $.$mol_theme.control,
         stroke: 'currentcolor',
         cursor: 'pointer',
-        padding: [rem(.5), rem(.75)],
+        padding: $.$mol_gap.text,
         boxSizing: 'border-box',
         position: 'relative',
         ':hover': {
@@ -6100,7 +6306,7 @@ var $;
                 return null;
             }
             minimal_height() {
-                return Math.max(super.minimal_height() || 40);
+                return Math.max(super.minimal_height() || 32);
             }
             theme() {
                 return this.current() ? '$mol_theme_base' : null;
@@ -6164,17 +6370,11 @@ var $;
                 this.Foot()
             ];
         }
-        event_top(val) {
-            if (val !== undefined)
-                return val;
-            return null;
-        }
         Title() {
-            const obj = new this.$.$mol_button();
+            const obj = new this.$.$mol_view();
             obj.sub = () => [
                 this.title()
             ];
-            obj.event_click = (val) => this.event_top(val);
             return obj;
         }
         tools() {
@@ -6219,9 +6419,6 @@ var $;
             return obj;
         }
     }
-    __decorate([
-        $.$mol_mem
-    ], $mol_page.prototype, "event_top", null);
     __decorate([
         $.$mol_mem
     ], $mol_page.prototype, "Title", null);
@@ -6274,12 +6471,12 @@ var $;
             Head: {
                 display: 'flex',
                 flexWrap: 'wrap',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
                 flex: 'none',
                 position: 'relative',
                 margin: 0,
                 minHeight: rem(4),
-                padding: rem(.75),
+                padding: $.$mol_gap.block,
                 background: {
                     color: $.$mol_theme.back,
                 },
@@ -6290,16 +6487,19 @@ var $;
                 flex: {
                     grow: 1000,
                     shrink: 1,
-                    basis: per(50),
+                    basis: 'auto',
                 },
                 minHeight: rem(2),
-                padding: [rem(.5), rem(.75)],
+                padding: $.$mol_gap.text,
                 wordBreak: 'normal',
-                cursor: 'default',
                 textShadow: '0 0',
             },
             Tools: {
-                flex: 'auto',
+                flex: {
+                    basis: 'auto',
+                    grow: 0,
+                    shrink: 1,
+                },
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'flex-start',
@@ -6423,7 +6623,7 @@ var $;
     (function ($$) {
         class $mol_check_expand extends $.$mol_check_expand {
             level_style() {
-                return `${this.level() * 1.25 - 1}rem`;
+                return `${this.level() * 1 - 1}rem`;
             }
             expandable() {
                 return this.expanded() !== null;
@@ -6439,7 +6639,7 @@ var $;
 (function ($) {
     class $mol_grid extends $.$mol_scroll {
         row_height() {
-            return 40;
+            return 32;
         }
         row_ids() {
             return [];
@@ -6628,7 +6828,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 1 1 auto;\n\tposition: relative;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > * ,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\ttransform: translateZ(0);\n\tpadding: .5rem .75rem;\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 0 0 0 .5px var(--mol_theme_line);\n}\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none;\n}\n\n[mol_grid_head] > * {\n\tbackground: var(--mol_theme_back);\n}\n\n[mol_grid_cell_number] {\n\ttext-align: right;\n}\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
+    $.$mol_style_attach("mol/grid/grid.view.css", "[mol_grid] {\n\tdisplay: block;\n\tflex: 1 1 auto;\n\tposition: relative;\n}\n\n[mol_grid_gap] {\n\tposition: absolute;\n\tpadding: .1px;\n\ttop: 0;\n\ttransform: translateZ(0);\n}\n\n[mol_grid_table] {\n\tborder-spacing: 0;\n\tdisplay: table-row-group;\n\tposition: relative;\n}\n\n[mol_grid_table] > * {\n\tdisplay: table-row;\n\ttransition: none;\n}\n\n[mol_grid_head] > * ,\n[mol_grid_table] > * > * {\n\tdisplay: table-cell;\n\tpadding: var(--mol_gap_text);\n\twhite-space: nowrap;\n\tvertical-align: middle;\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n}\n\n[mol_grid_head] {\n\tdisplay: table-row;\n\ttransform: none !important;\n}\n\n[mol_grid_head] > * {\n\tbackground: var(--mol_theme_back);\n}\n\n[mol_grid_cell_number] {\n\ttext-align: right;\n}\n\n[mol_grid_col_head] {\n\tfont-weight: inherit;\n\ttext-align: inherit;\n\tdisplay: table-cell;\n}\n\n[mol_grid_cell_dimmer] {\n\tdisplay: inline-block;\n\tvertical-align: inherit;\n}\n");
 })($ || ($ = {}));
 //grid.view.css.js.map
 ;
@@ -6734,7 +6934,7 @@ var $;
                 return (next2 == null) ? this.row_expanded_default(row_id) : next2;
             }
             row_expanded_default(row_id) {
-                return row_id.length < 3;
+                return true;
             }
             cell_expanded(id, next) {
                 return this.row_expanded(id.row, next);
@@ -6828,7 +7028,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/link/iconed/iconed.view.css", "[mol_link_iconed] {\n\talign-items: center;\n\tcolor: var(--mol_theme_control);\n\tdisplay: inline;\n\tpadding: .5rem;\n}\n\n[mol_link_iconed_icon] {\n\tbox-shadow: none;\n\theight: 1em;\n\twidth: 1em;\n\tdisplay: inline-block;\n\tmargin: -.25rem .25rem 0;\n\tvertical-align: middle;\n}\n\n[mol_theme=\"$mol_theme_dark\"] [mol_link_iconed_icon] {\n\tfilter: invert(1) hue-rotate(180deg);\n}\n");
+    $.$mol_style_attach("mol/link/iconed/iconed.view.css", "[mol_link_iconed] {\n\talign-items: center;\n\tcolor: var(--mol_theme_control);\n\tdisplay: inline;\n\tpadding: var(--mol_gap_text);\n}\n\n[mol_link_iconed_icon] {\n\tbox-shadow: none;\n\theight: 1em;\n\twidth: 1em;\n\tdisplay: inline-block;\n\tmargin: -.25rem .25rem 0 0;\n\tvertical-align: middle;\n}\n\n[mol_theme=\"$mol_theme_dark\"] [mol_link_iconed_icon] {\n\tfilter: invert(1) hue-rotate(180deg);\n}\n");
 })($ || ($ = {}));
 //iconed.view.css.js.map
 ;
@@ -7201,10 +7401,10 @@ var $;
         'code-call': /\.?\w+(?=\()/,
         'code-field': /(?:\.\w+|[\w-]+\??\s*:(?!\/\/))/,
         'code-keyword': /\b(throw|readonly|unknown|keyof|typeof|never|from|class|interface|type|function|extends|implements|module|namespace|import|export|include|require|var|let|const|for|do|while|until|in|of|new|if|then|else|switch|case|this|return|async|await|try|catch|break|continue|get|set|public|private|protected|string|boolean|number|null|undefined|true|false|void)\b/,
-        'code-global': /[$]\w*|\b[A-Z]\w*/,
+        'code-global': /[$]+\w*|\b[A-Z]\w*/,
         'code-decorator': /@\s*\S+/,
         'code-tag': /<\/?[\w-]+\/?>?|&\w+;/,
-        'code-punctuation': /[\-\[\]\{\}\(\)<=>`~!\?@#\$%&\*_\+\\\/\|'";:\.,\^]/,
+        'code-punctuation': /[\-\[\]\{\}\(\)<=>`~!\?@#%&\*_\+\\\/\|'";:\.,\^]+/,
     });
 })($ || ($ = {}));
 //md.js.map
@@ -7212,7 +7412,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tmax-width: 60rem;\n\tpadding: .75rem;\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_row] {\n\tmargin: .5rem .75rem;\n\toverflow: auto;\n\tmax-width: 100%;\n\tdisplay: block;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_type=\"block\"] {\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\tpadding: .75rem;\n\tfont-weight: 500;\n\tmargin: 0;\n}\n\n[mol_text_header_level=\"1\"] {\n\tfont-size: 1.5em;\n}\n\n[mol_text_header_level=\"2\"] {\n\tfont-size: 1.3em;\n}\n\n[mol_text_header_level=\"3\"] {\n\tfont-size: 1.1em;\n}\n\n[mol_text_header_level=\"4\"] {\n\tfont-size: 1.1em;\n\tfont-style: italic;\n}\n\n[mol_text_header_level=\"5\"] {\n\tfont-size: 1.1em;\n\tfont-weight: normal;\n\tfont-style: italic;\n}\n\n[mol_text_type=\"list-item\"] {\n\tdisplay: list-item;\n}\n\n[mol_text_type=\"list-item\"]:before {\n\tcontent: '•';\n\tmargin-right: 1ch;\n}\n\n[mol_text_table] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\toverflow: auto;\n\tmargin: .75rem;\n\tflex-grow: 0;\n}\n\n[mol_text_type=\"code-indent\"] ,\n[mol_text_type=\"code\"] {\n\tfont-family: var(--mol_skin_font_monospace);\n\twhite-space: pre-wrap;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_text_type=\"text-link\"] {\n\tcolor: var(--mol_theme_control);\n\ttext-decoration: none;\n\tpadding: 0 .25rem 0 0;\n}\n\n[mol_text_link]:hover ,\n[mol_text_link]:focus {\n\toutline: none;\n}\n\n[mol_text_image] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\tobject-fit: scale-down;\n}\n\n[mol_text_type=\"strong\"] {\n\tcolor: var(--mol_theme_focus);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"strike\"] {\n\ttext-decoration: line-through;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"code-keyword\"] {\n\tcolor: hsl(0, 70%, 60%);\n}\n\n[mol_text_type=\"code-field\"] {\n\tcolor: hsl(300, 70%, 60%);\n}\n\n[mol_text_type=\"code-tag\"] {\n\tcolor: hsl(330, 70%, 60%);\n}\n\n[mol_text_type=\"code-global\"] {\n\tcolor: hsl(210, 80%, 60%);\n}\n\n[mol_text_type=\"code-decorator\"] {\n\tcolor: hsl(180, 40%, 60%);\n}\n\n[mol_text_type=\"code-punctuation\"] {\n\tcolor: hsl( 0, 0%, 50% );\n}\n\n[mol_text_type=\"code-string\"] {\n\tcolor: hsl(90, 40%, 50%);\n}\n\n[mol_text_type=\"code-number\"] {\n\tcolor: hsl(60, 70%, 30%);\n}\n\n[mol_text_type=\"code-call\"] {\n\tcolor: hsl(270, 60%, 60%);\n}\n\n[mol_text_type=\"code-link\"] {\n\tcolor: hsl(240, 60%, 60%);\n}\n\n[mol_text_type=\"code-comment-inline\"] ,\n[mol_text_type=\"code-comment-block\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-docs\"] {\n\topacity: .75;\n}\n");
+    $.$mol_style_attach("mol/text/text.view.css", "[mol_text] {\n\tline-height: 1.5em;\n\tbox-sizing: border-box;\n\tmax-width: 60rem;\n\tpadding: var(--mol_gap_block);\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_row] {\n\tmargin: var(--mol_gap_text);\n\toverflow: auto;\n\tmax-width: 100%;\n\tdisplay: block;\n}\n\n[mol_text_span] {\n\tdisplay: inline;\n}\n\n[mol_text_type=\"block\"] {\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\tpadding: .75rem .5rem;\n\tfont-weight: 500;\n\tmargin: 0;\n}\n\n[mol_text_header_level=\"1\"] {\n\tfont-size: 1.5em;\n}\n\n[mol_text_header_level=\"2\"] {\n\tfont-size: 1.3em;\n}\n\n[mol_text_header_level=\"3\"] {\n\tfont-size: 1.1em;\n}\n\n[mol_text_header_level=\"4\"] {\n\tfont-size: 1.1em;\n\tfont-style: italic;\n}\n\n[mol_text_header_level=\"5\"] {\n\tfont-size: 1.1em;\n\tfont-weight: normal;\n\tfont-style: italic;\n}\n\n[mol_text_type=\"list-item\"] {\n\tdisplay: list-item;\n}\n\n[mol_text_type=\"list-item\"]:before {\n\tcontent: '•';\n\tmargin-right: 1ch;\n}\n\n[mol_text_table] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\toverflow: auto;\n\tmargin: .5rem;\n\tflex-grow: 0;\n}\n\n[mol_text_type=\"code-indent\"] ,\n[mol_text_type=\"code\"] {\n\tfont-family: var(--mol_skin_font_monospace);\n\twhite-space: pre-wrap;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_text_type=\"text-link\"] {\n\tcolor: var(--mol_theme_control);\n\ttext-decoration: none;\n\tpadding: 0 .25rem 0 0;\n}\n\n[mol_text_link]:hover ,\n[mol_text_link]:focus {\n\toutline: none;\n}\n\n[mol_text_image] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\tobject-fit: scale-down;\n}\n\n[mol_text_type=\"strong\"] {\n\tcolor: var(--mol_theme_focus);\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"strike\"] {\n\ttext-decoration: line-through;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"code-keyword\"] {\n\tcolor: hsl(0, 70%, 60%);\n}\n\n[mol_text_type=\"code-field\"] {\n\tcolor: hsl(300, 70%, 60%);\n}\n\n[mol_text_type=\"code-tag\"] {\n\tcolor: hsl(330, 70%, 60%);\n}\n\n[mol_text_type=\"code-global\"] {\n\tcolor: hsl(210, 80%, 60%);\n}\n\n[mol_text_type=\"code-decorator\"] {\n\tcolor: hsl(180, 40%, 60%);\n}\n\n[mol_text_type=\"code-punctuation\"] {\n\tcolor: hsl( 0, 0%, 50% );\n}\n\n[mol_text_type=\"code-string\"] {\n\tcolor: hsl(90, 40%, 50%);\n}\n\n[mol_text_type=\"code-number\"] {\n\tcolor: hsl(60, 70%, 30%);\n}\n\n[mol_text_type=\"code-call\"] {\n\tcolor: hsl(270, 60%, 60%);\n}\n\n[mol_text_type=\"code-link\"] {\n\tcolor: hsl(240, 60%, 60%);\n}\n\n[mol_text_type=\"code-comment-inline\"] ,\n[mol_text_type=\"code-comment-block\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-docs\"] {\n\topacity: .75;\n}\n");
 })($ || ($ = {}));
 //text.view.css.js.map
 ;
@@ -7409,7 +7609,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: .75rem;\n\tflex: 1 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmargin: .75rem;\n\tmax-width: 100%;\n}\n");
+    $.$mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: .5rem;\n\tflex: 1 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmargin: .5rem;\n\tmax-width: 100%;\n}\n");
 })($ || ($ = {}));
 //row.view.css.js.map
 ;
@@ -7477,7 +7677,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/portion/portion.view.css", "[mol_portion] {\n\tdisplay: inline-flex;\n\tflex: 0 1 8rem;\n\twidth: 8rem;\n\tmax-height: calc( 1rem + 1.5em );\n\talign-self: stretch;\n\tvertical-align: inherit;\n\tborder-radius: var(--mol_skin_round);\n\tbox-shadow: inset 0 0 0 .5px var(--mol_theme_line);\n\tbackground: var(--mol_theme_field);\n}\n\n[mol_portion_indicator] {\n\tpadding: .25rem 0;\n\tbackground-color: var(--mol_skin_base);\n\tcolor: var(--mol_theme_control);\n\tborder-radius: var(--mol_skin_round);\n}\n");
+    $.$mol_style_attach("mol/portion/portion.view.css", "[mol_portion] {\n\tdisplay: inline-flex;\n\tflex: 0 1 8rem;\n\twidth: 8rem;\n\tmax-height: calc( 1rem + 1.5em );\n\talign-self: stretch;\n\tvertical-align: inherit;\n\tborder-radius: var(--mol_skin_round);\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n\tbackground: var(--mol_theme_field);\n}\n\n[mol_portion_indicator] {\n\tpadding: .25rem 0;\n\tbackground-color: var(--mol_skin_base);\n\tcolor: var(--mol_theme_control);\n\tborder-radius: var(--mol_skin_round);\n}\n");
 })($ || ($ = {}));
 //portion.view.css.js.map
 ;
@@ -7598,7 +7798,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/bench/bench.view.css", "[mol_bench] {\n\toverflow: auto;\n}\n\n[mol_bench_col_head] {\n\tcursor: pointer;\n}\n\n[mol_bench_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[mol_bench_result_portion] {\n\tmargin-left: 1rem;\n}\n\n[mol_bench_col_head] > * {\n\tmargin: .25rem .5rem;\n}\n\n[mol_bench_head] + [mol_bench_row] [mol_portion_indicator] {\n\tbackground: var(--mol_skin_accent);\n}\n");
+    $.$mol_style_attach("mol/bench/bench.view.css", "[mol_bench] {\n\toverflow: auto;\n}\n\n[mol_bench_col_head] {\n\tcursor: pointer;\n}\n\n[mol_bench_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[mol_bench_result_portion] {\n\tmargin-left: 1rem;\n}\n\n[mol_bench_head] + [mol_bench_row] [mol_portion_indicator] {\n\tbackground: var(--mol_skin_accent);\n}\n");
 })($ || ($ = {}));
 //bench.view.css.js.map
 ;
@@ -7834,7 +8034,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/number/number.css", "[mol_number] {\n\tdisplay: flex;\n\tflex: 0 1 auto;\n\tposition: relative;\n\talign-items: stretch;\n\tmax-width: 100%;\n}\n\n[mol_number]:hover {\n\tz-index: 2;\n}\n\n[mol_number_string] {\n\tappearance: textfield;\n\ttext-align: right;\n\tposition: relative;\n\tflex: 1 1 7rem;\n\twidth: 7rem;\n}\n\n[mol_number_string]::-webkit-inner-spin-button {\n\tdisplay: none;\n}\n\n[mol_number_inc] ,\n[mol_number_dec] {\n\tmargin: 0;\n\tflex: 0 0 auto;\n\tposition: absolute;\n\ttop: 0;\n\tdisplay: none;\n\tz-index: 1;\n\tpadding: .5rem;\n}\n\n[mol_number_inc] {\n\tleft: calc( 100% - .5rem );\n}\n\n[mol_number_dec] {\n\tright: calc( 100% - .5rem );\n}\n\n[mol_number]:focus-within [mol_number_inc]:not([disabled]) ,\n[mol_number]:focus-within [mol_number_dec]:not([disabled]) {\n\tdisplay: flex;\n}\n\n[mol_number_inc_icon] ,\n[mol_number_dec_icon] {\n\tdisplay: block;\n\twidth: 1rem;\n\theight: 1rem;\n}\n");
+    $.$mol_style_attach("mol/number/number.css", "[mol_number] {\n\tdisplay: flex;\n\tflex: 0 1 auto;\n\tposition: relative;\n\talign-items: stretch;\n\tmax-width: 100%;\n}\n\n[mol_number]:hover {\n\tz-index: 2;\n}\n\n[mol_number_string] {\n\tappearance: textfield;\n\ttext-align: right;\n\tposition: relative;\n\tflex: 1 1 7rem;\n\twidth: 7rem;\n}\n\n[mol_number_string]::-webkit-inner-spin-button {\n\tdisplay: none;\n}\n\n[mol_number_inc] ,\n[mol_number_dec] {\n\tmargin: 0;\n\tflex: 0 0 auto;\n\tposition: absolute;\n\ttop: 0;\n\tdisplay: none;\n\tz-index: 1;\n\tpadding: var(--mol_gap_text);\n}\n\n[mol_number_inc] {\n\tleft: calc( 100% - .5rem );\n}\n\n[mol_number_dec] {\n\tright: calc( 100% - .5rem );\n}\n\n[mol_number]:focus-within [mol_number_inc]:not([disabled]) ,\n[mol_number]:focus-within [mol_number_dec]:not([disabled]) {\n\tdisplay: flex;\n}\n\n[mol_number_inc_icon] ,\n[mol_number_dec_icon] {\n\tdisplay: block;\n\twidth: 1rem;\n\theight: 1rem;\n}\n");
 })($ || ($ = {}));
 //number.css.js.map
 ;
@@ -8846,7 +9046,70 @@ var $;
 //deep.js.map
 ;
 "use strict";
-//jsx d.js.map
+var $;
+(function ($) {
+    $.$mol_test({
+        'Make empty div'() {
+            $.$mol_assert_equal(($.$mol_jsx("div", null)).outerHTML, '<div></div>');
+        },
+        'Define native field'() {
+            const dom = $.$mol_jsx("input", { value: '123' });
+            $.$mol_assert_equal(dom.outerHTML, '<input value="123">');
+            $.$mol_assert_equal(dom.value, '123');
+        },
+        'Define classes'() {
+            const dom = $.$mol_jsx("div", { classList: ['foo bar'] });
+            $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
+        },
+        'Define styles'() {
+            const dom = $.$mol_jsx("div", { style: { color: 'red' } });
+            $.$mol_assert_equal(dom.outerHTML, '<div style="color: red;"></div>');
+        },
+        'Define dataset'() {
+            const dom = $.$mol_jsx("div", { dataset: { foo: 'bar' } });
+            $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
+        },
+        'Define attributes'() {
+            const dom = $.$mol_jsx("div", { lang: "ru", hidden: true });
+            $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
+        },
+        'Define child nodes'() {
+            const dom = $.$mol_jsx("div", null,
+                "hello",
+                $.$mol_jsx("strong", null, "world"),
+                "!");
+            $.$mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
+        },
+        'Function as component'() {
+            const Button = ({ hint }, target) => {
+                return $.$mol_jsx("button", { title: hint }, target());
+            };
+            const dom = $.$mol_jsx(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
+            $.$mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
+        },
+        'Nested guid generation'() {
+            const Foo = () => {
+                return $.$mol_jsx("div", null,
+                    $.$mol_jsx(Bar, { id: "/bar" },
+                        $.$mol_jsx("img", { id: "/icon" })));
+            };
+            const Bar = (props, icon) => {
+                return $.$mol_jsx("span", null, icon);
+            };
+            const dom = $.$mol_jsx(Foo, { id: "/foo" });
+            $.$mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
+        },
+        'Fail on non unique ids'() {
+            const App = () => {
+                return $.$mol_jsx("div", null,
+                    $.$mol_jsx("span", { id: "/bar" }),
+                    $.$mol_jsx("span", { id: "/bar" }));
+            };
+            $.$mol_assert_fail(() => $.$mol_jsx(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
+        },
+    });
+})($ || ($ = {}));
+//jsx.test.js.map
 ;
 "use strict";
 var $;
@@ -8857,79 +9120,7 @@ var $;
         getElementById: () => null,
         createElement: (name) => $.$mol_dom_context.document.createElement(name)
     };
-})($ || ($ = {}));
-//jsx.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'Make empty div'() {
-            $.$mol_assert_equal(($.$mol_jsx_make("div", null)).outerHTML, '<div></div>');
-        },
-        'Define native field'() {
-            const dom = $.$mol_jsx_make("input", { value: '123' });
-            $.$mol_assert_equal(dom.outerHTML, '<input value="123">');
-            $.$mol_assert_equal(dom.value, '123');
-        },
-        'Define classes'() {
-            const dom = $.$mol_jsx_make("div", { classList: ['foo bar'] });
-            $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
-        },
-        'Define styles'() {
-            const dom = $.$mol_jsx_make("div", { style: { color: 'red' } });
-            $.$mol_assert_equal(dom.outerHTML, '<div style="color: red;"></div>');
-        },
-        'Define dataset'() {
-            const dom = $.$mol_jsx_make("div", { dataset: { foo: 'bar' } });
-            $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
-        },
-        'Define attributes'() {
-            const dom = $.$mol_jsx_make("div", { lang: "ru", hidden: true });
-            $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
-        },
-        'Define child nodes'() {
-            const dom = $.$mol_jsx_make("div", null,
-                "hello",
-                $.$mol_jsx_make("strong", null, "world"),
-                "!");
-            $.$mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
-        },
-        'Function as component'() {
-            const Button = ({ hint }, target) => {
-                return $.$mol_jsx_make("button", { title: hint }, target());
-            };
-            const dom = $.$mol_jsx_make(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
-            $.$mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
-        },
-        'Nested guid generation'() {
-            const Foo = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make(Bar, { id: "/bar" },
-                        $.$mol_jsx_make("img", { id: "/icon" })));
-            };
-            const Bar = (props, icon) => {
-                return $.$mol_jsx_make("span", null, icon);
-            };
-            const dom = $.$mol_jsx_make(Foo, { id: "/foo" });
-            $.$mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
-        },
-        'Fail on non unique ids'() {
-            const App = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make("span", { id: "/bar" }),
-                    $.$mol_jsx_make("span", { id: "/bar" }));
-            };
-            $.$mol_assert_fail(() => $.$mol_jsx_make(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
-        },
-    });
-})($ || ($ = {}));
-//make.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_jsx_make(Elem, props, ...childNodes) {
+    function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
         if ($.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
@@ -8986,9 +9177,9 @@ var $;
             node.id = guid;
         return node;
     }
-    $.$mol_jsx_make = $mol_jsx_make;
+    $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
-//make.js.map
+//jsx.js.map
 ;
 "use strict";
 var $;
@@ -9050,39 +9241,39 @@ var $;
             $.$mol_assert_ok($.$mol_compare_deep(a, b));
         },
         'empty Element'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", null), $.$mol_jsx_make("div", null)));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null), $.$mol_jsx_make("span", null)));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", null), $.$mol_jsx("div", null)));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null), $.$mol_jsx("span", null)));
         },
         'Element with attributes'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", { dir: "rtl" })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", null)));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { dir: "rtl" }), $.$mol_jsx_make("div", { dir: "ltr" })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", { dir: "rtl" })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", null)));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { dir: "rtl" }), $.$mol_jsx("div", { dir: "ltr" })));
         },
         'Element with styles'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: { color: 'red' } })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: {} })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { style: { color: 'red' } }), $.$mol_jsx_make("div", { style: { color: 'blue' } })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: { color: 'red' } })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: {} })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { style: { color: 'red' } }), $.$mol_jsx("div", { style: { color: 'blue' } })));
         },
         'Element with content'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", null,
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null))));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null))));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "bar",
-                $.$mol_jsx_make("br", null))));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null))));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("br", null)), $.$mol_jsx_make("div", null,
+                $.$mol_jsx("br", null)), $.$mol_jsx("div", null,
                 "foo",
-                $.$mol_jsx_make("hr", null))));
+                $.$mol_jsx("hr", null))));
         },
         'Element with handlers'() {
-            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx_make("div", { onclick: () => 1 }), $.$mol_jsx_make("div", { onclick: () => 1 })));
-            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx_make("div", { onclick: () => 1 }), $.$mol_jsx_make("div", { onclick: () => 2 })));
+            $.$mol_assert_ok($.$mol_compare_deep($.$mol_jsx("div", { onclick: () => 1 }), $.$mol_jsx("div", { onclick: () => 1 })));
+            $.$mol_assert_not($.$mol_compare_deep($.$mol_jsx("div", { onclick: () => 1 }), $.$mol_jsx("div", { onclick: () => 2 })));
         },
         'Date'() {
             $.$mol_assert_ok($.$mol_compare_deep(new Date(12345), new Date(12345)));
@@ -10287,15 +10478,15 @@ var $;
             $.$mol_assert_equal(dict.has([123]), false);
         },
         'html element as key'() {
-            const el = $.$mol_jsx_make("div", null);
+            const el = $.$mol_jsx("div", null);
             const dict = new $.$mol_dict();
             $.$mol_assert_equal(dict.get(el), undefined);
             $.$mol_assert_equal(dict.has(el), false);
             dict.set(el, 321);
             $.$mol_assert_equal(dict.get(el), 321);
             $.$mol_assert_equal(dict.has(el), true);
-            $.$mol_assert_equal(dict.get($.$mol_jsx_make("div", null)), undefined);
-            $.$mol_assert_equal(dict.has($.$mol_jsx_make("div", null)), false);
+            $.$mol_assert_equal(dict.get($.$mol_jsx("div", null)), undefined);
+            $.$mol_assert_equal(dict.has($.$mol_jsx("div", null)), false);
             dict.delete(el);
             $.$mol_assert_equal(dict.get(el), undefined);
             $.$mol_assert_equal(dict.has(el), false);
@@ -10981,6 +11172,19 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
+        'encode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
+        },
+    });
+})($ || ($ = {}));
+//encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
         'decode utf8 string'() {
             const str = 'Hello, ΧΨΩЫ';
             const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
@@ -10994,19 +11198,6 @@ var $;
     });
 })($ || ($ = {}));
 //decode.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'encode utf8 string'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
-            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
-        },
-    });
-})($ || ($ = {}));
-//encode.test.js.map
 ;
 "use strict";
 var $;
@@ -11025,6 +11216,194 @@ var $;
     });
 })($ || ($ = {}));
 //array.test.js.map
+;
+"use strict";
+//intersect.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'escape'() {
+            const specials = $.$mol_regexp.from('.*+?^${}()|[]\\');
+            $.$mol_assert_equal(specials.source, '\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\');
+        },
+        'char code'() {
+            const space = $.$mol_regexp.char_code(32);
+            $.$mol_assert_equal(space.exec(' ')[0], ' ');
+        },
+        'repeat fixed'() {
+            const { repeat, digit } = $.$mol_regexp;
+            const year = repeat(digit, 4, 4);
+            $.$mol_assert_equal(year.exec('#2020#')[0], '2020');
+        },
+        'greedy repeat'() {
+            const { repeat, repeat_greedy, letter } = $.$mol_regexp;
+            $.$mol_assert_equal(repeat(letter).exec('abc')[0], '');
+            $.$mol_assert_equal(repeat_greedy(letter).exec('abc')[0], 'abc');
+        },
+        'repeat range'() {
+            const { repeat_greedy, digit } = $.$mol_regexp;
+            const year = repeat_greedy(digit, 2, 4);
+            $.$mol_assert_equal(year.exec('#2#'), null);
+            $.$mol_assert_equal(year.exec('#20#')[0], '20');
+            $.$mol_assert_equal(year.exec('#2020#')[0], '2020');
+            $.$mol_assert_equal(year.exec('#20201#')[0], '2020');
+        },
+        'repeat from'() {
+            const { repeat_greedy, letter } = $.$mol_regexp;
+            const name = repeat_greedy(letter, 2);
+            $.$mol_assert_equal(name.exec('##'), null);
+            $.$mol_assert_equal(name.exec('#a#'), null);
+            $.$mol_assert_equal(name.exec('#ab#')[0], 'ab');
+            $.$mol_assert_equal(name.exec('#abc#')[0], 'abc');
+        },
+        'optional'() {
+            const { optional, letter } = $.$mol_regexp;
+            const name = optional(letter);
+            $.$mol_assert_equal(name.exec('')[0], '');
+            $.$mol_assert_equal(name.exec('a')[0], 'a');
+            $.$mol_assert_equal(name.exec('ab')[0], 'a');
+        },
+        'from string'() {
+            const regexp = $.$mol_regexp.from('[\\d]');
+            $.$mol_assert_equal(regexp.source, '\\[\\\\d\\]');
+            $.$mol_assert_equal(regexp.flags, 'gu');
+        },
+        'from regexp'() {
+            const regexp = $.$mol_regexp.from(/[\d]/i);
+            $.$mol_assert_equal(regexp.source, '[\\d]');
+            $.$mol_assert_equal(regexp.flags, 'i');
+        },
+        'case ignoring'() {
+            const xxx = $.$mol_regexp.from('x', { ignoreCase: true });
+            $.$mol_assert_like(xxx.flags, 'giu');
+            $.$mol_assert_like(xxx.exec('xx')[0], 'x');
+            $.$mol_assert_like(xxx.exec('XX')[0], 'X');
+        },
+        'multiline mode'() {
+            const { end } = $.$mol_regexp;
+            const xxx = $.$mol_regexp.from(['x', end], { multiline: true });
+            $.$mol_assert_like(xxx.exec('x\ny')[0], 'x');
+            $.$mol_assert_like(xxx.flags, 'gmu');
+        },
+        'sequence'() {
+            const { begin, end, digit, repeat } = $.$mol_regexp;
+            const year = repeat(digit, 4, 4);
+            const dash = '-';
+            const month = repeat(digit, 2, 2);
+            const day = repeat(digit, 2, 2);
+            const date = $.$mol_regexp.from([begin, year, dash, month, dash, day, end], { ignoreCase: true });
+            $.$mol_assert_like(date.exec('2020-01-02')[0], '2020-01-02');
+            $.$mol_assert_like(date.ignoreCase, true);
+        },
+        'only groups'() {
+            const regexp = $.$mol_regexp.from({ dog: '@' });
+            $.$mol_assert_like([...regexp.parse('#')], []);
+            $.$mol_assert_like([...regexp.parse('@')], [{ dog: '@' }]);
+        },
+        'catch skipped'() {
+            const regexp = $.$mol_regexp.from(/(@)(\d?)/g);
+            $.$mol_assert_like([...regexp.parse('[[@]]')], [
+                { 0: '[[' },
+                { 1: '@', 2: '' },
+                { 0: ']]' },
+            ]);
+        },
+        'enum variants'() {
+            let Sex;
+            (function (Sex) {
+                Sex["male"] = "male";
+                Sex["female"] = "female";
+            })(Sex || (Sex = {}));
+            const sexism = $.$mol_regexp.from(Sex);
+            $.$mol_assert_like([...sexism.parse('')], []);
+            $.$mol_assert_like([...sexism.parse('male')], [{ male: 'male', female: '' }]);
+            $.$mol_assert_like([...sexism.parse('female')], [{ male: '', female: 'female' }]);
+        },
+        'recursive only groups'() {
+            let Sex;
+            (function (Sex) {
+                Sex["male"] = "male";
+                Sex["female"] = "female";
+            })(Sex || (Sex = {}));
+            const sexism = $.$mol_regexp.from({ Sex });
+            $.$mol_assert_like([...sexism.parse('')], []);
+            $.$mol_assert_like([...sexism.parse('male')], [{ Sex: 'male', male: 'male', female: '' }]);
+            $.$mol_assert_like([...sexism.parse('female')], [{ Sex: 'female', male: '', female: 'female' }]);
+        },
+        'sequence with groups'() {
+            const { begin, end, digit, repeat } = $.$mol_regexp;
+            const year = repeat(digit, 4, 4);
+            const dash = '-';
+            const month = repeat(digit, 2, 2);
+            const day = repeat(digit, 2, 2);
+            const regexp = $.$mol_regexp.from([begin, { year }, dash, { month }, dash, { day }, end]);
+            const found = [...regexp.parse('2020-01-02')];
+            $.$mol_assert_like(found, [{
+                    year: '2020',
+                    month: '01',
+                    day: '02',
+                }]);
+        },
+        'sequence with groups of mixed type'() {
+            const prefix = '/';
+            const postfix = '/';
+            const regexp = $.$mol_regexp.from([{ prefix }, /(\w+)/, { postfix }, /([gumi]*)/]);
+            const found = [...regexp.parse('/foo/mi')];
+            $.$mol_assert_like(found, [{
+                    prefix: '/',
+                    0: 'foo',
+                    postfix: '/',
+                    1: 'mi',
+                }]);
+        },
+        'recursive sequence with groups'() {
+            const { begin, end, digit, repeat } = $.$mol_regexp;
+            const year = repeat(digit, 4, 4);
+            const dash = '-';
+            const month = repeat(digit, 2, 2);
+            const day = repeat(digit, 2, 2);
+            const regexp = $.$mol_regexp.from([begin, { date: [{ year }, dash, { month }] }, dash, { day }, end]);
+            const found = [...regexp.parse('2020-01-02')];
+            $.$mol_assert_like(found, [{
+                    date: '2020-01',
+                    year: '2020',
+                    month: '01',
+                    day: '02',
+                }]);
+        },
+        'parse multiple'() {
+            const { digit } = $.$mol_regexp;
+            const regexp = $.$mol_regexp.from({ digit });
+            $.$mol_assert_like([...regexp.parse('123')], [
+                { digit: '1' },
+                { digit: '2' },
+                { digit: '3' },
+            ]);
+        },
+        'variants'() {
+            const { begin, or, end } = $.$mol_regexp;
+            const sexism = $.$mol_regexp.from([begin, 'sex = ', [{ sex: 'male' }, or, { sex: 'female' }], end]);
+            $.$mol_assert_like([...sexism.parse('sex = male')], [{ sex: 'male' }]);
+            $.$mol_assert_like([...sexism.parse('sex = female')], [{ sex: 'female' }]);
+            $.$mol_assert_like([...sexism.parse('sex = malefemale')], []);
+        },
+        'force after'() {
+            const { letter, force_after } = $.$mol_regexp;
+            const regexp = $.$mol_regexp.from([letter, force_after('.')]);
+            $.$mol_assert_equal(regexp.exec('x.')[0], 'x');
+            $.$mol_assert_equal(regexp.exec('x5'), null);
+        },
+        'forbid after'() {
+            const { letter, forbid_after } = $.$mol_regexp;
+            const regexp = $.$mol_regexp.from([letter, forbid_after('.')]);
+            $.$mol_assert_equal(regexp.exec('x.'), null);
+            $.$mol_assert_equal(regexp.exec('x5')[0], 'x');
+        },
+    });
+})($ || ($ = {}));
+//regexp.test.js.map
 ;
 "use strict";
 var $;
@@ -11149,12 +11528,6 @@ var $;
 //tree.test.js.map
 ;
 "use strict";
-//equals.test.js.map
-;
-"use strict";
-//equals.js.map
-;
-"use strict";
 var $;
 (function ($) {
     function $mol_dom_parse(text, type = 'application/xhtml+xml') {
@@ -11175,7 +11548,7 @@ var $;
     $.$mol_test({
         'Attach to document'() {
             const doc = $.$mol_dom_parse('<html><body id="/foo"></body></html>');
-            $.$mol_jsx_attach(doc, () => $.$mol_jsx_make("body", { id: "/foo" }, "bar"));
+            $.$mol_jsx_attach(doc, () => $.$mol_jsx("body", { id: "/foo" }, "bar"));
             $.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
         },
     });
@@ -11210,13 +11583,13 @@ var $;
                     this.title = '';
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null,
+                    return $_1.$mol_jsx("div", null,
                         this.title,
                         " ",
                         this.childNodes.join('-'));
                 }
             }
-            const dom = $_1.$mol_jsx_make(Foo, { id: "/foo", title: "bar" },
+            const dom = $_1.$mol_jsx(Foo, { id: "/foo", title: "bar" },
                 "xxx",
                 123);
             $_1.$mol_assert_equal(dom.outerHTML, '<div id="/foo">bar xxx-123</div>');
@@ -11225,11 +11598,11 @@ var $;
             class Br extends $_1.$mol_jsx_view {
                 render() {
                     view = this;
-                    return $_1.$mol_jsx_make("br", { id: "/foo" });
+                    return $_1.$mol_jsx("br", { id: "/foo" });
                 }
             }
             let view;
-            $_1.$mol_assert_equal(Br.of($_1.$mol_jsx_make(Br, null)), view);
+            $_1.$mol_assert_equal(Br.of($_1.$mol_jsx(Br, null)), view);
         },
         'Attached view rerender'() {
             const doc = $_1.$mol_dom_parse('<html><body id="/foo"></body></html>');
@@ -11239,10 +11612,10 @@ var $;
                     this.value = 'foo';
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null, this.value);
+                    return $_1.$mol_jsx("div", null, this.value);
                 }
             }
-            const dom = $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(Title, { id: "/foo" }));
+            const dom = $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx(Title, { id: "/foo" }));
             const title = Title.of(dom);
             $_1.$mol_assert_equal(title.ownerDocument, doc);
             $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
@@ -11264,7 +11637,7 @@ var $;
                     return super.valueOf();
                 }
                 render() {
-                    return $_1.$mol_jsx_make("div", null, this.task().title());
+                    return $_1.$mol_jsx("div", null, this.task().title());
                 }
             }
             __decorate([
@@ -11275,7 +11648,7 @@ var $;
             ], App.prototype, "valueOf", null);
             const task = new Task;
             task.$ = $;
-            const autorun = $.$mol_atom2_autorun(() => $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx_make(App, { "$": $, id: "/foo", task: () => task })));
+            const autorun = $.$mol_atom2_autorun(() => $_1.$mol_jsx_attach(doc, () => $_1.$mol_jsx(App, { "$": $, id: "/foo", task: () => task })));
             autorun.$ = $;
             await $_1.$mol_fiber_warp();
             $_1.$mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
@@ -11317,6 +11690,12 @@ var $;
     $.$mol_jsx_view = $mol_jsx_view;
 })($ || ($ = {}));
 //view.js.map
+;
+"use strict";
+//equals.test.js.map
+;
+"use strict";
+//equals.js.map
 ;
 "use strict";
 var $;

@@ -2,12 +2,6 @@ declare namespace $ { }
 export = $;
 
 declare namespace $ {
-    type $mol_type_partial_deep<Val> = {
-        [field in keyof Val]?: $mol_type_partial_deep<Val[field]>;
-    };
-}
-
-declare namespace $ {
     var $mol_dom_context: typeof globalThis;
 }
 
@@ -21,34 +15,6 @@ declare const $node_require: NodeRequire;
 declare namespace $ {
 }
 
-declare namespace JSX {
-    interface Element extends HTMLElement {
-    }
-    interface ElementClass {
-        attributes: {};
-        ownerDocument: Pick<Document, 'getElementById' | 'createElement'>;
-        childNodes: Array<Node | string>;
-        valueOf(): Element;
-    }
-    type IntrinsicElements = {
-        [key in keyof HTMLElementTagNameMap]?: $.$mol_type_partial_deep<HTMLElementTagNameMap[key]>;
-    };
-    interface IntrinsicAttributes {
-        id?: string;
-    }
-    interface ElementAttributesProperty {
-        attributes: {};
-    }
-    interface ElementChildrenAttribute {
-    }
-}
-
-declare namespace $ {
-    let $mol_jsx_prefix: string;
-    let $mol_jsx_booked: Set<string> | null;
-    let $mol_jsx_document: JSX.ElementClass['ownerDocument'];
-}
-
 declare namespace $ {
     function $mol_fail(error: any): never;
 }
@@ -58,9 +24,39 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_jsx_make<Props extends {
+    type $mol_type_partial_deep<Val> = {
+        [field in keyof Val]?: $mol_type_partial_deep<Val[field]>;
+    };
+}
+
+declare namespace $ {
+    let $mol_jsx_prefix: string;
+    let $mol_jsx_booked: Set<string> | null;
+    let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
+    function $mol_jsx<Props extends {
         id?: string;
     }, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element) | typeof $mol_jsx_view, props: Props, ...childNodes: Children): Element;
+    namespace $mol_jsx.JSX {
+        interface Element extends HTMLElement {
+        }
+        interface ElementClass {
+            attributes: {};
+            ownerDocument: Pick<Document, 'getElementById' | 'createElement'>;
+            childNodes: Array<Node | string>;
+            valueOf(): Element;
+        }
+        type IntrinsicElements = {
+            [key in keyof HTMLElementTagNameMap]?: $.$mol_type_partial_deep<HTMLElementTagNameMap[key]>;
+        };
+        interface IntrinsicAttributes {
+            id?: string;
+        }
+        interface ElementAttributesProperty {
+            attributes: {};
+        }
+        interface ElementChildrenAttribute {
+        }
+    }
 }
 
 declare namespace $ {
@@ -346,11 +342,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_atom2_value<Value>(task: () => Value): Value | undefined;
+    function $mol_atom2_value<Value>(task: () => Value, next?: Value): Value | undefined;
     class $mol_atom2<Value = any> extends $mol_fiber<Value> {
         static logs: boolean;
         static get current(): $mol_atom2<any> | null;
         static cached: boolean;
+        static cached_next: any;
         static reap_task: $mol_fiber<any> | null;
         static reap_queue: $mol_atom2<any>[];
         static reap(atom: $mol_atom2): void;
@@ -407,7 +404,7 @@ declare namespace $ {
     function $mol_mem_persist(): void;
     function $mol_mem<Host extends object, Field extends keyof Host, Prop extends Extract<Host[Field], (next?: any) => any>>(proto: Host, name: Field, descr?: TypedPropertyDescriptor<Prop>): {
         value: ((this: Host, next?: $mol_type_param<Prop, 0> | undefined, force?: $mol_mem_force | undefined) => any) & {
-            orig: NonNullable<Prop>;
+            orig: Function;
         };
         enumerable?: boolean | undefined;
         configurable?: boolean | undefined;
@@ -450,7 +447,7 @@ declare namespace $ {
         content(): string;
         selected(next?: boolean): boolean;
         valueOf(): HTMLElement;
-        render(): JSX.Element;
+        render(): $mol_jsx.JSX.Element;
     }
     class List extends $mol_jsx_view {
         constructor();
@@ -477,7 +474,7 @@ declare namespace $ {
         selected(next?: number): number;
         item_selected(id: number, next?: boolean): boolean;
         valueOf(): HTMLElement;
-        render(): JSX.Element;
+        render(): $mol_jsx.JSX.Element;
     }
 }
 
