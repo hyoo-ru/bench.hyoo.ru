@@ -67,7 +67,7 @@ declare namespace $ {
 declare namespace $ {
     const $mol_ambient_ref: unique symbol;
     type $mol_ambient_context = $;
-    function $mol_ambient(this: $mol_ambient_context | void, overrides: Partial<$mol_ambient_context>): $mol_ambient_context;
+    function $mol_ambient(this: $ | void, overrides: Partial<$>): $;
 }
 
 declare namespace $ {
@@ -102,8 +102,8 @@ declare namespace $ {
     class $mol_object2 {
         static $: typeof $$;
         [$mol_ambient_ref]: typeof $$;
-        get $(): $mol_ambient_context;
-        set $(next: $mol_ambient_context);
+        get $(): $;
+        set $(next: $);
         constructor(init?: (obj: any) => void);
         static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         static toString(): any;
