@@ -15,6 +15,7 @@ jobs:
     - name: Build apps
       uses: hyoo-ru/mam_build@master2
       with:
+        token: ${{ secrets.GH_PAT }}
         package: hyoo/bench
         modules: app list/mol list/tsx list/tsxatom chart/rope/mol chart/bar/mol 
         
