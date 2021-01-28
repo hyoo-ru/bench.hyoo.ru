@@ -5373,15 +5373,15 @@ var $;
         graphs_positioned() {
             return this.graphs();
         }
-        Meter() {
-            const obj = new this.$.$mol_meter();
-            return obj;
-        }
         width() {
             return this.Meter().width();
         }
         height() {
             return this.Meter().height();
+        }
+        Meter() {
+            const obj = new this.$.$mol_meter();
+            return obj;
         }
         Touch() {
             const obj = new this.$.$mol_touch();
@@ -5691,6 +5691,9 @@ var $;
         hue_shift() {
             return 111;
         }
+        graphs_colored() {
+            return this.Plot().graphs_colored();
+        }
         Plot() {
             const obj = new this.$.$mol_plot_pane();
             obj.gap_left = () => this.gap_left();
@@ -5701,9 +5704,6 @@ var $;
             obj.hue_base = () => this.hue_base();
             obj.hue_shift = () => this.hue_shift();
             return obj;
-        }
-        graphs_colored() {
-            return this.Plot().graphs_colored();
         }
     }
     __decorate([
@@ -6034,12 +6034,12 @@ var $;
 var $;
 (function ($) {
     class $mol_view_tree_test_binding_right extends $.$mol_view {
+        outer_width(v) {
+            return this.Test().width(v);
+        }
         Test() {
             const obj = new this.$.$mol_view_tree_test_binding_right_test();
             return obj;
-        }
-        outer_width(v) {
-            return this.Test().width(v);
         }
     }
     __decorate([

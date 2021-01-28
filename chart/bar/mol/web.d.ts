@@ -1598,9 +1598,9 @@ declare namespace $ {
         graphs_sorted(): readonly $mol_svg[];
         graphs(): readonly $mol_plot_graph[];
         graphs_positioned(): readonly $mol_plot_graph[];
-        Meter(): $$.$mol_meter;
         width(): number;
         height(): number;
+        Meter(): $$.$mol_meter;
         Touch(): $$.$mol_touch;
         reset(event?: any): any;
     }
@@ -1646,8 +1646,8 @@ declare namespace $ {
         Legend(): $$.$mol_chart_legend;
         hue_base(): number;
         hue_shift(): number;
-        Plot(): $$.$mol_plot_pane;
         graphs_colored(): readonly $mol_plot_graph[];
+        Plot(): $$.$mol_plot_pane;
     }
 }
 
@@ -1725,8 +1725,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_view_tree_test_binding_right extends $mol_view {
-        Test(): $mol_view_tree_test_binding_right_test;
         outer_width(v?: any): any;
+        Test(): $mol_view_tree_test_binding_right_test;
     }
     class $mol_view_tree_test_binding_right_test extends $mol_view {
         width(val?: any): any;
