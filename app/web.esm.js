@@ -1,3 +1,4 @@
+"use strict";
 function require( path ){ return $node[ path ] };
 "use strict"
 
@@ -4825,10 +4826,10 @@ var $;
             return false;
         }
         field() {
-            return Object.assign(Object.assign({}, super.field()), { disabled: this.disabled(), value: this.value_changed(), placeholder: this.hint(), type: this.type(), spellcheck: this.spellcheck(), autocomplete: this.autocomplete_native() });
+            return Object.assign(Object.assign({}, super.field()), { disabled: this.disabled(), value: this.value_changed(), placeholder: this.hint(), spellcheck: this.spellcheck(), autocomplete: this.autocomplete_native() });
         }
         attr() {
-            return Object.assign(Object.assign({}, super.attr()), { maxlength: this.length_max() });
+            return Object.assign(Object.assign({}, super.attr()), { maxlength: this.length_max(), type: this.type() });
         }
         event() {
             return Object.assign(Object.assign({}, super.event()), { input: (event) => this.event_change(event), keydown: (event) => this.event_key_press(event) });
@@ -4852,11 +4853,6 @@ var $;
         hint() {
             return "";
         }
-        type(val) {
-            if (val !== undefined)
-                return val;
-            return "text";
-        }
         spellcheck() {
             return false;
         }
@@ -4865,6 +4861,11 @@ var $;
         }
         length_max() {
             return Infinity;
+        }
+        type(val) {
+            if (val !== undefined)
+                return val;
+            return "text";
         }
         event_change(event) {
             if (event !== undefined)
