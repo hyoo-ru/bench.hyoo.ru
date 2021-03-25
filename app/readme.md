@@ -1,80 +1,81 @@
-# $hyoo_bench
+# MAM
 
-Common benchmarking interface, that can be added to any of benchmarks.
+**M**am owns **A**gnostic **M**odules.
+This is base **MAM** project.
 
-## Known benchmarks
+# Features
 
-* [list](list) - Rendering of lists by frameworks ([online](http://bench.hyoo.ru/list/#bench=list/sort=fill/sample=angularjs~mol~native-dom~react~native-html))
-* [elements](elements) - Rendering of HTML elements ([online](http://bench.hyoo.ru/elements/#sample=audio~button~details~div~fieldset~hr~img~input~keygen~marquee~meter~object~optgroup~q~select~style~textarea~video#sort=fill#))
-* [geometry](geometry) - Rendering of simple geometry by graphics libraries ([online](http://bench.hyoo.ru/geometry/#sort=render#))
-* [chart/rope](chart/rope) - Line graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/rope/#sort=fill/sample=hcharts~mol))
-* [chart/bar](chart/bar) - Bar graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/bar/#sort=fill/sample=hcharts~mol))
-* [todomvc](https://github.com/hyoo-ru/todomvc/tree/master/benchmark) - ToDoMVC workflow by frameworks ([online](https://hyoo-ru/todomvc/benchmark/#sample=angular2%7Eangularjs%7Eknockoutjs%7Emol%7Epolymer%7Ereact-alt%7Evanillajs%7Evue#sort=fill#))
-* [Unified todomvc](https://github.com/zerkalica/utb) - ToDoMVC workflow by react-like libraries ([online](https://zerkalica.github.io/utb/benchmark/#sample=inferno-lom_atom~inferno-mobx~inferno-raw~inferno-reactive-di~preact-lom_atom~preact-mobx~preact-raw~preact-reactive-di~react-lom_atom~react-mobx~react-raw~react-reactive-di/sort=fill))
+* **Agnostic modules.** Module is directory with mixed source files (JS, TS, CSS, JSON, HTML, Tree, images etc).
+* **Automatic dependency tracking.** You don't need import/export - simply use namespaced names in accordance to directory structure, like `$mol_http_resource` / `$jin.time.moment` in `*.JAM.JS`/`*.TS` or `--mol_skin_light` / `[mol_page_title]` / `.my-header-avatar` in `*.CSS`.
+* **PostCSS support.** Write a cutting age css code.
+* **Development server with automatic bundling on request**. Only if you use it then it will have bundled.
+* **Build anyone module as standalone bundle**. You can develope thousand of modules in one project.
+* **Cordova project generation**. Simply add `config.xml` to module and `-cordova` dir with cordova project will have generated.
 
-## Create your benchmark
+# Installation
 
-Benchmark is html page, opened in iframe, and communicates with $hyoo_bench by RPC.
- 
-Benchmark must receive messages as array of values. First value is procedure name. Other values is procedure arguments.
+**Checkout this repo (~2s):**
 
-```js
-window.addEventListener( 'message' , function( event ) {
-	window[ event.data[0] ].apply( null , event.data.slice( 1 ) )
-} )
+```sh
+git clone https://github.com/hyoo-ru/mam.git ./mam && cd mam
 ```
 
-To return result, benchmark must send message to parent frame.
+## Linux limits
 
-```js
-function done( result ) {
-	if( parent === window ) console.log( result )
-	else parent.postMessage( [ 'done' , result ] , '*' )
-}
-```
+$mol_build and typescript uses inotify by default on Linux to monitor directories for changes. It's not uncommon to encounter a system limit on the number of files you can monitor.
 
-At start $hyoo_bench sends ```[ 'meta' ]``` to get benchmark meta information in this format:
-
-```ts
-type meta = {
-	title : { [ lang : string ] : string }
-	descr : { [ lang : string ] : string }
-	samples : { [ sample : string ] : {
-		title : { [ lang : string ] : string }
-	} }
-	steps : { [ step : string ] : { 
-		title : { [ lang : string ] : string }
-	} }
-	params : { [ param : string ] : {
-		title : { [ lang : string ] : string }
-		default : number
-		type : string
-		precision : number 
-	} }
-}
-```
-
-Description supports markdown. For every sample and step benchmark will receive message ```[ step , sample, params ]```.
-
-Deploy benchmark to web server. In example: ```//localhost:9080/hyoo/bench/geometry/```
-
-Open [$hyoo_bench_app](http://bench.hyoo.ru/) and type in developer console command like this to switch to your benchmark:
+/etc/sysctl.d/20-watch.conf
 
 ```
-$hyoo_bench_app.root(0).bench( '//localhost:9080/hyoo/bench/geometry/' )
+fs.inotify.max_user_watches=524288
+fs.file-max=500000
 ```
 
-## Running custom benches from localhost
+# Development server
 
-Pass url to benchmark in `bench` parameter to `http://localhost:9080/hyoo/bench/app/`
+**Install node modules (~1m)**
 
-Example:
-
-```
-http://localhost:9080/hyoo/bench/app/#bench=..%2Fgeometry
+```sh
+npm install
 ```
 
-## Articles
+**Build dev server from sources and start that (first ~15s, second ~10s):**
 
-- [$mol_app_bench: готовим JS бенчмарки быстро и просто](https://habrahabr.ru/post/322162/)
+```sh
+npm start
+```
 
+**Open simple $mol based ToDoMVC application (first ~4s, second ~0.3s):**
+
+```sh
+start http://localhost:9080/mol/app/todomvc/
+```
+
+**Open $mol demos application (first ~11s, second ~0.5s):**
+
+```sh
+start http://localhost:9080/mol/
+```
+
+# Manual building
+
+* Execute `npm start mol/app/todomvc` to build ToDoMVC application (~13s).
+* Execute `npm start mol` to build $mol demos application (~15s).
+* Execute `npm start lib/pdfjs` to build PDFJS library (~1s).
+
+# Custom package
+
+[Video tutorial](https://www.youtube.com/watch?v=PyK3if5sgN0)
+
+1. Create dir for your namespace. `my` in example.
+2. Create dir for your module. `my/alert` in example.
+3. Create module source file. `my/alert/alert.ts` with content `function $my_alert( msg : string ) { alert( msg ) }` in example.
+4. Create dir for your application module. `my/app` in example.
+5. Create application source file. `my/app/app.ts` with content `$my_alert( 'Hello, World!' )` in example.
+6. Create application web entry point. `my/app/index.html` with content `<script src="-/web.js"></script><script src="-/web.test.js"></script>` in example.
+7. Start development server: `npm start`
+8. Open your application. `http://localhost:9080/my/app/` in example.
+
+# MAM based projects
+
+- https://github.com/hyoo-ru?q=hyoo.ru
