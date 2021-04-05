@@ -224,7 +224,7 @@ var $;
             $.$mol_assert_equal(dom.value, '123');
         },
         'Define classes'() {
-            const dom = $.$mol_jsx("div", { classList: ['foo bar'] });
+            const dom = $.$mol_jsx("div", { class: 'foo bar' });
             $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
         },
         'Define styles'() {
@@ -347,8 +347,8 @@ var $;
             class Foo {
             }
             const proxy = $.$mol_delegate({}, () => new Foo);
-            $.$mol_assert_ok(proxy.valueOf() instanceof Foo);
-            $.$mol_assert_not(proxy.valueOf() instanceof $.$mol_delegate);
+            $.$mol_assert_ok(proxy instanceof Foo);
+            $.$mol_assert_ok(proxy instanceof $.$mol_delegate);
         },
     });
 })($ || ($ = {}));
@@ -700,9 +700,9 @@ var $;
     function $mol_dom_parse(text, type = 'application/xhtml+xml') {
         const parser = new $.$mol_dom_context.DOMParser();
         const doc = parser.parseFromString(text, type);
-        const error = doc.getElementsByTagName('parsererror')[0];
-        if (error)
-            throw new Error(error.textContent);
+        const error = doc.getElementsByTagName('parsererror');
+        if (error.length)
+            throw new Error(error[0].textContent);
         return doc;
     }
     $.$mol_dom_parse = $mol_dom_parse;
@@ -1818,7 +1818,7 @@ var $;
         if (a_type !== b_type)
             return false;
         if (a_type === 'function')
-            return String(a) === String(b);
+            return a['toString']() === b['toString']();
         if (a_type !== 'object')
             return false;
         if (!a || !b)
@@ -1828,7 +1828,7 @@ var $;
         if (a['constructor'] !== b['constructor'])
             return false;
         if (a instanceof RegExp)
-            return Object.is(String(a), String(b));
+            return a.toString() === b['toString']();
         const ref = a_stack.indexOf(a);
         if (ref >= 0) {
             return Object.is(b_stack[ref], b);
@@ -1849,7 +1849,7 @@ var $;
         b_stack.push(b);
         let result;
         try {
-            if (a[Symbol.iterator]) {
+            if (Symbol.iterator in a) {
                 const a_iter = a[Symbol.iterator]();
                 const b_iter = b[Symbol.iterator]();
                 while (true) {
@@ -1880,12 +1880,10 @@ var $;
                 if (count < 0)
                     return result = false;
             }
-            const a_val = a['valueOf']();
-            if (Object.is(a_val, a))
-                return result = true;
-            const b_val = b['valueOf']();
-            if (!Object.is(a_val, b_val))
-                return result = false;
+            if (a instanceof Number || a instanceof String || a instanceof Symbol || a instanceof Boolean || a instanceof Date) {
+                if (!Object.is(a['valueOf'](), b['valueOf']()))
+                    return result = false;
+            }
             return result = true;
         }
         finally {
