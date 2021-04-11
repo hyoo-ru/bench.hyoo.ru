@@ -62,7 +62,7 @@ declare namespace $ {
         static [Symbol.toPrimitive](): any;
         static toString(): any;
         destructor(): void;
-        [Symbol.toPrimitive](): any;
+        [Symbol.toPrimitive](hint: string): any;
         toString(): any;
         toJSON(): any;
     }
@@ -2095,7 +2095,7 @@ declare namespace $.$$ {
         col_head_content(colId: string): readonly string[];
         rows(): readonly $mol_view[];
         cells(row_id: string[]): readonly $mol_view[];
-        col_type(col_id: string): "text" | "number" | "branch";
+        col_type(col_id: string): "number" | "text" | "branch";
         Cell(id: {
             row: string[];
             col: string;
@@ -2425,7 +2425,7 @@ declare namespace $.$$ {
         }): number;
         col_head_title(col: string): string;
         event_sort_toggle(col: string, next?: Event): void;
-        col_type(col: string): "text" | "number" | "branch";
+        col_type(col: string): "number" | "text" | "branch";
         cell_content_number(id: {
             row: string[];
             col: string;
@@ -2690,7 +2690,7 @@ declare namespace $ {
     function $mol_view_tree_prop_key(prop: $mol_tree): string;
     function $mol_view_tree_prop_next(prop: $mol_tree): string;
     function $mol_view_tree_prop_value(prop: $mol_tree): $mol_tree;
-    function $mol_view_tree_value_type(val: $mol_tree): "locale" | "string" | "object" | "bool" | "null" | "dict" | "get" | "bind" | "put" | "list" | "number";
+    function $mol_view_tree_value_type(val: $mol_tree): "number" | "locale" | "string" | "object" | "bool" | "null" | "dict" | "get" | "bind" | "put" | "list";
     function $mol_view_tree_compile(tree: $mol_tree): {
         script: string;
         locales: {
