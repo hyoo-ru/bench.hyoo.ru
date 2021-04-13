@@ -586,6 +586,7 @@ declare namespace $ {
         dom_node(next?: Element): Element;
         dom_tree(next?: Element): Element;
         dom_node_actual(): Element;
+        auto(): void;
         render(): void;
         static view_classes(): (typeof $mol_view)[];
         view_names_owned(): string[];
@@ -1539,3 +1540,5 @@ declare namespace $ {
         render(): void;
     }
 }
+
+export = $;

@@ -239,3 +239,5 @@ declare namespace $ {
 declare namespace $ {
     function $mol_exec(this: $, dir: string, command: string, ...args: string[]): any;
 }
+
+export = $;

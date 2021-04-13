@@ -436,3 +436,5 @@ declare namespace $ {
         render(): $mol_jsx.JSX.Element;
     }
 }
+
+export = $;
