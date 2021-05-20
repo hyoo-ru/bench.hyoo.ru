@@ -573,7 +573,13 @@ var $;
             });
         }
         make(config) {
-            return new $mol_tree(Object.assign({ baseUri: this.baseUri, row: this.row, col: this.col, length: this.length }, config));
+            return new $mol_tree({
+                baseUri: this.baseUri,
+                row: this.row,
+                col: this.col,
+                length: this.length,
+                ...config,
+            });
         }
         make_data(value, sub) {
             return this.make({ value, sub });
@@ -654,7 +660,7 @@ var $;
                     }
                     if (json instanceof Error) {
                         const { name, message, stack } = json;
-                        json = Object.assign(Object.assign({}, json), { name, message, stack });
+                        json = { ...json, name, message, stack };
                     }
                     var sub = [];
                     for (var key in json) {
@@ -850,7 +856,7 @@ var $;
     function $mol_log3_node_make(level, output, type, color) {
         return function $mol_log3_logger(event) {
             if (!event.time)
-                event = Object.assign({ time: new Date().toISOString() }, event);
+                event = { time: new Date().toISOString(), ...event };
             const tree = this.$mol_tree.fromJSON(event).clone({ type });
             let str = tree.toString();
             if (process[output].isTTY) {
