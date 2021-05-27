@@ -413,6 +413,7 @@ var $;
             return $.$mol_fail(new Error('dom_tree() not implemented'));
         }
     }
+    Symbol.toStringTag;
     $.$mol_jsx_view = $mol_jsx_view;
 })($ || ($ = {}));
 //view.js.map
@@ -462,7 +463,7 @@ var $;
             this.selected = Number.NaN;
         }
         static render(props) {
-            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(this, Object.assign({ id: "/list" }, props)));
+            return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(this, { id: "/list", ...props }));
         }
         onItemSelect(item) {
             this.selected = item.id;
