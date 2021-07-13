@@ -1,6 +1,6 @@
 # $hyoo_bench
 
-Common benchmarking interface, that can be added to any of benchmarks.
+Common benchmarking interface, that can be added to any benchmarks.
 
 ## Known benchmarks
 
