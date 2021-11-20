@@ -195,7 +195,7 @@ namespace $.$$ {
 
 		@ $mol_mem_key
 		param_value( id : string, next? : any) {
-			let next_2 = $mol_state_arg.value( id , next )
+			let next_2 = Number( $mol_state_arg.value( id , next ) )
 			return next_2 || this.meta().params[ id ].default
 		}
 
