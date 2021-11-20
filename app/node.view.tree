@@ -559,7 +559,7 @@ $hyoo_bench_app $mol_book2
 	pages /
 		<= Addon_page $mol_page
 			title <= addon_title @ \Samples
-			head /
+			tools /
 				<= Filter $mol_search
 					query?val <=> filter?val \
 				<= Source_link $mol_link_source

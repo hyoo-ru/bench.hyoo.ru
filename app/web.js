@@ -8209,7 +8209,7 @@ var $;
         Addon_page() {
             const obj = new this.$.$mol_page();
             obj.title = () => this.addon_title();
-            obj.head = () => [
+            obj.tools = () => [
                 this.Filter(),
                 this.Source_link()
             ];
