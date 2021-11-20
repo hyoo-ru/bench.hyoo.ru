@@ -8411,7 +8411,7 @@ var $;
         Addon_page() {
             const obj = new this.$.$mol_page();
             obj.title = () => this.addon_title();
-            obj.tools = () => [
+            obj.head = () => [
                 this.Filter(),
                 this.Source_link()
             ];
@@ -8643,7 +8643,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/bench/app/app.view.css", "[hyoo_bench_app_main_page] {\n\tflex: 0 0 50rem;\n}\n\n[hyoo_bench_app_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n\tpadding: .75rem;\n}\n\n[hyoo_bench_app_addon_page] {\n\tflex: 0 0 20rem;\n}\n\n[hyoo_bench_app_sandbox_page] {\n\tflex: 1000 0 20rem;\n}\n\n[hyoo_bench_app_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_app_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_app_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n\tpadding: 0;\n}\n\n[hyoo_bench_app_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_app_result] {\n\tflex: none;\n\tmargin: .75rem;\n}\n\n[hyoo_bench_app_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_bench_app_addon_page_tools] {\n\tflex-grow: 1;\n}\n\n[hyoo_bench_app_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_app_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_app_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
+    $.$mol_style_attach("hyoo/bench/app/app.view.css", "[hyoo_bench_app_main_page] {\n\tflex: 0 0 50rem;\n}\n\n[hyoo_bench_app_main_page_body] {\n\tdisplay: flex;\n\toverflow: auto;\n\tz-index: 1;\n\tpadding: .75rem;\n}\n\n[hyoo_bench_app_addon_page] {\n\tflex: 0 0 20rem;\n}\n\n[hyoo_bench_app_sandbox_page] {\n\tflex: 1000 0 20rem;\n}\n\n[hyoo_bench_app_result_page] {\n\tflex: 1 1 auto;\n}\n\n[hyoo_bench_app_sandbox] {\n\tborder: none;\n}\n\n[hyoo_bench_app_descr] {\n\tflex: 0 1 auto;\n\tmax-width: none;\n\tpadding: 0;\n}\n\n[hyoo_bench_app_param_fields] {\n\tflex: none;\n}\n\n[hyoo_bench_app_result] {\n\tflex: none;\n\tmargin: .75rem;\n}\n\n[hyoo_bench_app_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_bench_app_addon_page_tools] {\n\tflex-grow: 1;\n}\n\n[hyoo_bench_app_result_head] {\n\tcursor: pointer;\n}\n\n[hyoo_bench_app_result_cell_number] {\n\twhite-space: nowrap;\n\ttext-align: right;\n}\n\n[hyoo_bench_app_result_portion] {\n\tdisplay: inline-flex;\n\tvertical-align: bottom;\n\tmargin-left: .5rem;\n\twidth: 5vw;\n}\n");
 })($ || ($ = {}));
 //app.view.css.js.map
 ;
