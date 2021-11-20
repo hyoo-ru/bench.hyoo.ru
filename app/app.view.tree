@@ -36,7 +36,7 @@ $hyoo_bench_app $mol_book2
 		title <= param_title!id \
 		content /
 			<= Param_value!id $mol_number
-				value?val <=> param_value!id?val \
+				value?val <=> param_value!id?val 0
 				precision_change <= param_precision!id 0
 	-
 	result_col_title_sample @ \Sample
