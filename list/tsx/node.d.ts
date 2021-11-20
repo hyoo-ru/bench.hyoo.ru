@@ -30,7 +30,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_dom_render_children(el: Element, childNodes: NodeList | Array<Node | string | null>): void;
+    function $mol_dom_render_children(el: Element | DocumentFragment, childNodes: NodeList | Array<Node | string | null>): void;
 }
 
 declare namespace $ {
@@ -43,24 +43,27 @@ declare namespace $ {
     let $mol_jsx_prefix: string;
     let $mol_jsx_booked: Set<string> | null;
     let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
-    function $mol_jsx<Props extends {
-        id?: string;
-    }, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element) | typeof $mol_jsx_view, props: Props, ...childNodes: Children): Element;
+    const $mol_jsx_frag = "";
+    function $mol_jsx<Props extends $mol_jsx.JSX.IntrinsicAttributes, Children extends Array<Node | string>>(Elem: string | ((props: Props, ...children: Children) => Element), props: Props, ...childNodes: Children): Element | DocumentFragment;
     namespace $mol_jsx.JSX {
         interface Element extends HTMLElement {
             class?: string;
         }
         interface ElementClass {
             attributes: {};
-            ownerDocument: Pick<Document, 'getElementById' | 'createElement'>;
+            ownerDocument: Pick<Document, 'getElementById' | 'createElementNS' | 'createDocumentFragment'>;
             childNodes: Array<Node | string>;
             valueOf(): Element;
         }
+        type OrString<Dict> = {
+            [key in keyof Dict]: Dict[key] | string;
+        };
         type IntrinsicElements = {
-            [key in keyof HTMLElementTagNameMap]?: $.$mol_type_partial_deep<Element & HTMLElementTagNameMap[key]>;
+            [key in keyof ElementTagNameMap]?: $.$mol_type_partial_deep<OrString<Element & IntrinsicAttributes & ElementTagNameMap[key]>>;
         };
         interface IntrinsicAttributes {
             id?: string;
+            xmlns?: string;
         }
         interface ElementAttributesProperty {
             attributes: {};
@@ -110,7 +113,6 @@ declare namespace $ {
         [$mol_ambient_ref]: typeof $$;
         get $(): $;
         set $(next: $);
-        constructor(init?: (obj: any) => void);
         static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         static [Symbol.toPrimitive](): any;
         static toString(): any;
@@ -185,9 +187,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; } & {
-        $: $;
-    }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
+    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
 }
 
 declare namespace $ {

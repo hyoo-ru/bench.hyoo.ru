@@ -57,7 +57,6 @@ declare namespace $ {
         [$mol_ambient_ref]: typeof $$;
         get $(): $;
         set $(next: $);
-        constructor(init?: (obj: any) => void);
         static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         static [Symbol.toPrimitive](): any;
         static toString(): any;
@@ -146,7 +145,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_style_func_name = 'calc' | 'hsla' | 'rgba' | 'var' | 'url';
+    type $mol_style_func_name = 'calc' | 'hsla' | 'rgba' | 'var' | 'clamp' | 'url';
     class $mol_style_func<Name extends $mol_style_func_name, Value = unknown> extends $mol_decor<Value> {
         readonly name: Name;
         constructor(name: Name, value: Value);
@@ -156,6 +155,7 @@ declare namespace $ {
         static vary<Name extends string>(name: Name): $mol_style_func<"var", Name>;
         static url<Href extends string>(href: Href): $mol_style_func<"url", string>;
         static hsla(hue: number, saturation: number, lightness: number, alpha: number): $mol_style_func<"hsla", (number | $mol_style_unit<"%">)[]>;
+        static clamp(min: $mol_style_unit<any>, mid: $mol_style_unit<any>, max: $mol_style_unit<any>): $mol_style_func<"clamp", $mol_style_unit<any>[]>;
         static rgba(red: number, green: number, blue: number, alpha: number): $mol_style_func<"rgba", number[]>;
     }
 }
@@ -225,9 +225,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; } & {
-        $: $;
-    }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
+    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
 }
 
 declare namespace $ {
@@ -295,10 +293,6 @@ declare namespace $ {
         task: () => void;
         constructor(task: () => void);
     }
-}
-
-declare namespace $ {
-    function $mol_compare_any(a: any, b: any): boolean;
 }
 
 declare namespace $ {
@@ -485,18 +479,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_dict_key(value: any): any;
-    class $mol_dict<Key, Value> extends Map<Key, Value> {
-        get(key: Key): Value | undefined;
-        has(key: Key): boolean;
-        set(key: Key, value: Value): this;
-        delete(key: Key): boolean;
-        forEach(back: (value: Value, key: Key, dict: Map<Key, Value>) => void, context?: any): void;
-        [Symbol.iterator](): {
-            [Symbol.iterator](): any;
-            next(): IteratorResult<[Key, Value], any>;
-        };
-    }
+    function $mol_key<Value>(value: Value): string | Value;
 }
 
 declare namespace $ {
@@ -505,22 +488,6 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_atom2_autorun(calculate: () => any): $mol_atom2<unknown>;
-}
-
-declare namespace $ {
-    class $mol_defer extends $mol_object {
-        run: () => void;
-        constructor(run: () => void);
-        destructor(): void;
-        static all: $mol_defer[];
-        static timer: any;
-        static scheduleNative: (handler: () => void) => any;
-        static schedule(): void;
-        static unschedule(): void;
-        static add(defer: $mol_defer): void;
-        static drop(defer: $mol_defer): void;
-        static run(): void;
-    }
 }
 
 declare namespace $ {
@@ -559,7 +526,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_dom_render_children(el: Element, childNodes: NodeList | Array<Node | string | null>): void;
+    function $mol_dom_render_children(el: Element | DocumentFragment, childNodes: NodeList | Array<Node | string | null>): void;
 }
 
 declare namespace $ {
@@ -686,7 +653,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_vector<Value, Length extends number> extends Array<Value> {
-        length: Length;
+        get length(): Length;
         constructor(...values: Value[] & {
             length: Length;
         });
@@ -705,34 +672,28 @@ declare namespace $ {
         multed1(this: $mol_vector<number, Length>, mults: readonly number[] & {
             length: Length;
         }): this;
+        powered0(this: $mol_vector<number, Length>, mult: number): this;
         expanded1(this: $mol_vector<$mol_vector_range<number>, Length>, point: readonly number[] & {
             length: Length;
         }): this;
         expanded2(this: $mol_vector<$mol_vector_range<number>, Length>, point: readonly (readonly [number, number])[] & {
             length: Length;
         }): this;
-    }
-    class $mol_vector_1d<Value> extends $mol_vector<Value, 1> {
-        [0]: Value;
-        get x(): Value;
-    }
-    class $mol_vector_2d<Value> extends $mol_vector<Value, 2> {
-        [0]: Value;
-        [1]: Value;
-        get x(): Value;
-        get y(): Value;
-    }
-    class $mol_vector_3d<Value> extends $mol_vector<Value, 3> {
-        [0]: Value;
-        [1]: Value;
-        [2]: Value;
+        center<Item extends $mol_vector<number, number>>(this: $mol_vector<Item, Length>): Item;
+        distance(this: $mol_vector<$mol_vector<number, number>, Length>): number;
         get x(): Value;
         get y(): Value;
         get z(): Value;
     }
+    class $mol_vector_1d<Value> extends $mol_vector<Value, 1> {
+    }
+    class $mol_vector_2d<Value> extends $mol_vector<Value, 2> {
+    }
+    class $mol_vector_3d<Value> extends $mol_vector<Value, 3> {
+    }
     class $mol_vector_range<Value> extends $mol_vector<Value, 2> {
-        [0]: Value;
-        [1]: Value;
+        get [0](): Value;
+        get [1](): Value;
         get min(): Value;
         get max(): Value;
         get inversed(): $mol_vector_range<Value>;
@@ -752,6 +713,13 @@ declare namespace $ {
         })[] & {
             length: Height;
         }): this;
+    }
+}
+
+declare namespace $ {
+    class $mol_svg_title extends $mol_svg {
+        dom_name(): string;
+        sub(): readonly any[];
     }
 }
 
@@ -777,6 +745,7 @@ declare namespace $ {
         points(): readonly (readonly number[])[];
         front(): readonly $mol_svg[];
         back(): readonly $mol_svg[];
+        Hint(): $mol_svg_title;
         hue(): number;
         Sample(): any;
         type(): string;
@@ -789,6 +758,8 @@ declare namespace $ {
         dimensions_y(): $mol_vector_range<number>;
         gap_x(): $mol_vector_range<number>;
         gap_y(): $mol_vector_range<number>;
+        title(): string;
+        hint(): string;
     }
     class $mol_plot_graph_sample extends $mol_view {
         attr(): {
@@ -808,6 +779,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $mol_plot_graph extends $.$mol_plot_graph {
         viewport(): $mol_vector_2d<$mol_vector_range<number>>;
+        indexes(): readonly number[];
         points(): readonly (readonly number[])[];
         series_x(): readonly number[];
         dimensions(): $mol_vector_2d<$mol_vector_range<number>>;
@@ -944,7 +916,7 @@ declare namespace $ {
         dimensions_axis(): $mol_vector_range<number>;
         viewport_axis(): $mol_vector_range<number>;
         axis_points(): readonly number[];
-        normalize(val?: any): any;
+        normalize(val?: any): number;
         precision(): number;
         sub(): readonly any[];
         Label(index: any): $$.$mol_svg_text;
@@ -1056,162 +1028,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $mol_colors: {
-        readonly aliceblue: "#f0f8ff";
-        readonly antiquewhite: "#faebd7";
-        readonly aqua: "#00ffff";
-        readonly aquamarine: "#7fffd4";
-        readonly azure: "#f0ffff";
-        readonly beige: "#f5f5dc";
-        readonly bisque: "#ffe4c4";
-        readonly black: "#000000";
-        readonly blanchedalmond: "#ffebcd";
-        readonly blue: "#0000ff";
-        readonly blueviolet: "#8a2be2";
-        readonly brown: "#a52a2a";
-        readonly burlywood: "#deb887";
-        readonly cadetblue: "#5f9ea0";
-        readonly chartreuse: "#7fff00";
-        readonly chocolate: "#d2691e";
-        readonly coral: "#ff7f50";
-        readonly cornflowerblue: "#6495ed";
-        readonly cornsilk: "#fff8dc";
-        readonly crimson: "#dc143c";
-        readonly cyan: "#00ffff";
-        readonly darkblue: "#00008b";
-        readonly darkcyan: "#008b8b";
-        readonly darkgoldenrod: "#b8860b";
-        readonly darkgray: "#a9a9a9";
-        readonly darkgreen: "#006400";
-        readonly darkgrey: "#a9a9a9";
-        readonly darkkhaki: "#bdb76b";
-        readonly darkmagenta: "#8b008b";
-        readonly darkolivegreen: "#556b2f";
-        readonly darkorange: "#ff8c00";
-        readonly darkorchid: "#9932cc";
-        readonly darkred: "#8b0000";
-        readonly darksalmon: "#e9967a";
-        readonly darkseagreen: "#8fbc8f";
-        readonly darkslateblue: "#483d8b";
-        readonly darkslategrey: "#2f4f4f";
-        readonly darkturquoise: "#00ced1";
-        readonly darkviolet: "#9400d3";
-        readonly deeppink: "#ff1493";
-        readonly deepskyblue: "#00bfff";
-        readonly dimgray: "#696969";
-        readonly dimgrey: "#696969";
-        readonly dodgerblue: "#1e90ff";
-        readonly firebrick: "#b22222";
-        readonly floralwhite: "#fffaf0";
-        readonly forestgreen: "#228b22";
-        readonly fuchsia: "#ff00ff";
-        readonly gainsboro: "#dcdcdc";
-        readonly ghostwhite: "#f8f8ff";
-        readonly gold: "#ffd700";
-        readonly goldenrod: "#daa520";
-        readonly gray: "#808080";
-        readonly green: "#008000";
-        readonly greenyellow: "#adff2f";
-        readonly grey: "#808080";
-        readonly honeydew: "#f0fff0";
-        readonly hotpink: "#ff69b4";
-        readonly indianred: "#cd5c5c";
-        readonly indigo: "#4b0082";
-        readonly ivory: "#fffff0";
-        readonly khaki: "#f0e68c";
-        readonly lavender: "#e6e6fa";
-        readonly lavenderblush: "#fff0f5";
-        readonly lawngreen: "#7cfc00";
-        readonly lemonchiffon: "#fffacd";
-        readonly lightblue: "#add8e6";
-        readonly lightcoral: "#f08080";
-        readonly lightcyan: "#e0ffff";
-        readonly lightgoldenrodyellow: "#fafad2";
-        readonly lightgray: "#d3d3d3";
-        readonly lightgreen: "#90ee90";
-        readonly lightgrey: "#d3d3d3";
-        readonly lightpink: "#ffb6c1";
-        readonly lightsalmon: "#ffa07a";
-        readonly lightseagreen: "#20b2aa";
-        readonly lightskyblue: "#87cefa";
-        readonly lightslategray: "#778899";
-        readonly lightslategrey: "#778899";
-        readonly lightsteelblue: "#b0c4de";
-        readonly lightyellow: "#ffffe0";
-        readonly lime: "#00ff00";
-        readonly limegreen: "#32cd32";
-        readonly linen: "#faf0e6";
-        readonly magenta: "#ff00ff";
-        readonly maroon: "#800000";
-        readonly mediumaquamarine: "#66cdaa";
-        readonly mediumblue: "#0000cd";
-        readonly mediumorchid: "#ba55d3";
-        readonly mediumpurple: "#9370db";
-        readonly mediumseagreen: "#3cb371";
-        readonly mediumslateblue: "#7b68ee";
-        readonly mediumspringgreen: "#00fa9a";
-        readonly mediumturquoise: "#48d1cc";
-        readonly mediumvioletred: "#c71585";
-        readonly midnightblue: "#191970";
-        readonly mintcream: "#f5fffa";
-        readonly mistyrose: "#ffe4e1";
-        readonly moccasin: "#ffe4b5";
-        readonly navajowhite: "#ffdead";
-        readonly navy: "#000080";
-        readonly oldlace: "#fdf5e6";
-        readonly olive: "#808000";
-        readonly olivedrab: "#6b8e23";
-        readonly orange: "#ffa500";
-        readonly orangered: "#ff4500";
-        readonly orchid: "#da70d6";
-        readonly palegoldenrod: "#eee8aa";
-        readonly palegreen: "#98fb98";
-        readonly paleturquoise: "#afeeee";
-        readonly palevioletred: "#db7093";
-        readonly papayawhip: "#ffefd5";
-        readonly peachpuff: "#ffdab9";
-        readonly peru: "#cd853f";
-        readonly pink: "#ffc0cb";
-        readonly plum: "#dda0dd";
-        readonly powderblue: "#b0e0e6";
-        readonly purple: "#800080";
-        readonly rebeccapurple: "#663399";
-        readonly red: "#ff0000";
-        readonly rosybrown: "#bc8f8f";
-        readonly royalblue: "#4169e1";
-        readonly saddlebrown: "#8b4513";
-        readonly salmon: "#fa8072";
-        readonly sandybrown: "#f4a460";
-        readonly seagreen: "#2e8b57";
-        readonly seashell: "#fff5ee";
-        readonly sienna: "#a0522d";
-        readonly silver: "#c0c0c0";
-        readonly skyblue: "#87ceeb";
-        readonly slateblue: "#6a5acd";
-        readonly slategray: "#708090";
-        readonly slategrey: "#708090";
-        readonly snow: "#fffafa";
-        readonly springgreen: "#00ff7f";
-        readonly steelblue: "#4682b4";
-        readonly tan: "#d2b48c";
-        readonly teal: "#008080";
-        readonly thistle: "#d8bfd8";
-        readonly tomato: "#ff6347";
-        readonly turquoise: "#40e0d0";
-        readonly violet: "#ee82ee";
-        readonly wheat: "#f5deb3";
-        readonly white: "#ffffff";
-        readonly whitesmoke: "#f5f5f5";
-        readonly yellow: "#ffff00";
-        readonly yellowgreen: "#9acd32";
-    };
-}
-
-declare namespace $ {
     export type $mol_style_properties = Partial<$mol_type_override<CSSStyleDeclaration, Overrides>>;
     type Common = 'inherit' | 'initial' | 'unset';
-    type Color = keyof typeof $mol_colors | 'transparent' | 'currentcolor' | $mol_style_func<'hsla' | 'rgba' | 'var'> | `#${string}`;
-    type Length = 0 | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc' | 'var'>;
+    type Color = 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure' | 'beige' | 'bisque' | 'black' | 'blanchedalmond' | 'blue' | 'blueviolet' | 'brown' | 'burlywood' | 'cadetblue' | 'chartreuse' | 'chocolate' | 'coral' | 'cornflowerblue' | 'cornsilk' | 'crimson' | 'cyan' | 'darkblue' | 'darkcyan' | 'darkgoldenrod' | 'darkgray' | 'darkgreen' | 'darkgrey' | 'darkkhaki' | 'darkmagenta' | 'darkolivegreen' | 'darkorange' | 'darkorchid' | 'darkred' | 'darksalmon' | 'darkseagreen' | 'darkslateblue' | 'darkslategrey' | 'darkturquoise' | 'darkviolet' | 'deeppink' | 'deepskyblue' | 'dimgray' | 'dimgrey' | 'dodgerblue' | 'firebrick' | 'floralwhite' | 'forestgreen' | 'fuchsia' | 'gainsboro' | 'ghostwhite' | 'gold' | 'goldenrod' | 'gray' | 'green' | 'greenyellow' | 'grey' | 'honeydew' | 'hotpink' | 'indianred' | 'indigo' | 'ivory' | 'khaki' | 'lavender' | 'lavenderblush' | 'lawngreen' | 'lemonchiffon' | 'lightblue' | 'lightcoral' | 'lightcyan' | 'lightgoldenrodyellow' | 'lightgray' | 'lightgreen' | 'lightgrey' | 'lightpink' | 'lightsalmon' | 'lightseagreen' | 'lightskyblue' | 'lightslategray' | 'lightslategrey' | 'lightsteelblue' | 'lightyellow' | 'lime' | 'limegreen' | 'linen' | 'magenta' | 'maroon' | 'mediumaquamarine' | 'mediumblue' | 'mediumorchid' | 'mediumpurple' | 'mediumseagreen' | 'mediumslateblue' | 'mediumspringgreen' | 'mediumturquoise' | 'mediumvioletred' | 'midnightblue' | 'mintcream' | 'mistyrose' | 'moccasin' | 'navajowhite' | 'navy' | 'oldlace' | 'olive' | 'olivedrab' | 'orange' | 'orangered' | 'orchid' | 'palegoldenrod' | 'palegreen' | 'paleturquoise' | 'palevioletred' | 'papayawhip' | 'peachpuff' | 'peru' | 'pink' | 'plum' | 'powderblue' | 'purple' | 'rebeccapurple' | 'red' | 'rosybrown' | 'royalblue' | 'saddlebrown' | 'salmon' | 'sandybrown' | 'seagreen' | 'seashell' | 'sienna' | 'silver' | 'skyblue' | 'slateblue' | 'slategray' | 'slategrey' | 'snow' | 'springgreen' | 'steelblue' | 'tan' | 'teal' | 'thistle' | 'tomato' | 'turquoise' | 'violet' | 'wheat' | 'white' | 'whitesmoke' | 'yellow' | 'yellowgreen' | 'transparent' | 'currentcolor' | $mol_style_func<'hsla' | 'rgba' | 'var'> | `#${string}`;
+    type Length = 0 | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc' | 'var' | 'clamp'>;
     type Size = 'auto' | 'max-content' | 'min-content' | 'fit-content' | Length | Common;
     type Directions<Value> = Value | readonly [Value, Value] | {
         top?: Value;
@@ -1228,6 +1048,7 @@ declare namespace $ {
     interface Overrides {
         alignContent?: 'baseline' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'normal' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | readonly ['first' | 'last', 'baseline'] | readonly ['safe' | 'unsafe', 'start' | 'end' | 'flex-start' | 'flex-end'] | Common;
         justifyContent?: 'start' | 'end' | 'flex-start' | 'flex-end' | 'left' | 'right' | 'space-between' | 'space-around' | 'space-evenly' | 'normal' | 'stretch' | 'center' | Common;
+        gap?: Length;
         background?: 'none' | {
             color?: Color | Common;
             image?: readonly (readonly [$mol_style_func<'url'>])[] | 'none' | Common;
@@ -1235,6 +1056,7 @@ declare namespace $ {
             position?: 'left' | 'right' | 'top' | 'bottom' | 'center';
             size?: (BG_size | [BG_size, BG_size])[];
         };
+        backdropFilter: string;
         box?: {
             shadow?: readonly {
                 inset?: boolean;
@@ -1348,6 +1170,7 @@ declare namespace $ {
         readonly block: $mol_style_func<"var", "--mol_gap_block">;
         readonly text: $mol_style_func<"var", "--mol_gap_text">;
         readonly round: $mol_style_func<"var", "--mol_gap_round">;
+        readonly space: $mol_style_func<"var", "--mol_gap_space">;
     };
 }
 
@@ -1356,15 +1179,15 @@ declare namespace $ {
         minimal_height(): number;
         _event_scroll_timer(val?: any): any;
         field(): {
-            scrollTop: any;
-            scrollLeft: any;
+            scrollTop: number;
+            scrollLeft: number;
             tabIndex: number;
         };
         event(): {
             scroll: (event?: any) => any;
         };
-        scroll_top(val?: any): any;
-        scroll_left(val?: any): any;
+        scroll_top(val?: any): number;
+        scroll_left(val?: any): number;
         tabindex(): number;
         event_scroll(event?: any): any;
     }
@@ -1417,12 +1240,14 @@ declare namespace $.$$ {
         _event_scroll_timer(next?: $mol_after_timeout | null): $mol_after_timeout | null | undefined;
         event_scroll(next?: Event): void;
         minimal_height(): number;
+        minimal_width(): number;
     }
 }
 
 declare namespace $ {
     class $mol_chart_legend extends $mol_scroll {
         graphs(): readonly $mol_plot_graph[];
+        graphs_front(): readonly $mol_plot_graph[];
         sub(): readonly $mol_view[];
         Graph_legend(id: any): $mol_view;
         graph_legends(): readonly $mol_view[];
@@ -1438,8 +1263,8 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_chart_legend extends $.$mol_chart_legend {
-        graphs_front(): $.$mol_plot_graph[];
-        graph_legends(): $mol_view[];
+        graphs_front(): readonly $mol_plot_graph[];
+        graph_legends(): readonly $mol_view[];
         graph_title(index: number): string;
         Graph_sample(index: number): any;
     }
@@ -1474,46 +1299,15 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_meter extends $mol_plugin {
-        zoom(): number;
-        width(val?: any): any;
-        height(val?: any): any;
-        left(val?: any): any;
-        right(val?: any): any;
-        bottom(val?: any): any;
-        top(val?: any): any;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_meter extends $.$mol_meter {
-        rect(): {
-            left: number;
-            top: number;
-            right: number;
-            bottom: number;
-            width: number;
-            height: number;
-            zoom: number;
-        };
-        top(): number;
-        bottom(): number;
-        left(): number;
-        right(): number;
-        width(): number;
-        height(): number;
-        zoom(): number;
-    }
-}
-
-declare namespace $ {
     class $mol_touch extends $mol_plugin {
-        start_zoom(val?: any): any;
-        start_distance(val?: any): any;
-        zoom(val?: any): any;
-        start_pan(val?: any): any;
-        pan(val?: any): any;
-        pos(val?: any): any;
+        start_zoom(val?: any): number;
+        start_distance(val?: any): number;
+        zoom(val?: any): number;
+        action_type(val?: any): string;
+        action_point(val?: any): $mol_vector_2d<number>;
+        start_pan(val?: any): readonly any[];
+        pan(val?: any): $mol_vector_2d<number>;
+        pointer_center(): $mol_vector_2d<number>;
         start_pos(val?: any): any;
         swipe_precision(): number;
         swipe_right(val?: any): any;
@@ -1528,39 +1322,45 @@ declare namespace $ {
         swipe_to_bottom(val?: any): any;
         swipe_to_left(val?: any): any;
         swipe_to_top(val?: any): any;
+        draw(event?: any): any;
         style(): {
             "touch-action": string;
             "overscroll-behavior": string;
         };
         event(): {
-            touchstart: (event?: any) => any;
-            touchmove: (event?: any) => any;
-            touchend: (event?: any) => any;
-            mousedown: (event?: any) => any;
-            mousemove: (event?: any) => any;
-            mouseup: (event?: any) => any;
-            mouseleave: (event?: any) => any;
+            pointerdown: (event?: any) => any;
+            pointermove: (event?: any) => any;
+            pointerup: (event?: any) => any;
+            pointerleave: (event?: any) => any;
             wheel: (event?: any) => any;
+            contextmenu: (event?: any) => any;
         };
         event_start(event?: any): any;
         event_move(event?: any): any;
         event_end(event?: any): any;
-        event_leave(event?: any): any;
         event_wheel(event?: any): any;
+        event_menu(event?: any): any;
     }
 }
 
 declare namespace $.$$ {
     class $mol_touch extends $.$mol_touch {
-        rect(): DOMRect;
-        event_start(event: TouchEvent | MouseEvent): void;
-        event_leave(event: TouchEvent | MouseEvent): void;
-        event_move(event: TouchEvent | MouseEvent): void;
-        swipe_left(event?: TouchEvent | MouseEvent): void;
-        swipe_right(event?: TouchEvent | MouseEvent): void;
-        swipe_top(event?: TouchEvent | MouseEvent): void;
-        swipe_bottom(event?: TouchEvent | MouseEvent): void;
-        event_end(event?: TouchEvent | MouseEvent): void;
+        auto(): void;
+        pointer_events(next?: readonly PointerEvent[]): readonly PointerEvent[];
+        pointer_coords(): $mol_vector<$mol_vector_2d<number>, number>;
+        pointer_center(): $mol_vector_2d<number>;
+        event_coords(event: PointerEvent | WheelEvent): $mol_vector_2d<number>;
+        action_point(): $mol_vector_2d<number>;
+        event_eat(event: PointerEvent | WheelEvent): string;
+        event_start(event: PointerEvent): void;
+        event_move(event: PointerEvent): void;
+        event_end(event: PointerEvent): void;
+        swipe_left(event: PointerEvent): void;
+        swipe_right(event: PointerEvent): void;
+        swipe_top(event: PointerEvent): void;
+        swipe_bottom(event: PointerEvent): void;
+        _menu_mute: boolean;
+        event_menu(event: PointerEvent): void;
         event_wheel(event: WheelEvent): void;
     }
 }
@@ -1568,8 +1368,8 @@ declare namespace $.$$ {
 declare namespace $ {
     class $mol_plot_pane extends $mol_svg_root {
         aspect(): string;
-        hue_base(val?: any): any;
-        hue_shift(val?: any): any;
+        hue_base(val?: any): number;
+        hue_shift(val?: any): number;
         gap_hor(): number;
         gap_vert(): number;
         gap_left(): number;
@@ -1578,20 +1378,19 @@ declare namespace $ {
         gap_bottom(): number;
         gap(): $mol_vector_2d<$mol_vector_range<number>>;
         shift_limit(): $mol_vector_2d<$mol_vector_range<number>>;
-        shift_default(): readonly number[];
-        shift(val?: any): any;
+        shift_default(): $mol_vector_2d<number>;
+        shift(val?: any): $mol_vector_2d<number>;
         scale_limit(): $mol_vector_2d<$mol_vector_range<number>>;
-        scale_default(): readonly number[];
-        scale(val?: any): any;
-        scale_x(val?: any): any;
-        scale_y(val?: any): any;
+        scale_default(): $mol_vector_2d<number>;
+        scale(val?: any): $mol_vector_2d<number>;
+        scale_x(val?: any): number;
+        scale_y(val?: any): number;
         size(): $mol_vector_2d<number>;
         size_real(): $mol_vector_2d<number>;
-        dimensions_viewport(): $mol_vector_2d<$mol_vector_range<number>>;
         dimensions(): $mol_vector_2d<$mol_vector_range<number>>;
+        dimensions_viewport(): $mol_vector_2d<$mol_vector_range<number>>;
         sub(): readonly $mol_svg[];
         graphs_colored(): readonly $mol_plot_graph[];
-        cursor_position(val?: any): any;
         plugins(): readonly any[];
         event(): {
             dblclick: (event?: any) => any;
@@ -1602,16 +1401,19 @@ declare namespace $ {
         shift_limit_y(): $mol_vector_range<number>;
         scale_limit_x(): $mol_vector_range<number>;
         scale_limit_y(): $mol_vector_range<number>;
-        dimensions_viewport_x(): $mol_vector_range<number>;
-        dimensions_viewport_y(): $mol_vector_range<number>;
         dimensions_x(): $mol_vector_range<number>;
         dimensions_y(): $mol_vector_range<number>;
+        dimensions_viewport_x(): $mol_vector_range<number>;
+        dimensions_viewport_y(): $mol_vector_range<number>;
         graphs_sorted(): readonly $mol_svg[];
         graphs(): readonly $mol_plot_graph[];
+        graphs_visible(): readonly $mol_plot_graph[];
         graphs_positioned(): readonly $mol_plot_graph[];
-        width(): number;
-        height(): number;
-        Meter(): $$.$mol_meter;
+        zoom(val?: any): number;
+        draw(event?: any): any;
+        cursor_position(): $mol_vector_2d<number>;
+        action_type(): string;
+        action_point(): $mol_vector_2d<number>;
         Touch(): $$.$mol_touch;
         reset(event?: any): any;
     }
@@ -1625,20 +1427,22 @@ declare namespace $.$$ {
         dimensions(): $mol_vector_2d<$mol_vector_range<number>>;
         size(): $mol_vector_2d<number>;
         graph_hue(index: number): number;
-        graphs_colored(): readonly $.$mol_plot_graph[];
+        graphs_colored(): $.$mol_plot_graph[];
         size_real(): $mol_vector_2d<number>;
         view_box(): string;
         scale_limit(): $mol_vector_2d<$mol_vector_range<number>>;
-        scale_default(): readonly [number, number];
-        scale(next?: readonly [number, number], force?: $mol_mem_force): readonly [number, number];
+        scale_default(): $mol_vector_2d<number>;
+        scale(next?: $mol_vector_2d<number>): $mol_vector_2d<number>;
         scale_x(next?: number): number;
         scale_y(next?: number): number;
         shift_limit(): $mol_vector_2d<$mol_vector_range<number>>;
-        shift_default(): readonly [number, number];
+        shift_default(): $mol_vector_2d<number>;
         graph_touched: boolean;
-        shift(next?: readonly [number, number], force?: $mol_mem_force): readonly [number, number];
+        shift(next?: $mol_vector_2d<number>): $mol_vector_2d<number>;
         reset(event?: Event): void;
-        graphs_positioned(): readonly $.$mol_plot_graph[];
+        graphs_visible(): $.$mol_plot_graph[];
+        graphs_positioned(): $.$mol_plot_graph[];
+        dimensions_viewport(): $mol_vector<$mol_vector_range<number>, 2>;
         viewport(): $mol_vector_2d<$mol_vector_range<number>>;
         graphs_sorted(): $.$mol_svg[];
     }
@@ -1657,7 +1461,8 @@ declare namespace $ {
         Legend(): $$.$mol_chart_legend;
         hue_base(): number;
         hue_shift(): number;
-        graphs_colored(): readonly $mol_plot_graph[];
+        zoom(val?: any): number;
+        graphs_colored(): $mol_plot_graph[];
         Plot(): $$.$mol_plot_pane;
     }
 }
@@ -1670,10 +1475,14 @@ declare namespace $ {
         threshold(): number;
         spacing(): number;
         color_fill(): string;
+        dom_name(): string;
+        attr(): {
+            d: string;
+            mol_plot_graph_type: string;
+        };
         sub(): readonly any[];
         Sample(): $mol_plot_graph_sample;
         curve(): string;
-        Curve(): $mol_svg_path;
     }
 }
 
@@ -1682,6 +1491,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_plot_line extends $.$mol_plot_line {
+        sub(): readonly any[];
         indexes(): number[];
         curve(): string;
     }
@@ -1690,6 +1500,7 @@ declare namespace $.$$ {
 declare namespace $ {
     class $mol_plot_dot extends $mol_plot_graph {
         points_max(): number;
+        aspect(): number;
         style(): {
             "stroke-width": number;
             color: string;

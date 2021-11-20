@@ -5,7 +5,7 @@ var exports = void 0;
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	else for (var i = decorators.length - 1; i >= 0; i--) if ((d = decorators[i])) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
@@ -34,6 +34,9 @@ var $;
 (function ($) {
 })($ || ($ = {}));
 //context.js.map
+;
+"use strict";
+//node.js.map
 ;
 "use strict";
 var $node = new Proxy({ require }, {
@@ -156,11 +159,13 @@ var $;
     $.$mol_jsx_booked = null;
     $.$mol_jsx_document = {
         getElementById: () => null,
-        createElement: (name) => $.$mol_dom_context.document.createElement(name)
+        createElementNS: (space, name) => $.$mol_dom_context.document.createElementNS(space, name),
+        createDocumentFragment: () => $.$mol_dom_context.document.createDocumentFragment(),
     };
+    $.$mol_jsx_frag = '';
     function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
-        if ($.$mol_jsx_booked) {
+        if (Elem && $.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
                 $.$mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(id)}`));
             }
@@ -169,7 +174,7 @@ var $;
             }
         }
         const guid = $.$mol_jsx_prefix + id;
-        let node = guid && $.$mol_jsx_document.getElementById(guid);
+        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
         if (typeof Elem !== 'string') {
             if ('prototype' in Elem) {
                 const view = node && node[Elem] || new Elem;
@@ -196,11 +201,17 @@ var $;
                 }
             }
         }
-        if (!node)
-            node = $.$mol_jsx_document.createElement(Elem);
+        if (!node) {
+            node = Elem
+                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
+                : $.$mol_jsx_document.createDocumentFragment();
+        }
         $.$mol_dom_render_children(node, [].concat(...childNodes));
+        if (!Elem)
+            return node;
         for (const key in props) {
             if (typeof props[key] === 'string') {
+                ;
                 node.setAttribute(key, props[key]);
             }
             else if (props[key] &&
@@ -211,7 +222,9 @@ var $;
                     continue;
                 }
             }
-            node[key] = props[key];
+            else {
+                node[key] = props[key];
+            }
         }
         if (guid)
             node.id = guid;
@@ -341,13 +354,9 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    var _a;
     class $mol_object2 {
-        constructor(init) {
-            this[_a] = null;
-            if (init)
-                init(this);
-        }
+        static $ = $;
+        [$.$mol_ambient_ref] = null;
         get $() {
             if (this[$.$mol_ambient_ref])
                 return this[$.$mol_ambient_ref];
@@ -360,9 +369,12 @@ var $;
             this[$.$mol_ambient_ref] = next;
         }
         static create(init) {
-            return new this(init);
+            const obj = new this;
+            if (init)
+                init(obj);
+            return obj;
         }
-        static [(_a = $.$mol_ambient_ref, Symbol.toPrimitive)]() {
+        static [Symbol.toPrimitive]() {
             return this.toString();
         }
         static toString() {
@@ -381,7 +393,6 @@ var $;
             return this.toString();
         }
     }
-    $mol_object2.$ = $;
     $.$mol_object2 = $mol_object2;
 })($ || ($ = {}));
 //object2.js.map
@@ -393,6 +404,10 @@ var $;
         static of(node) {
             return node[this];
         }
+        [Symbol.toStringTag];
+        attributes;
+        ownerDocument;
+        childNodes;
         valueOf() {
             const prefix = $.$mol_jsx_prefix;
             const booked = $.$mol_jsx_booked;
@@ -413,7 +428,6 @@ var $;
             return $.$mol_fail(new Error('dom_tree() not implemented'));
         }
     }
-    Symbol.toStringTag;
     $.$mol_jsx_view = $mol_jsx_view;
 })($ || ($ = {}));
 //view.js.map
@@ -439,12 +453,9 @@ var $;
 var $;
 (function ($) {
     class Item extends $.$mol_jsx_view {
-        constructor() {
-            super(...arguments);
-            this.title = '';
-            this.content = '';
-            this.selected = false;
-        }
+        title = '';
+        content = '';
+        selected = false;
         onSelect() { }
         render() {
             return ($.$mol_jsx("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
@@ -454,23 +465,20 @@ var $;
     }
     $.Item = Item;
     class List extends $.$mol_jsx_view {
-        constructor() {
-            super(...arguments);
-            this.data = {
-                sample: '',
-                items: []
-            };
-            this.selected = Number.NaN;
-        }
         static render(props) {
             return $.$mol_jsx_attach($.$mol_dom_context.document, () => $.$mol_jsx(this, { id: "/list", ...props }));
         }
+        data = {
+            sample: '',
+            items: []
+        };
+        selected = Number.NaN;
         onItemSelect(item) {
             this.selected = item.id;
             this.valueOf();
         }
         render() {
-            return ($.$mol_jsx("div", { classList: ['list'] }, this.data.items.map(item => ($.$mol_jsx(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
+            return ($.$mol_jsx("div", { classList: ['list'] }, ...this.data.items.map(item => ($.$mol_jsx(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
         }
     }
     $.List = List;
@@ -510,7 +518,7 @@ var $;
             let warned = false;
             descr.value = function $mol_deprecated_wrapper(...args) {
                 if (!warned) {
-                    this.$.$mol_log3_warn({
+                    $.$$.$mol_log3_warn({
                         place: `${host.constructor.name}::${field}`,
                         message: `Deprecated`,
                         hint: message,
@@ -530,6 +538,13 @@ var $;
 (function ($) {
     $.$mol_tree_convert = Symbol('$mol_tree_convert');
     class $mol_tree extends $.$mol_object2 {
+        type;
+        data;
+        sub;
+        baseUri;
+        row;
+        col;
+        length;
         constructor(config = {}) {
             super();
             this.type = config.type || '';
@@ -863,6 +878,7 @@ var $;
             if (process[output].isTTY) {
                 str = $node.colorette[color + 'Bright'](str);
             }
+            ;
             this.console[level](str);
             const self = this;
             return () => self.console.groupEnd();

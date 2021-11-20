@@ -28,6 +28,7 @@ $mol_speck $mol_view
 $mol_button $mol_view
 	enabled true
 	minimal_height 40
+	minimal_width 40
 	click?event null
 	event_click?event null
 	event *
@@ -108,7 +109,7 @@ $mol_list $mol_view
 $mol_labeler $mol_list
 	rows /
 		<= Label $mol_view
-			minimal_height 24
+			minimal_height 16
 			sub <= label /$mol_view_content
 				<= title
 		<= Content $mol_view
@@ -118,8 +119,12 @@ $mol_labeler $mol_list
 $mol_pop $mol_view
 	event * keydown?event <=> keydown?event null
 	showed?val false
+	align_vert \
+	align_hor \
 	sub /
 		<= Anchor null
+	sub_visible /
+		<= Anchor
 		<= Bubble $mol_pop_bubble
 			align <= align \bottom_center
 			content <= bubble_content /$mol_view_content
@@ -154,8 +159,8 @@ $mol_nav $mol_plugin
 	keys_x?val /
 	keys_y?val /
 	-
-	current_x?val \
-	current_y?val \
+	current_x?val null
+	current_y?val null
 	-
 	event_up?event null
 	event_down?event null
@@ -177,7 +182,7 @@ $mol_string $mol_view
 		^
 		disabled <= disabled false
 		value <= value_changed?val <=> value?val \
-		placeholder <= hint \
+		placeholder <= hint \ 
 		spellcheck <= spellcheck false
 		autocomplete <= autocomplete_native \
 		selectionEnd <= selection_end 0
@@ -194,9 +199,11 @@ $mol_string $mol_view
 		<= Submit $mol_hotkey
 			key * enter?event <=> submit?event null
 
+$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
 $mol_paragraph $mol_view
 	line_height 24
-	letter_width 8
+	letter_width 7
 	width_limit Infinity
 	sub / <= title
 
@@ -222,11 +229,19 @@ $mol_search $mol_pop
 			keys_y <= nav_components /$mol_view
 			current_y?component <=> nav_focused?component null
 	showed?val <=> suggests_showed?val false
-	Anchor <= Query $mol_string
-		value?val <=> query?val \
-		hint <= hint @ \Search...
-		submit?event <=> submit?event null
-		enabled <= enabled true
+	align_hor \right
+	Anchor $mol_view
+		sub <= anchor_content /
+			<= Query $mol_string
+				value?val <=> query?val \
+				hint <= hint @ \Search...
+				submit?event <=> submit?event null
+				enabled <= enabled true
+			<= Clear $mol_button_minor
+				hint @ \Clear
+				click?event <=> clear?event null
+				sub /
+					<= Clear_icon $mol_icon_cross
 	bubble_content /$mol_view_content
 		<= Menu $mol_list
 			rows <= menu_items /$mol_view
@@ -277,6 +292,46 @@ $mol_page $mol_view
 		<= Foot $mol_view
 			sub <= foot /$mol_view
 
+$mol_text_code_token $mol_dimmer
+	attr *
+		^
+		mol_text_code_token_type <= type \
+
+$mol_text_code_token_link $mol_text_code_token
+	dom_name \a
+	type \code-link
+	attr *
+		^
+		href <= haystack \
+		target \_blank
+
+$mol_text_code_row $mol_paragraph
+	text \
+	minimal_height 24
+	numb_showed true
+	Numb $mol_view
+		sub /
+			<= numb 0
+	Token!id $mol_text_code_token
+		type <= token_type!id \
+		haystack <= token_text!id \
+		needle <= highlight \
+	Token_link!id $mol_text_code_token_link
+		haystack <= token_text!id \
+		needle <= highlight \
+
+$mol_text_code $mol_list
+	attr *
+		^
+		mol_text_code_sidebar_showed <= sidebar_showed false
+	text \
+	text_lines /string
+	Row!id $mol_text_code_row
+		numb_showed <= sidebar_showed
+		numb <= row_numb!id 0
+		text <= row_text!id \
+		highlight <= highlight \
+
 $mol_float $mol_view
 	style *
 		^
@@ -294,7 +349,7 @@ $mol_check_expand $mol_check
 	checked?val <=> expanded?val false
 	enabled <= expandable false
 
-$mol_grid $mol_scroll
+$mol_grid $mol_view
 	row_height 32
 	row_ids /string[]
 	row_id!index null
@@ -351,6 +406,7 @@ $mol_image $mol_view
 		^
 		src <= uri \
 		alt <= title
+		loading <= loading \lazy
 
 $mol_link_iconed $mol_link
 	sub /
@@ -371,12 +427,17 @@ $mol_text $mol_list
 		sub <= block_content!id /
 		type <= block_type!id \
 	Span!id $mol_text_span
+	String!id $mol_text_string
+		needle <= highlight \
 	Link!id $mol_text_link
 		target <= link_target!id \_blank
 	Image!id $mol_text_image
 	Header!id $mol_text_header
 		level <= header_level!id 0
 		content <= header_content!id /
+	Code!id $mol_text_code
+		text <= code_text!id \
+		highlight <= highlight \
 	Table!id $mol_grid
 		head_cells <= table_head_cells!id /
 		rows <= table_rows!id /
@@ -406,6 +467,10 @@ $mol_text_span $mol_paragraph
 		mol_text_type <= type?val \
 	sub <= content?val /
 
+$mol_text_string $mol_dimmer
+	dom_name \span
+	haystack?val \
+
 $mol_text_link $mol_link_iconed
 	attr *
 		^
@@ -421,7 +486,9 @@ $mol_text_image $mol_view
 		mol_text_type <= type?val \
 		data <= link?val \
 	sub /
-		<= title?val \
+		<= Image $mol_image
+			uri <= link
+			title <= title?val \
 
 $mol_row $mol_view
 
@@ -477,7 +544,7 @@ $mol_number $mol_view
 		<= String $mol_string
 			type \tel
 			value?val <=> value_string?val \
-			hint <= hint \
+			hint <= hint \ 
 			enabled <= string_enabled <= enabled true
 		<= Dec $mol_button_minor
 			event_click?val <=> event_dec?val null
@@ -526,7 +593,7 @@ $hyoo_bench_app $mol_book2
 		title <= param_title!id \
 		content /
 			<= Param_value!id $mol_number
-				value?val <=> param_value!id?val \
+				value?val <=> param_value!id?val 0
 				precision_change <= param_precision!id 0
 	-
 	result_col_title_sample @ \Sample
