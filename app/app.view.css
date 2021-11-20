@@ -45,6 +45,10 @@
 	flex-direction: column;
 }
 
+[hyoo_bench_app_addon_page_tools] {
+	flex-grow: 1;
+}
+
 [hyoo_bench_app_result_head] {
 	cursor: pointer;
 }
