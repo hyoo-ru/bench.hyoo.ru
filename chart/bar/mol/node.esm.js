@@ -2760,6 +2760,9 @@ var $;
             }
             return distance;
         }
+        transponed() {
+            return this[0].map((_, i) => this.map(row => row[i]));
+        }
         get x() { return this[0]; }
         get y() { return this[1]; }
         get z() { return this[2]; }
@@ -2880,6 +2883,12 @@ var $;
         gap() {
             const obj = new this.$.$mol_vector_2d(this.gap_x(), this.gap_y());
             return obj;
+        }
+        repos_x(val) {
+            return 0;
+        }
+        repos_y(val) {
+            return 0;
         }
         indexes() {
             return [];
@@ -3039,14 +3048,20 @@ var $;
             indexes() {
                 return this.series_x().map((_, i) => i);
             }
+            repos_x(val) {
+                return val;
+            }
+            repos_y(val) {
+                return val;
+            }
             points() {
                 const [shift_x, shift_y] = this.shift();
                 const [scale_x, scale_y] = this.scale();
                 const series_x = this.series_x();
                 const series_y = this.series_y();
                 return this.indexes().map(index => {
-                    let point_x = Math.round(shift_x + series_x[index] * scale_x);
-                    let point_y = Math.round(shift_y + series_y[index] * scale_y);
+                    let point_x = Math.round(shift_x + this.repos_x(series_x[index]) * scale_x);
+                    let point_y = Math.round(shift_y + this.repos_y(series_y[index]) * scale_y);
                     point_x = Math.max(Number.MIN_SAFE_INTEGER, Math.min(point_x, Number.MAX_SAFE_INTEGER));
                     point_y = Math.max(Number.MIN_SAFE_INTEGER, Math.min(point_y, Number.MAX_SAFE_INTEGER));
                     return [point_x, point_y];
@@ -3060,7 +3075,7 @@ var $;
                 const series_x = this.series_x();
                 const series_y = this.series_y();
                 for (let i = 0; i < series_x.length; i++) {
-                    next = next.expanded1([series_x[i], series_y[i]]);
+                    next = next.expanded1([this.repos_x(series_x[i]), this.repos_y(series_y[i])]);
                 }
                 return next;
             }
@@ -5032,7 +5047,7 @@ var $;
                 const action_type = this.event_eat(event);
                 if (action_type === 'zoom') {
                     const zoom_prev = this.zoom() || 0.001;
-                    const zoom_next = zoom_prev * (1 - .1 * Math.sign(event.deltaY));
+                    const zoom_next = zoom_prev * (1 - .001 * event.deltaY);
                     const mult = zoom_next / zoom_prev;
                     this.zoom(zoom_next);
                     const pan_prev = this.pan();
