@@ -546,124 +546,90 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
-        'return source when same object'() {
-            const target = {};
-            $.$mol_assert_equal($.$mol_conform(target, target), target);
+        'nulls & undefineds'() {
+            $.$mol_assert_ok($.$mol_compare_deep(null, null));
+            $.$mol_assert_ok($.$mol_compare_deep(undefined, undefined));
+            $.$mol_assert_not($.$mol_compare_deep(undefined, null));
+            $.$mol_assert_not($.$mol_compare_deep({}, null));
         },
-        'return target when some is not object'() {
-            const obj = { a: 1 };
-            $.$mol_assert_equal($.$mol_conform(true, obj), true);
-            $.$mol_assert_equal($.$mol_conform(obj, true), obj);
+        'number'() {
+            $.$mol_assert_ok($.$mol_compare_deep(1, 1));
+            $.$mol_assert_ok($.$mol_compare_deep(Number.NaN, Number.NaN));
+            $.$mol_assert_not($.$mol_compare_deep(1, 2));
+            $.$mol_assert_ok($.$mol_compare_deep(Object(1), Object(1)));
+            $.$mol_assert_not($.$mol_compare_deep(Object(1), Object(2)));
         },
-        'return target when some is null'() {
-            const obj = { a: 1 };
-            $.$mol_assert_equal($.$mol_conform(null, obj), null);
-            $.$mol_assert_equal($.$mol_conform(obj, null), obj);
+        'POJO'() {
+            $.$mol_assert_ok($.$mol_compare_deep({}, {}));
+            $.$mol_assert_not($.$mol_compare_deep({ a: 1 }, { b: 2 }));
+            $.$mol_assert_not($.$mol_compare_deep({ a: 1 }, { a: 2 }));
+            $.$mol_assert_not($.$mol_compare_deep({}, { a: undefined }));
+            $.$mol_assert_ok($.$mol_compare_deep({ a: 1, b: 2 }, { b: 2, a: 1 }));
+            $.$mol_assert_ok($.$mol_compare_deep({ a: { b: 1 } }, { a: { b: 1 } }));
         },
-        'return target when some is undefined'() {
-            const obj = { a: 1 };
-            $.$mol_assert_equal($.$mol_conform(undefined, obj), undefined);
-            $.$mol_assert_equal($.$mol_conform(obj, undefined), obj);
+        'Array'() {
+            $.$mol_assert_ok($.$mol_compare_deep([], []));
+            $.$mol_assert_ok($.$mol_compare_deep([1, [2]], [1, [2]]));
+            $.$mol_assert_not($.$mol_compare_deep([1, 2], [1, 3]));
+            $.$mol_assert_not($.$mol_compare_deep([1, 2,], [1, 3, undefined]));
         },
-        'return target when different keys count'() {
-            const target = [1, 2, 3];
-            const source = [1, 2, 3, undefined];
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-            $.$mol_assert_equal(result.join(','), '1,2,3');
+        'Non POJO are different'() {
+            class Thing extends Object {
+            }
+            $.$mol_assert_not($.$mol_compare_deep(new Thing, new Thing));
+            $.$mol_assert_not($.$mol_compare_deep(() => 1, () => 1));
+            $.$mol_assert_not($.$mol_compare_deep(new RangeError('Test error'), new RangeError('Test error')));
         },
-        'return source when array values are strong equal'() {
-            const source = [1, 2, 3];
-            $.$mol_assert_equal($.$mol_conform([1, 2, 3], source), source);
+        'same POJOs with cyclic reference'() {
+            const a = { foo: {} };
+            a['self'] = a;
+            const b = { foo: {} };
+            b['self'] = b;
+            $.$mol_assert_ok($.$mol_compare_deep(a, b));
         },
-        'return source when object values are strong equal'() {
-            const source = { a: 1, b: 2 };
-            $.$mol_assert_equal($.$mol_conform({ a: 1, b: 2 }, source), source);
+        'Date'() {
+            $.$mol_assert_ok($.$mol_compare_deep(new Date(12345), new Date(12345)));
+            $.$mol_assert_not($.$mol_compare_deep(new Date(12345), new Date(12346)));
         },
-        'return target when some values are not equal'() {
-            const target = [1, 2, 3];
-            const source = [1, 2, 5];
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-            $.$mol_assert_equal(result.join(','), '1,2,3');
+        'RegExp'() {
+            $.$mol_assert_ok($.$mol_compare_deep(/\x22/mig, /\x22/mig));
+            $.$mol_assert_not($.$mol_compare_deep(/\x22/mig, /\x21/mig));
+            $.$mol_assert_not($.$mol_compare_deep(/\x22/mig, /\x22/mg));
         },
-        'return source when values are deep equal'() {
-            const source = { foo: { bar: 1 } };
-            $.$mol_assert_equal($.$mol_conform({ foo: { bar: 1 } }, source), source);
+        'Map'() {
+            $.$mol_assert_ok($.$mol_compare_deep(new Map, new Map));
+            $.$mol_assert_ok($.$mol_compare_deep(new Map([[1, [2]]]), new Map([[1, [2]]])));
+            $.$mol_assert_not($.$mol_compare_deep(new Map([[1, 2]]), new Map([[1, 3]])));
+            $.$mol_assert_not($.$mol_compare_deep(new Map([[[1], 2]]), new Map([[[1], 2]])));
         },
-        'return target with equal values from source and not equal from target'() {
-            const source = { foo: { xxx: 1 }, bar: { xxx: 2 } };
-            const target = { foo: { xxx: 1 }, bar: { xxx: 3 } };
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-            $.$mol_assert_equal(result.foo, source.foo);
-            $.$mol_assert_equal(result.bar, target.bar);
+        'Set'() {
+            $.$mol_assert_ok($.$mol_compare_deep(new Set, new Set));
+            $.$mol_assert_ok($.$mol_compare_deep(new Set([1, [2]]), new Set([1, [2]])));
+            $.$mol_assert_not($.$mol_compare_deep(new Set([1]), new Set([2])));
         },
-        'return target when equal but with different class'() {
-            const target = { '0': 1 };
-            $.$mol_assert_equal($.$mol_conform(target, [1]), target);
+        'Uint8Array'() {
+            $.$mol_assert_ok($.$mol_compare_deep(new Uint8Array, new Uint8Array));
+            $.$mol_assert_ok($.$mol_compare_deep(new Uint8Array([0]), new Uint8Array([0])));
+            $.$mol_assert_not($.$mol_compare_deep(new Uint8Array([0]), new Uint8Array([1])));
         },
-        'return target when conformer for class is not defined'() {
-            const Obj = class {
-            };
-            const source = new Obj;
-            const target = new Obj;
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-        },
-        'return target when has cyclic reference'() {
-            const source = { foo: {} };
-            source['self'] = source;
-            const target = { foo: {} };
-            target['self'] = target;
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-            $.$mol_assert_equal(result['self'], target);
-            $.$mol_assert_equal(result.foo, source.foo);
-        },
-        'return source when equal dates'() {
-            const source = new Date(12345);
-            const target = new Date(12345);
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
-        },
-        'return source when equal regular expressions'() {
-            const source = /\x22/mig;
-            const target = /\x22/mig;
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
-        },
-        'return cached value if already conformed'() {
-            const source = { foo: { xxx: 1 }, bar: { xxx: 3 } };
-            const target = { foo: { xxx: 2 }, bar: { xxx: 3 } };
-            const result = $.$mol_conform(target, source);
-            target.foo.xxx = 1;
-            $.$mol_assert_equal($.$mol_conform(target.foo, source.foo), target.foo);
-        },
-        'skip readlony fields'() {
-            const source = { foo: {}, bar: {} };
-            const target = { foo: {}, bar: {} };
-            Object.defineProperty(target, 'bar', { value: {}, writable: false });
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, target);
-            $.$mol_assert_equal(result.foo, source.foo);
-            $.$mol_assert_equal(result.bar, target.bar);
-        },
-        'object with NaN'() {
-            const source = { foo: Number.NaN };
-            const target = { foo: Number.NaN };
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
-        },
-        'array with NaN'() {
-            const source = [Number.NaN];
-            const target = [Number.NaN];
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
+        'Custom comparator'() {
+            class User {
+                name;
+                rand;
+                constructor(name, rand = Math.random()) {
+                    this.name = name;
+                    this.rand = rand;
+                }
+                [Symbol.toPrimitive](mode) {
+                    return this.name;
+                }
+            }
+            $.$mol_assert_ok($.$mol_compare_deep(new User('Jin'), new User('Jin')));
+            $.$mol_assert_not($.$mol_compare_deep(new User('Jin'), new User('John')));
         },
     });
 })($ || ($ = {}));
-//conform.test.js.map
+//deep.test.js.map
 ;
 "use strict";
 var $;
@@ -1113,197 +1079,5 @@ var $;
 ;
 "use strict";
 //equals.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'nulls & undefineds'() {
-            $.$mol_assert_ok($.$mol_compare_deep(null, null));
-            $.$mol_assert_ok($.$mol_compare_deep(undefined, undefined));
-            $.$mol_assert_not($.$mol_compare_deep(undefined, null));
-            $.$mol_assert_not($.$mol_compare_deep({}, null));
-        },
-        'number'() {
-            $.$mol_assert_ok($.$mol_compare_deep(1, 1));
-            $.$mol_assert_ok($.$mol_compare_deep(Number.NaN, Number.NaN));
-            $.$mol_assert_not($.$mol_compare_deep(1, 2));
-            $.$mol_assert_ok($.$mol_compare_deep(Object(1), Object(1)));
-            $.$mol_assert_not($.$mol_compare_deep(Object(1), Object(2)));
-        },
-        'POJO'() {
-            $.$mol_assert_ok($.$mol_compare_deep({}, {}));
-            $.$mol_assert_not($.$mol_compare_deep({ a: 1 }, { b: 2 }));
-            $.$mol_assert_not($.$mol_compare_deep({ a: 1 }, { a: 2 }));
-            $.$mol_assert_not($.$mol_compare_deep({}, { a: undefined }));
-            $.$mol_assert_ok($.$mol_compare_deep({ a: 1, b: 2 }, { b: 2, a: 1 }));
-            $.$mol_assert_ok($.$mol_compare_deep({ a: { b: 1 } }, { a: { b: 1 } }));
-        },
-        'Array'() {
-            $.$mol_assert_ok($.$mol_compare_deep([], []));
-            $.$mol_assert_ok($.$mol_compare_deep([1, [2]], [1, [2]]));
-            $.$mol_assert_not($.$mol_compare_deep([1, 2], [1, 3]));
-            $.$mol_assert_not($.$mol_compare_deep([1, 2,], [1, 3, undefined]));
-        },
-        'Non POJO are different'() {
-            class Thing extends Object {
-            }
-            $.$mol_assert_not($.$mol_compare_deep(new Thing, new Thing));
-            $.$mol_assert_not($.$mol_compare_deep(() => 1, () => 1));
-            $.$mol_assert_not($.$mol_compare_deep(new RangeError('Test error'), new RangeError('Test error')));
-        },
-        'same POJOs with cyclic reference'() {
-            const a = { foo: {} };
-            a['self'] = a;
-            const b = { foo: {} };
-            b['self'] = b;
-            $.$mol_assert_ok($.$mol_compare_deep(a, b));
-        },
-        'Date'() {
-            $.$mol_assert_ok($.$mol_compare_deep(new Date(12345), new Date(12345)));
-            $.$mol_assert_not($.$mol_compare_deep(new Date(12345), new Date(12346)));
-        },
-        'RegExp'() {
-            $.$mol_assert_ok($.$mol_compare_deep(/\x22/mig, /\x22/mig));
-            $.$mol_assert_not($.$mol_compare_deep(/\x22/mig, /\x21/mig));
-            $.$mol_assert_not($.$mol_compare_deep(/\x22/mig, /\x22/mg));
-        },
-        'Map'() {
-            $.$mol_assert_ok($.$mol_compare_deep(new Map, new Map));
-            $.$mol_assert_ok($.$mol_compare_deep(new Map([[1, [2]]]), new Map([[1, [2]]])));
-            $.$mol_assert_not($.$mol_compare_deep(new Map([[1, 2]]), new Map([[1, 3]])));
-            $.$mol_assert_not($.$mol_compare_deep(new Map([[[1], 2]]), new Map([[[1], 2]])));
-        },
-        'Set'() {
-            $.$mol_assert_ok($.$mol_compare_deep(new Set, new Set));
-            $.$mol_assert_ok($.$mol_compare_deep(new Set([1, [2]]), new Set([1, [2]])));
-            $.$mol_assert_not($.$mol_compare_deep(new Set([1]), new Set([2])));
-        },
-        'Uint8Array'() {
-            $.$mol_assert_ok($.$mol_compare_deep(new Uint8Array, new Uint8Array));
-            $.$mol_assert_ok($.$mol_compare_deep(new Uint8Array([0]), new Uint8Array([0])));
-            $.$mol_assert_not($.$mol_compare_deep(new Uint8Array([0]), new Uint8Array([1])));
-        },
-    });
-})($ || ($ = {}));
-//deep.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    let cache = new WeakMap();
-    function $mol_compare_deep(left, right) {
-        if (Object.is(left, right))
-            return true;
-        if (left === null)
-            return false;
-        if (right === null)
-            return false;
-        if (typeof left !== 'object')
-            return false;
-        if (typeof right !== 'object')
-            return false;
-        const left_proto = Reflect.getPrototypeOf(left);
-        const right_proto = Reflect.getPrototypeOf(right);
-        if (left_proto !== right_proto)
-            return false;
-        if (left instanceof Boolean)
-            return Object.is(left.valueOf(), right['valueOf']());
-        if (left instanceof Number)
-            return Object.is(left.valueOf(), right['valueOf']());
-        if (left instanceof String)
-            return Object.is(left.valueOf(), right['valueOf']());
-        if (left instanceof Date)
-            return Object.is(left.valueOf(), right['valueOf']());
-        if (left instanceof RegExp)
-            return left.source === right['source'] && left.flags === right['flags'];
-        let left_cache = cache.get(left);
-        if (left_cache) {
-            const right_cache = left_cache.get(right);
-            if (typeof right_cache === 'boolean')
-                return right_cache;
-        }
-        else {
-            left_cache = new WeakMap([[right, true]]);
-            cache.set(left, left_cache);
-        }
-        let result;
-        try {
-            if (left_proto && !Reflect.getPrototypeOf(left_proto))
-                result = compare_pojo(left, right);
-            else if (Array.isArray(left))
-                result = compare_array(left, right);
-            else if (left instanceof Set)
-                result = compare_set(left, right);
-            else if (left instanceof Map)
-                result = compare_map(left, right);
-            else if (ArrayBuffer.isView(left))
-                result = compare_buffer(left, right);
-            else
-                result = false;
-        }
-        finally {
-            left_cache.set(right, result);
-        }
-        return result;
-    }
-    $.$mol_compare_deep = $mol_compare_deep;
-    function compare_array(left, right) {
-        const len = left.length;
-        if (len !== right.length)
-            return false;
-        for (let i = 0; i < len; ++i) {
-            if (!$mol_compare_deep(left[i], right[i]))
-                return false;
-        }
-        return true;
-    }
-    function compare_buffer(left, right) {
-        const len = left.byteLength;
-        if (len !== right.byteLength)
-            return false;
-        for (let i = 0; i < len; ++i) {
-            if (left[i] !== right[i])
-                return false;
-        }
-        return true;
-    }
-    function compare_iterator(left, right, compare) {
-        while (true) {
-            const left_next = left.next();
-            const right_next = right.next();
-            if (left_next.done !== right_next.done)
-                return false;
-            if (left_next.done)
-                break;
-            if (!compare(left_next.value, right_next.value))
-                return false;
-        }
-        return true;
-    }
-    function compare_set(left, right) {
-        if (left.size !== right.size)
-            return false;
-        return compare_iterator(left.values(), right.values(), $mol_compare_deep);
-    }
-    function compare_map(left, right) {
-        if (left.size !== right.size)
-            return false;
-        return compare_iterator(left.keys(), right.keys(), Object.is)
-            && compare_iterator(left.values(), right.values(), $mol_compare_deep);
-    }
-    function compare_pojo(left, right) {
-        const left_keys = Object.getOwnPropertyNames(left);
-        const right_keys = Object.getOwnPropertyNames(right);
-        if (left_keys.length !== right_keys.length)
-            return false;
-        for (let key of left_keys) {
-            if (!$mol_compare_deep(left[key], Reflect.get(right, key)))
-                return false;
-        }
-        return true;
-    }
-})($ || ($ = {}));
-//deep.js.map
 
 //# sourceMappingURL=web.test.js.map
