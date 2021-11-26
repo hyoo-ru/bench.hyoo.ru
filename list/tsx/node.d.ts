@@ -14,6 +14,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    let $mol_report_bugsnag: string;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     var $mol_dom_context: typeof globalThis;
 }
 
