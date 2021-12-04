@@ -24,74 +24,6 @@ module.exports = $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_report_bugsnag = '';
-    globalThis.onerror = function (msg, url, line, col, err) {
-        const el = document.activeElement;
-        const report = {
-            apiKey: $.$mol_report_bugsnag,
-            payloadVersion: 5,
-            notifier: {
-                name: '$mol_report_bugsnag',
-                version: '1',
-                url: '$mol_report_bugsnag',
-            },
-            events: [{
-                    device: {
-                        locale: navigator.language,
-                        userAgent: navigator.userAgent,
-                        time: new Date().toISOString(),
-                    },
-                    context: el && el.id,
-                    exceptions: [{
-                            message: err && err.message || err || msg,
-                            errorClass: err && err.constructor.name,
-                            stacktrace: [{
-                                    columnNumber: col,
-                                    file: url,
-                                    lineNumber: line,
-                                    method: '',
-                                }],
-                        }],
-                    metaData: {
-                        stack: err && err.stack,
-                    },
-                    request: {
-                        url: document.location.href,
-                        referer: document.referrer,
-                    },
-                }],
-        };
-        if (location.hostname === 'localhost') {
-            console.debug('Error report', report);
-        }
-        else {
-            fetch('https://notify.bugsnag.com/', {
-                method: 'post',
-                body: JSON.stringify(report),
-            });
-        }
-    };
-    globalThis.onunhandledrejection = function (event) {
-        globalThis.onerror('Unhandled Rejection', '', 0, 0, event.reason);
-    };
-    const error = console.error;
-    console.error = function (...args) {
-        globalThis.onerror('Logged Error', '', 0, 0, arguments[0]);
-        error.apply(console, args);
-    };
-})($ || ($ = {}));
-//bugsnag.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_report_bugsnag = '18acf016ed2a2a4cc4445daa9dd2dd3c';
-})($ || ($ = {}));
-//hyoo.js.map
-;
-"use strict";
-var $;
-(function ($) {
 })($ || ($ = {}));
 //context.js.map
 ;
@@ -143,6 +75,74 @@ var $;
     $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
 })($ || ($ = {}));
 //context.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_report_bugsnag = '';
+    globalThis.onerror = function (msg, url, line, col, err) {
+        const doc = $.$mol_dom_context.document;
+        const report = {
+            apiKey: $.$mol_report_bugsnag,
+            payloadVersion: 5,
+            notifier: {
+                name: '$mol_report_bugsnag',
+                version: '1',
+                url: '$mol_report_bugsnag',
+            },
+            events: [{
+                    device: {
+                        locale: navigator.language,
+                        userAgent: navigator.userAgent,
+                        time: new Date().toISOString(),
+                    },
+                    context: doc?.activeElement?.id,
+                    exceptions: [{
+                            message: err?.message || err || msg,
+                            errorClass: err?.constructor.name,
+                            stacktrace: [{
+                                    columnNumber: col,
+                                    file: url,
+                                    lineNumber: line,
+                                    method: '',
+                                }],
+                        }],
+                    metaData: {
+                        stack: err && err.stack,
+                    },
+                    request: {
+                        url: doc?.location.href,
+                        referer: doc?.referrer,
+                    },
+                }],
+        };
+        if (location.hostname === 'localhost') {
+            console.debug('Error report', report);
+        }
+        else {
+            fetch('https://notify.bugsnag.com/', {
+                method: 'post',
+                body: JSON.stringify(report),
+            });
+        }
+    };
+    globalThis.onunhandledrejection = function (event) {
+        globalThis.onerror('Unhandled Rejection', '', 0, 0, event.reason);
+    };
+    const error = console.error;
+    console.error = function (...args) {
+        globalThis.onerror('Logged Error', '', 0, 0, arguments[0]);
+        error.apply(console, args);
+    };
+})($ || ($ = {}));
+//bugsnag.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_report_bugsnag = '18acf016ed2a2a4cc4445daa9dd2dd3c';
+})($ || ($ = {}));
+//hyoo.js.map
 ;
 "use strict";
 var $;
@@ -1982,16 +1982,50 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_guid(length = 8, exists = () => false) {
+        for (;;) {
+            let id = Math.random().toString(36).substring(2, length + 2).toUpperCase();
+            if (exists(id))
+                continue;
+            return id;
+        }
+    }
+    $.$mol_guid = $mol_guid;
+})($ || ($ = {}));
+//guid.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    const keys = new WeakMap();
     function $mol_key(value) {
         if (!value)
             return JSON.stringify(value);
         if (typeof value !== 'object' && typeof value !== 'function')
             return JSON.stringify(value);
-        if (Array.isArray(value))
-            return JSON.stringify(value);
-        if (Object.getPrototypeOf(Object.getPrototypeOf(value)) === null)
-            return JSON.stringify(value);
-        return value;
+        return JSON.stringify(value, (field, value) => {
+            if (!value)
+                return value;
+            if (typeof value !== 'object' && typeof value !== 'function')
+                return value;
+            if (Array.isArray(value))
+                return value;
+            const proto = Reflect.getPrototypeOf(value);
+            if (!proto)
+                return value;
+            if (Reflect.getPrototypeOf(proto) === null)
+                return value;
+            if ('toJSON' in value)
+                return value;
+            if (value instanceof RegExp)
+                return value.toString();
+            let key = keys.get(value);
+            if (key)
+                return key;
+            key = $.$mol_guid();
+            keys.set(value, key);
+            return key;
+        });
     }
     $.$mol_key = $mol_key;
 })($ || ($ = {}));
@@ -3231,6 +3265,61 @@ var $;
     });
 })($ || ($ = {}));
 //view.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'Primitives'() {
+            $.$mol_assert_equal($.$mol_key(null), 'null');
+            $.$mol_assert_equal($.$mol_key(false), 'false');
+            $.$mol_assert_equal($.$mol_key(true), 'true');
+            $.$mol_assert_equal($.$mol_key(0), '0');
+            $.$mol_assert_equal($.$mol_key(''), '""');
+        },
+        'Array & POJO'() {
+            $.$mol_assert_equal($.$mol_key([null]), '[null]');
+            $.$mol_assert_equal($.$mol_key({ foo: 0 }), '{"foo":0}');
+            $.$mol_assert_equal($.$mol_key({ foo: [false] }), '{"foo":[false]}');
+        },
+        'Function'() {
+            const func = () => { };
+            $.$mol_assert_equal($.$mol_key(func), $.$mol_key(func));
+            $.$mol_assert_unique($.$mol_key(func), $.$mol_key(() => { }));
+        },
+        'Objects'() {
+            class User {
+            }
+            const jin = new User();
+            $.$mol_assert_equal($.$mol_key(jin), $.$mol_key(jin));
+            $.$mol_assert_unique($.$mol_key(jin), $.$mol_key(new User()));
+        },
+        'Elements'() {
+            const foo = $.$mol_jsx("div", null, "bar");
+            $.$mol_assert_equal($.$mol_key(foo), $.$mol_key(foo));
+            $.$mol_assert_unique($.$mol_key(foo), $.$mol_key($.$mol_jsx("div", null, "bar")));
+        },
+        'Custom JSON representation'() {
+            class User {
+                name;
+                age;
+                constructor(name, age) {
+                    this.name = name;
+                    this.age = age;
+                }
+                toJSON() { return { name: this.name }; }
+            }
+            $.$mol_assert_equal($.$mol_key(new User('jin', 18)), '{"name":"jin"}');
+        },
+        'Special native classes'() {
+            $.$mol_assert_equal($.$mol_key(new Date('xyz')), 'null');
+            $.$mol_assert_equal($.$mol_key(new Date('2001-01-02T03:04:05.678Z')), '"2001-01-02T03:04:05.678Z"');
+            $.$mol_assert_equal($.$mol_key(/./), '"/./"');
+            $.$mol_assert_equal($.$mol_key(/\./gimsu), '"/\\\\./gimsu"');
+        },
+    });
+})($ || ($ = {}));
+//key.test.js.map
 ;
 "use strict";
 var $;
