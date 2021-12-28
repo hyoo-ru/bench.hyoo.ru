@@ -269,9 +269,6 @@ var $;
             return this.name;
         }
         destructor() { }
-        [Symbol.toPrimitive](hint) {
-            return hint === 'number' ? this.valueOf() : this.toString();
-        }
         toString() {
             return this[Symbol.toStringTag] || this.constructor.name + '()';
         }
