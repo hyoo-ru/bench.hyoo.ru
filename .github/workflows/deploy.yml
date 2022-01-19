@@ -18,7 +18,7 @@ jobs:
       with:
         token: ${{ secrets.GH_PAT }}
         package: hyoo/bench
-        modules: app list/mol list/tsx list/tsxatom chart/rope/mol chart/bar/mol 
+        modules: app list/mol list/tsx chart/rope/mol chart/bar/mol 
         
     - name: Consolidate apps
       run: |
