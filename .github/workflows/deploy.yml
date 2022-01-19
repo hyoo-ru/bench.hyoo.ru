@@ -35,7 +35,6 @@ jobs:
         mv hyoo/bench/list/sapui5 ./-/list
         mv hyoo/bench/list/mol/- ./-/list/mol
         mv hyoo/bench/list/tsx/- ./-/list/tsx
-        mv hyoo/bench/list/tsxatom/- ./-/list/tsxatom
         mv hyoo/bench/geometry ./-
         mv hyoo/bench/elements ./-
         mkdir ./-/chart
