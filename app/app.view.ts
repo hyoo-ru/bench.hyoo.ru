@@ -19,6 +19,7 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		command_result< Result >( command : any[] ) : Result {
+			$mol_wire_solid()
 			return $mol_wire_sync( this ).command_result_async( command ) as Result
 		}
 			
