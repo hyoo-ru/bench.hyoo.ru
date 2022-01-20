@@ -532,6 +532,31 @@ $mol_bench_head $mol_float
 		^
 		title <= hint @ \Click to sort by this column
 
+$mol_embed_native $mol_scroll
+	dom_name \object
+	window null
+	attr *
+		^
+		data <= uri?val \
+		type <= mime \
+	sub /
+		<= title?val \
+
+$mol_frame $mol_embed_native
+	dom_name \iframe
+	attr *
+		data null
+		type null
+		src <= uri?val \
+		srcdoc <= html null
+		allow <= allow \
+	fullscreen true
+	accelerometer true
+	autoplay true
+	encription true
+	gyroscope true
+	pip true
+
 $mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
@@ -581,8 +606,8 @@ $hyoo_bench_app $mol_book2
 					col_sort?val <=> result_col_sort?val \
 		<= Sandbox_page $mol_page
 			title <= sandbox_title @ \Sandbox
-			Body <= Sandbox $mol_scroll
-				dom_name \iframe
+			Body <= Sandbox $mol_frame
+				uri <= bench?val \//bench.hyoo.ru/list/
 	-
 	Menu_option!id $mol_check_box
 		minimal_height 36
