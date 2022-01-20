@@ -5280,24 +5280,494 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_mem_force extends Object {
-        constructor() { super(); }
-        $mol_mem_force = true;
-        static $mol_mem_force = true;
-        static toString() { return this.name; }
+    class $mol_plot_group extends $mol_plot_graph {
+        sub() {
+            return this.graphs_enriched();
+        }
+        Sample() {
+            const obj = new this.$.$mol_plot_graph_sample();
+            obj.sub = () => this.graph_samples();
+            return obj;
+        }
+        graphs() {
+            return [];
+        }
+        graphs_enriched() {
+            return this.graphs();
+        }
+        graph_samples() {
+            return [];
+        }
     }
-    $.$mol_mem_force = $mol_mem_force;
-    class $mol_mem_force_cache extends $mol_mem_force {
-    }
-    $.$mol_mem_force_cache = $mol_mem_force_cache;
-    class $mol_mem_force_update extends $mol_mem_force {
-    }
-    $.$mol_mem_force_update = $mol_mem_force_update;
-    class $mol_mem_force_fail extends $mol_mem_force_cache {
-    }
-    $.$mol_mem_force_fail = $mol_mem_force_fail;
+    __decorate([
+        $mol_mem
+    ], $mol_plot_group.prototype, "Sample", null);
+    $.$mol_plot_group = $mol_plot_group;
 })($ || ($ = {}));
-//mol/mem/force/force.ts
+//mol/plot/group/-view.tree/group.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_group extends $.$mol_plot_group {
+            graphs_enriched() {
+                const graphs = this.graphs();
+                for (let graph of graphs) {
+                    graph.shift = () => this.shift();
+                    graph.scale = () => this.scale();
+                    graph.size_real = () => this.size_real();
+                    graph.hue = () => this.hue();
+                    graph.series_x = () => this.series_x();
+                    graph.series_y = () => this.series_y();
+                    graph.dimensions_pane = () => this.dimensions_pane();
+                    graph.viewport = () => this.viewport();
+                    graph.cursor_position = () => this.cursor_position();
+                    graph.gap = () => this.gap();
+                    graph.title = () => this.title();
+                    graph.repos_x = val => this.repos_x(val);
+                    graph.repos_y = val => this.repos_y(val);
+                }
+                return graphs;
+            }
+            dimensions() {
+                const graphs = this.graphs_enriched();
+                let next = new this.$.$mol_vector_2d($mol_vector_range_full.inversed, $mol_vector_range_full.inversed);
+                for (let graph of graphs) {
+                    next = next.expanded2(graph.dimensions());
+                }
+                return next;
+            }
+            graph_samples() {
+                return this.graphs_enriched().map(graph => graph.Sample());
+            }
+            back() {
+                const graphs = this.graphs_enriched();
+                const next = [];
+                for (let graph of graphs)
+                    next.push(...graph.back());
+                return next;
+            }
+            front() {
+                const graphs = this.graphs_enriched();
+                const next = [];
+                for (let graph of graphs)
+                    next.push(...graph.front());
+                return next;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_group.prototype, "graphs_enriched", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_group.prototype, "dimensions", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_group.prototype, "graph_samples", null);
+        $$.$mol_plot_group = $mol_plot_group;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/plot/group/group.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_plot_line extends $mol_plot_graph {
+        threshold() {
+            return 1;
+        }
+        spacing() {
+            return 2;
+        }
+        color_fill() {
+            return "none";
+        }
+        dom_name() {
+            return "path";
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                d: this.curve()
+            };
+        }
+        sub() {
+            return [
+                this.Hint()
+            ];
+        }
+        Sample() {
+            const obj = new this.$.$mol_plot_graph_sample();
+            obj.color = () => this.color();
+            obj.type = () => this.type();
+            return obj;
+        }
+        curve() {
+            return "";
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_plot_line.prototype, "Sample", null);
+    $.$mol_plot_line = $mol_plot_line;
+})($ || ($ = {}));
+//mol/plot/line/-view.tree/line.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/line/line.view.css", "[mol_plot_line] {\n\tcolor: var(--mol_skin_base);\n\tfill: none;\n\tstroke-linejoin: round;\n}\n\n[mol_plot_line_sample] {\n\theight: 0;\n\tleft: 0;\n\tright: 0;\n\tbottom: 0;\n\tborder-width: 2px 0 0;\n\tposition: absolute;\n\ttop: .75em;\n\ttransform: translateY(-50%);\n}\n");
+})($ || ($ = {}));
+//mol/plot/line/-css/line.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_line extends $.$mol_plot_line {
+            sub() {
+                return this.hint() ? super.sub() : [];
+            }
+            indexes() {
+                const threshold = this.threshold();
+                const { x: { min: viewport_left, max: viewport_right }, y: { min: viewport_bottom, max: viewport_top }, } = this.viewport();
+                const [shift_x, shift_y] = this.shift();
+                const [scale_x, scale_y] = this.scale();
+                const indexes = [];
+                let last = new $mol_vector_2d(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+                let last_zone = new $mol_vector_2d(0, 0);
+                const series_x = this.series_x();
+                const series_y = this.series_y();
+                const zone_of = (point) => new $mol_vector_2d(point.x < viewport_left ? -1
+                    : point.x > viewport_right ? 1
+                        : 0, point.y < viewport_bottom ? -1
+                    : point.y > viewport_top ? 1
+                        : 0);
+                for (let i = 0; i < series_x.length - 1; i++) {
+                    const scaled = new $mol_vector_2d(Math.round(shift_x + this.repos_x(series_x[i]) * scale_x), Math.round(shift_y + this.repos_y(series_y[i]) * scale_y));
+                    if (Math.abs(scaled.x - last.x) < threshold
+                        && Math.abs(scaled.y - last.y) < threshold)
+                        continue;
+                    const zone = zone_of(scaled);
+                    last = scaled;
+                    if (zone.x !== 0 && zone.x === last_zone.x || zone.y !== 0 && zone.y === last_zone.y) {
+                        continue;
+                    }
+                    if (last_zone.x !== 0 || last_zone.y !== 0) {
+                        indexes.push(i - 1);
+                    }
+                    last_zone = zone;
+                    indexes.push(i);
+                }
+                indexes.push(series_x.length - 1);
+                return indexes;
+            }
+            curve() {
+                const points = this.points();
+                if (points.length === 0)
+                    return '';
+                const main = points.map(point => `L ${point.join(' ')}`).join(' ');
+                return `M ${points[0].join(' ')} ${main}`;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_line.prototype, "indexes", null);
+        $$.$mol_plot_line = $mol_plot_line;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/plot/line/line.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_plot_dot extends $mol_plot_graph {
+        points_max() {
+            return Infinity;
+        }
+        aspect() {
+            return 1;
+        }
+        style() {
+            return {
+                ...super.style(),
+                "stroke-width": this.diameter()
+            };
+        }
+        sub() {
+            return [
+                this.Hint(),
+                this.Curve()
+            ];
+        }
+        Sample() {
+            const obj = new this.$.$mol_plot_graph_sample();
+            obj.color = () => this.color();
+            return obj;
+        }
+        diameter() {
+            return 8;
+        }
+        curve() {
+            return "";
+        }
+        Curve() {
+            const obj = new this.$.$mol_svg_path();
+            obj.geometry = () => this.curve();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_plot_dot.prototype, "Sample", null);
+    __decorate([
+        $mol_mem
+    ], $mol_plot_dot.prototype, "Curve", null);
+    $.$mol_plot_dot = $mol_plot_dot;
+})($ || ($ = {}));
+//mol/plot/dot/-view.tree/dot.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_coord_pack(a, b) {
+        return a << 16 | b & 0xFFFF;
+    }
+    $.$mol_coord_pack = $mol_coord_pack;
+    function $mol_coord_high(key) {
+        return key >> 16;
+    }
+    $.$mol_coord_high = $mol_coord_high;
+    function $mol_coord_low(key) {
+        return (key & 0xFFFF) << 16 >> 16;
+    }
+    $.$mol_coord_low = $mol_coord_low;
+})($ || ($ = {}));
+//mol/coord/coord.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/plot/dot/dot.view.css", "[mol_plot_dot] {\n\tcolor: var(--mol_skin_base);\n\tstroke-linecap: round;\n\tfill: none;\n}\n\n[mol_plot_dot_sample] {\n\twidth: .5rem;\n\theight: .5rem;\n\tborder-radius: 1rem;\n\tbackground: currentColor;\n\tposition: absolute;\n\ttop: .75em;\n\tleft: 50%;\n\ttransform: translate(-50%, -50%);\n}\n");
+})($ || ($ = {}));
+//mol/plot/dot/-css/dot.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_plot_dot extends $.$mol_plot_dot {
+            filled() {
+                return new Set();
+            }
+            indexes() {
+                const radius = this.diameter() / 2;
+                const points_max = this.points_max();
+                const viewport = this.viewport();
+                const viewport_left = viewport.x.min - radius;
+                const viewport_right = viewport.x.max + radius;
+                const viewport_bottom = viewport.y.min - radius;
+                const viewport_top = viewport.y.max + radius;
+                const [shift_x, shift_y] = this.shift();
+                const [scale_x, scale_y] = this.scale();
+                let last_x = Number.NEGATIVE_INFINITY;
+                let last_y = Number.NEGATIVE_INFINITY;
+                let spacing = 0;
+                let filled = this.filled();
+                let indexes;
+                const series_x = this.series_x();
+                const series_y = this.series_y();
+                do {
+                    indexes = [];
+                    for (let i = 0; i < series_x.length; i++) {
+                        const point_x = this.repos_x(series_x[i]);
+                        const point_y = this.repos_y(series_y[i]);
+                        const scaled_x = Math.round(shift_x + point_x * scale_x);
+                        const scaled_y = Math.round(shift_y + point_y * scale_y);
+                        if (Math.abs(scaled_x - last_x) < radius
+                            && Math.abs(scaled_y - last_y) < radius)
+                            continue;
+                        last_x = scaled_x;
+                        last_y = scaled_y;
+                        if (scaled_x < viewport_left)
+                            continue;
+                        if (scaled_y < viewport_bottom)
+                            continue;
+                        if (scaled_x > viewport_right)
+                            continue;
+                        if (scaled_y > viewport_top)
+                            continue;
+                        if (spacing !== 0) {
+                            const key = $mol_coord_pack(Math.round(point_x * scale_x / spacing) * spacing, Math.round(point_y * scale_y / spacing) * spacing);
+                            if (filled.has(key))
+                                continue;
+                            filled.add(key);
+                        }
+                        indexes.push(i);
+                        if (indexes.length > points_max)
+                            break;
+                    }
+                    spacing += Math.ceil(radius);
+                    filled.clear();
+                } while (indexes.length > points_max);
+                return indexes;
+            }
+            curve() {
+                const points = this.points();
+                if (points.length === 0)
+                    return '';
+                const diameter = this.diameter();
+                const aspect = this.aspect();
+                const shift_y = Math.max(0, Math.floor((aspect - 1) * diameter / 2));
+                const shift_x = Math.max(0, Math.floor((1 / aspect - 1) * diameter / 2));
+                const size_y = Math.max(0, Math.ceil((aspect - 1) * diameter));
+                const size_x = Math.max(0, Math.ceil((1 / aspect - 1) * diameter));
+                return points.map(point => `M ${point[0] - shift_x} ${point[1] - shift_y} l ${size_x} ${size_y}`).join(' ');
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_plot_dot.prototype, "filled", null);
+        __decorate([
+            $mol_mem
+        ], $mol_plot_dot.prototype, "indexes", null);
+        $$.$mol_plot_dot = $mol_plot_dot;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//mol/plot/dot/dot.view.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_bench_chart_rope_mol extends $mol_view {
+        sub() {
+            return [
+                this.Chart()
+            ];
+        }
+        Graph(id) {
+            const obj = new this.$.$mol_plot_group();
+            obj.title = () => this.graph_title(id);
+            obj.series_y = () => this.series(id);
+            obj.graphs = () => [
+                this.Line(id),
+                this.Dots(id)
+            ];
+            return obj;
+        }
+        Vert() {
+            const obj = new this.$.$mol_plot_ruler_vert();
+            obj.title = () => "Val";
+            return obj;
+        }
+        Hor() {
+            const obj = new this.$.$mol_plot_ruler_hor();
+            obj.title = () => "Iter";
+            return obj;
+        }
+        graphs() {
+            return [
+                this.Vert(),
+                this.Hor()
+            ];
+        }
+        Chart() {
+            const obj = new this.$.$mol_chart();
+            obj.graphs = () => this.graphs();
+            return obj;
+        }
+        graph_title(id) {
+            return "";
+        }
+        series(id) {
+            return [];
+        }
+        Line(id) {
+            const obj = new this.$.$mol_plot_line();
+            return obj;
+        }
+        Dots(id) {
+            const obj = new this.$.$mol_plot_dot();
+            return obj;
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_bench_chart_rope_mol.prototype, "Graph", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_bench_chart_rope_mol.prototype, "Vert", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_bench_chart_rope_mol.prototype, "Hor", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_bench_chart_rope_mol.prototype, "Chart", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_bench_chart_rope_mol.prototype, "Line", null);
+    __decorate([
+        $mol_mem_key
+    ], $hyoo_bench_chart_rope_mol.prototype, "Dots", null);
+    $.$hyoo_bench_chart_rope_mol = $hyoo_bench_chart_rope_mol;
+})($ || ($ = {}));
+//hyoo/bench/chart/rope/mol/-view.tree/mol.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("hyoo/bench/chart/rope/mol/mol.view.css", "[hyoo_bench_chart_rope_mol] {\n\tdisplay: flex;\n}\n");
+})($ || ($ = {}));
+//hyoo/bench/chart/rope/mol/-css/mol.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_bench_chart_rope_mol extends $.$hyoo_bench_chart_rope_mol {
+            static listener() {
+                return new $mol_dom_listener(window, 'message', (event) => {
+                    switch (event.data[0]) {
+                        case 'fill':
+                        case 'update':
+                            this.data(event.data[1]);
+                            break;
+                    }
+                });
+            }
+            static data(next) {
+                this.listener();
+                return next || { sample: '', graphs: [] };
+            }
+            graphs() {
+                const data = $hyoo_bench_chart_rope_mol.data();
+                return [
+                    ...super.graphs(),
+                    ...data.graphs.map((g, i) => this.Graph(i)),
+                ];
+            }
+            graph_title(id) {
+                return `Graph #${id}`;
+            }
+            series(id) {
+                return $hyoo_bench_chart_rope_mol.data().graphs[id] ?? [];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $hyoo_bench_chart_rope_mol, "listener", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_bench_chart_rope_mol, "data", null);
+        $$.$hyoo_bench_chart_rope_mol = $hyoo_bench_chart_rope_mol;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//hyoo/bench/chart/rope/mol/mol.view.ts
 ;
 "use strict";
 var $;
@@ -5413,16 +5883,19 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_bench_chart_bar_mol extends $.$hyoo_bench_chart_bar_mol {
-            static data(next, force) {
-                window.addEventListener('message', event => {
+            static listener() {
+                return new $mol_dom_listener(window, 'message', (event) => {
                     switch (event.data[0]) {
                         case 'fill':
                         case 'update':
-                            this.data(event.data[1], $mol_mem_force_cache);
+                            this.data(event.data[1]);
                             break;
                     }
                 });
-                return { sample: '', graphs: [] };
+            }
+            static data(next) {
+                this.listener();
+                return next || { sample: '', graphs: [] };
             }
             graphs() {
                 const data = $hyoo_bench_chart_bar_mol.data();
@@ -5441,6 +5914,9 @@ var $;
                 return $mol_range2().slice(0, this.series(0).length);
             }
         }
+        __decorate([
+            $mol_mem
+        ], $hyoo_bench_chart_bar_mol, "listener", null);
         __decorate([
             $mol_mem
         ], $hyoo_bench_chart_bar_mol, "data", null);
