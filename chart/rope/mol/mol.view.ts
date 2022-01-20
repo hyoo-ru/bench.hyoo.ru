@@ -8,16 +8,21 @@ namespace $.$$ {
 	export class $hyoo_bench_chart_rope_mol extends $.$hyoo_bench_chart_rope_mol {
 		
 		@ $mol_mem
-		static data( next? : $hyoo_bench_chart_rope_mol_data , force? : $mol_mem_force ) : $hyoo_bench_chart_rope_mol_data {
-			window.addEventListener( 'message' , event => {
+		static listener() {
+			return new $mol_dom_listener( window , 'message' , ( event : MessageEvent )=> {
 				switch( event.data[0] ) {
 					case 'fill' :
 					case 'update' :
-						this.data( event.data[ 1 ] , $mol_mem_force_cache )
+						this.data( event.data[ 1 ] )
 						break
 				}
 			} )
-			return { sample : '' , graphs : [] }
+		}
+		
+		@ $mol_mem
+		static data( next? : $hyoo_bench_chart_rope_mol_data ) : $hyoo_bench_chart_rope_mol_data {
+			this.listener()
+			return next || { sample : '' , graphs : [] }
 		}
 		
 		graphs() {
