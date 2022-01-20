@@ -3354,73 +3354,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_wire_sync(obj) {
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                return function $mol_wire_sync(...args) {
-                    const fiber = $mol_wire_fiber.temp(obj, val, ...args);
-                    return fiber.sync();
-                };
-            }
-        });
-    }
-    $.$mol_wire_sync = $mol_wire_sync;
-})($ || ($ = {}));
-//mol/wire/sync/sync.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_action = $mol_wire_method;
-})($ || ($ = {}));
-//mol/action/action.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_fiber_defer(calculate) {
-        const host = {};
-        const fiber = new $mol_wire_fiber(host, calculate, calculate.name);
-        fiber.plan();
-        return fiber;
-    }
-    $.$mol_fiber_defer = $mol_fiber_defer;
-    function $mol_fiber_root(calculate) {
-        const wrapper = function (...args) {
-            const fiber = new $mol_wire_fiber(this, calculate, this + '.' + calculate.name, ...args);
-            return fiber.async();
-        };
-        wrapper[Symbol.toStringTag] = calculate.name;
-        return wrapper;
-    }
-    $.$mol_fiber_root = $mol_fiber_root;
-    function $mol_fiber_sync(request) {
-        throw new Error('Use $mol_wire_sync instead');
-    }
-    $.$mol_fiber_sync = $mol_fiber_sync;
-    async function $mol_fiber_warp() {
-        $mol_wire_fiber.sync();
-    }
-    $.$mol_fiber_warp = $mol_fiber_warp;
-    class $mol_fiber_solid extends $mol_wrapper {
-        static func(task) {
-            return task;
-        }
-    }
-    $.$mol_fiber_solid = $mol_fiber_solid;
-    class $mol_fiber {
-        static method = $mol_action;
-    }
-    $.$mol_fiber = $mol_fiber;
-})($ || ($ = {}));
-//mol/fiber/fiber.ts
-;
-"use strict";
-var $;
-(function ($) {
     $mol_style_attach("hyoo/bench/list/mol/mol.view.css", "[hyoo_bench_list_mol] {\n\tpadding: .5rem;\n}\n\n[hyoo_bench_list_mol_head] {\n\tpadding: .5rem;\n\tmargin: 0;\n\tfont-size: 1.5em;\n\tfont-weight: normal;\n}\n\n[hyoo_bench_list_mol_row] {\n\tpadding: .5rem;\n\tcursor: pointer;\n\tdisplay: block;\n}\n\n[hyoo_bench_list_mol_row]:hover {\n\tbox-shadow: none;\n}\n\n[hyoo_bench_list_mol_row][mol_check_checked] {\n\tbackground: #eee;\n}\n\n[hyoo_bench_list_mol_row_title] {\n\tfont-weight: bold;\n\tdisplay: block;\n}\n\n[hyoo_bench_list_mol_row_content] {\n\tdisplay: block;\n}\n");
 })($ || ($ = {}));
 //hyoo/bench/list/mol/-css/mol.view.css.ts
@@ -3432,11 +3365,11 @@ var $;
     (function ($$) {
         class $hyoo_bench_list_mol extends $.$hyoo_bench_list_mol {
             static listener() {
-                return new $mol_dom_listener(window, 'message', $mol_fiber_root((event) => {
+                return new $mol_dom_listener(window, 'message', (event) => {
                     if (event.data[0] !== 'set data')
                         return;
                     this.data(event.data[1]);
-                }));
+                });
             }
             static data(next) {
                 this.listener();
