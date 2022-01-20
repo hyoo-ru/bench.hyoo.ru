@@ -4,21 +4,12 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		bench( next? : string ) {
-			return $mol_state_arg.value( 'bench' , next ) || '//bench.hyoo.ru/list/'
+			return $mol_state_arg.value( 'bench' , next ) || super.bench()
 		}
 		
 		@ $mol_mem
-		sandbox() : HTMLIFrameElement {
-
-			const next = this.Sandbox().dom_node() as HTMLIFrameElement
-		
-			const src = this.bench()
-			
-			return $mol_fiber_sync( ()=> new Promise< typeof next >( ( done , fail )=> {
-				next.onload = ()=> done( next )
-				next.src = src
-			} ) )()
-			
+		sandbox() {
+			return this.Sandbox().window()
 		}
 
 		@ $mol_mem
@@ -28,11 +19,15 @@ namespace $.$$ {
 		
 		@ $mol_mem_key
 		command_result< Result >( command : any[] ) : Result {
+			return $mol_wire_sync( this ).command_result_async( command ) as Result
+		}
+			
+		command_result_async( command : any[] ) {
 			
 			const sandbox = this.sandbox()
-			new $mol_defer( ()=> this.command_last( command ) )
+			this.command_last( command )
 			
-			return $mol_fiber_sync( ()=> new Promise< Result >( done => requestAnimationFrame( ()=> {
+			return new Promise( done => requestAnimationFrame( ()=> {
 				
 				const handle = ( event : MessageEvent )=> {
 					
@@ -43,10 +38,9 @@ namespace $.$$ {
 				}
 				
 				window.addEventListener( 'message' , handle )
-				
-				sandbox.contentWindow!.postMessage( command , '*' )
+				sandbox.postMessage( command , '*' )
 
-			} ) ) )()
+			} ) )
 
 		}
 		
