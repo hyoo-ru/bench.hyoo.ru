@@ -5518,28 +5518,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_mem_force extends Object {
-        constructor() { super(); }
-        $mol_mem_force = true;
-        static $mol_mem_force = true;
-        static toString() { return this.name; }
-    }
-    $.$mol_mem_force = $mol_mem_force;
-    class $mol_mem_force_cache extends $mol_mem_force {
-    }
-    $.$mol_mem_force_cache = $mol_mem_force_cache;
-    class $mol_mem_force_update extends $mol_mem_force {
-    }
-    $.$mol_mem_force_update = $mol_mem_force_update;
-    class $mol_mem_force_fail extends $mol_mem_force_cache {
-    }
-    $.$mol_mem_force_fail = $mol_mem_force_fail;
-})($ || ($ = {}));
-//mol/mem/force/force.ts
-;
-"use strict";
-var $;
-(function ($) {
     $mol_style_attach("hyoo/bench/chart/rope/mol/mol.view.css", "[hyoo_bench_chart_rope_mol] {\n\tdisplay: flex;\n}\n");
 })($ || ($ = {}));
 //hyoo/bench/chart/rope/mol/-css/mol.view.css.ts
@@ -5550,16 +5528,19 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_bench_chart_rope_mol extends $.$hyoo_bench_chart_rope_mol {
-            static data(next, force) {
-                window.addEventListener('message', event => {
+            static listener() {
+                return new $mol_dom_listener(window, 'message', (event) => {
                     switch (event.data[0]) {
                         case 'fill':
                         case 'update':
-                            this.data(event.data[1], $mol_mem_force_cache);
+                            this.data(event.data[1]);
                             break;
                     }
                 });
-                return { sample: '', graphs: [] };
+            }
+            static data(next) {
+                this.listener();
+                return next || { sample: '', graphs: [] };
             }
             graphs() {
                 const data = $hyoo_bench_chart_rope_mol.data();
@@ -5575,6 +5556,9 @@ var $;
                 return $hyoo_bench_chart_rope_mol.data().graphs[id] ?? [];
             }
         }
+        __decorate([
+            $mol_mem
+        ], $hyoo_bench_chart_rope_mol, "listener", null);
         __decorate([
             $mol_mem
         ], $hyoo_bench_chart_rope_mol, "data", null);
