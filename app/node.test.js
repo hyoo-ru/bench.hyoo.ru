@@ -8779,6 +8779,17 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_solid() {
+        $mol_wire_auto.reap = nothing;
+    }
+    $.$mol_wire_solid = $mol_wire_solid;
+    const nothing = () => { };
+})($ || ($ = {}));
+//mol/wire/solid/solid.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_compare_text(item = (item) => String(item)) {
         return (a, b) => {
             const text_a = item(a).trim().toLowerCase();
@@ -8827,6 +8838,7 @@ var $;
                 return next || null;
             }
             command_result(command) {
+                $mol_wire_solid();
                 return $mol_wire_sync(this).command_result_async(command);
             }
             command_result_async(command) {
