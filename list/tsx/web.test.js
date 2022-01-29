@@ -890,7 +890,7 @@ var $;
         [$mol_dev_format_head]() {
             return $mol_dev_format_native(this);
         }
-        get derived() {
+        get pub_empty() {
             return this.sub_from === this.pub_from;
         }
     }
@@ -951,6 +951,12 @@ var $;
             $mol_assert_ok($mol_compare_deep(/\x22/mig, /\x22/mig));
             $mol_assert_not($mol_compare_deep(/\x22/mig, /\x21/mig));
             $mol_assert_not($mol_compare_deep(/\x22/mig, /\x22/mg));
+        },
+        'Error'() {
+            $mol_assert_not($mol_compare_deep(new Error('xxx'), new Error('xxx')));
+            const fail = (message) => new Error(message);
+            $mol_assert_ok($mol_compare_deep(...['xxx', 'xxx'].map(msg => new Error(msg))));
+            $mol_assert_not($mol_compare_deep(...['xxx', 'yyy'].map(msg => new Error(msg))));
         },
         'Map'() {
             $mol_assert_ok($mol_compare_deep(new Map, new Map));
@@ -1036,6 +1042,8 @@ var $;
                 result = compare_set(left, right);
             else if (left instanceof Map)
                 result = compare_map(left, right);
+            else if (left instanceof Error)
+                result = left.stack === right.stack;
             else if (ArrayBuffer.isView(left))
                 result = compare_buffer(left, right);
             else if (Symbol.toPrimitive in left)
@@ -1464,7 +1472,6 @@ var $;
             if ($mol_owning_check(this, prev)) {
                 prev.destructor();
             }
-            this.cache = undefined;
             if (this.persist) {
                 if (this.pub_from === 0) {
                     this.host[this.field()] = null;
@@ -1509,6 +1516,8 @@ var $;
         }
         up() {
             if (this.cursor === $mol_wire_cursor.fresh)
+                return;
+            if (this.cursor === $mol_wire_cursor.final)
                 return;
             check: if (this.cursor === $mol_wire_cursor.doubt) {
                 for (let i = this.pub_from; i < this.sub_from; i += 2) {
