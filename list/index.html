@@ -59,16 +59,12 @@
 		samples : {
 			'mol' : {
 				title : { 'en' : '$mol_view' } ,
-				weight : '22.6 KB' ,
+				weight : '22.5 KB' ,
 			} ,
-			'tsx' : {
+			'moljsx' : {
 				title : { 'en' : '$mol_jsx_view' } ,
-				weight : '5.7 KB' ,
+				weight : '10.4 KB' ,
 			} ,
-			// 'tsxatom' : {
-			// 	title : { 'en' : '$mol_jsx_view + $mol_atom2' } ,
-			// 	weight : '12.3 KB' ,
-			// } ,
 			'react' : {
 				title : { 'en' : 'ReactJS 17.0.2' } ,
 				weight : '46.7 KB' ,
@@ -125,7 +121,7 @@
 		sandbox.src = 'about:blank'
 		setTimeout( function() {
 			var start = Date.now()
-			sandbox.src = sample + '/index.html'
+			sandbox.src = '../'+sample + '/-/index.html'
 			sandbox.onload = function() {
 				done( Date.now() - start + ' ms' )
 				sandbox.onload = null
