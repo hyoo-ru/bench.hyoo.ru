@@ -80,227 +80,26 @@ require = (req => Object.assign(function require(name) {
 "use strict";
 var $;
 (function ($) {
-    $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
-})($ || ($ = {}));
-//mol/dom/context/context.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_report_bugsnag = '';
-    globalThis.onerror = function (msg, url, line, col, err) {
-        const doc = $mol_dom_context.document;
-        const report = {
-            apiKey: $.$mol_report_bugsnag,
-            payloadVersion: 5,
-            notifier: {
-                name: '$mol_report_bugsnag',
-                version: '1',
-                url: '$mol_report_bugsnag',
-            },
-            events: [{
-                    device: {
-                        locale: navigator.language,
-                        userAgent: navigator.userAgent,
-                        time: new Date().toISOString(),
-                    },
-                    context: doc?.activeElement?.id,
-                    exceptions: [{
-                            message: err?.message || err || msg,
-                            errorClass: err?.constructor.name,
-                            stacktrace: [{
-                                    columnNumber: col,
-                                    file: url,
-                                    lineNumber: line,
-                                    method: '',
-                                }],
-                        }],
-                    metaData: {
-                        stack: err && err.stack,
-                    },
-                    request: {
-                        url: doc?.location.href,
-                        referer: doc?.referrer,
-                    },
-                }],
+    function $mol_log3_area_lazy(event) {
+        const self = this;
+        const stack = self.$mol_log3_stack;
+        const deep = stack.length;
+        let logged = false;
+        stack.push(() => {
+            logged = true;
+            self.$mol_log3_area.call(self, event);
+        });
+        return () => {
+            if (logged)
+                self.console.groupEnd();
+            if (stack.length > deep)
+                stack.length = deep;
         };
-        if (location.hostname === 'localhost') {
-            console.debug('Error report', report);
-        }
-        else {
-            fetch('https://notify.bugsnag.com/', {
-                method: 'post',
-                body: JSON.stringify(report),
-            }).catch(() => null);
-        }
-    };
-    globalThis.onunhandledrejection = function (event) {
-        globalThis.onerror('Unhandled Rejection', '', 0, 0, event.reason);
-    };
-    const error = console.error;
-    console.error = function (...args) {
-        globalThis.onerror('Logged Error', '', 0, 0, arguments[0]);
-        error.apply(console, args);
-    };
-})($ || ($ = {}));
-//mol/report/bugsnag/bugsnag.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_report_bugsnag = '18acf016ed2a2a4cc4445daa9dd2dd3c';
-})($ || ($ = {}));
-//hyoo/hyoo.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_fail(error) {
-        throw error;
     }
-    $.$mol_fail = $mol_fail;
+    $.$mol_log3_area_lazy = $mol_log3_area_lazy;
+    $.$mol_log3_stack = [];
 })($ || ($ = {}));
-//mol/fail/fail.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_dom_render_children(el, childNodes) {
-        const node_set = new Set(childNodes);
-        let nextNode = el.firstChild;
-        for (let view of childNodes) {
-            if (view == null)
-                continue;
-            if (view instanceof $mol_dom_context.Node) {
-                while (true) {
-                    if (!nextNode) {
-                        el.appendChild(view);
-                        break;
-                    }
-                    if (nextNode == view) {
-                        nextNode = nextNode.nextSibling;
-                        break;
-                    }
-                    else {
-                        if (node_set.has(nextNode)) {
-                            el.insertBefore(view, nextNode);
-                            break;
-                        }
-                        else {
-                            const nn = nextNode.nextSibling;
-                            el.removeChild(nextNode);
-                            nextNode = nn;
-                        }
-                    }
-                }
-            }
-            else {
-                if (nextNode && nextNode.nodeName === '#text') {
-                    const str = String(view);
-                    if (nextNode.nodeValue !== str)
-                        nextNode.nodeValue = str;
-                    nextNode = nextNode.nextSibling;
-                }
-                else {
-                    const textNode = $mol_dom_context.document.createTextNode(String(view));
-                    el.insertBefore(textNode, nextNode);
-                }
-            }
-        }
-        while (nextNode) {
-            const currNode = nextNode;
-            nextNode = currNode.nextSibling;
-            el.removeChild(currNode);
-        }
-    }
-    $.$mol_dom_render_children = $mol_dom_render_children;
-})($ || ($ = {}));
-//mol/dom/render/children/children.ts
-;
-"use strict";
-//mol/type/partial/deep/deep.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_jsx_prefix = '';
-    $.$mol_jsx_booked = null;
-    $.$mol_jsx_document = {
-        getElementById: () => null,
-        createElementNS: (space, name) => $mol_dom_context.document.createElementNS(space, name),
-        createDocumentFragment: () => $mol_dom_context.document.createDocumentFragment(),
-    };
-    $.$mol_jsx_frag = '';
-    function $mol_jsx(Elem, props, ...childNodes) {
-        const id = props && props.id || '';
-        if (Elem && $.$mol_jsx_booked) {
-            if ($.$mol_jsx_booked.has(id)) {
-                $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(id)}`));
-            }
-            else {
-                $.$mol_jsx_booked.add(id);
-            }
-        }
-        const guid = $.$mol_jsx_prefix + id;
-        let node = guid ? $.$mol_jsx_document.getElementById(guid) : null;
-        if (typeof Elem !== 'string') {
-            if ('prototype' in Elem) {
-                const view = node && node[Elem] || new Elem;
-                Object.assign(view, props);
-                view[Symbol.toStringTag] = guid;
-                view.childNodes = childNodes;
-                if (!view.ownerDocument)
-                    view.ownerDocument = $.$mol_jsx_document;
-                node = view.valueOf();
-                node[Elem] = view;
-                return node;
-            }
-            else {
-                const prefix = $.$mol_jsx_prefix;
-                const booked = $.$mol_jsx_booked;
-                try {
-                    $.$mol_jsx_prefix = guid;
-                    $.$mol_jsx_booked = new Set;
-                    return Elem(props, ...childNodes);
-                }
-                finally {
-                    $.$mol_jsx_prefix = prefix;
-                    $.$mol_jsx_booked = booked;
-                }
-            }
-        }
-        if (!node) {
-            node = Elem
-                ? $.$mol_jsx_document.createElementNS(props?.xmlns ?? 'http://www.w3.org/1999/xhtml', Elem)
-                : $.$mol_jsx_document.createDocumentFragment();
-        }
-        $mol_dom_render_children(node, [].concat(...childNodes));
-        if (!Elem)
-            return node;
-        for (const key in props) {
-            if (typeof props[key] === 'string') {
-                ;
-                node.setAttribute(key, props[key]);
-            }
-            else if (props[key] &&
-                typeof props[key] === 'object' &&
-                Reflect.getPrototypeOf(props[key]) === Reflect.getPrototypeOf({})) {
-                if (typeof node[key] === 'object') {
-                    Object.assign(node[key], props[key]);
-                    continue;
-                }
-            }
-            else {
-                node[key] = props[key];
-            }
-        }
-        if (guid)
-            node.id = guid;
-        return node;
-    }
-    $.$mol_jsx = $mol_jsx;
-})($ || ($ = {}));
-//mol/jsx/jsx.ts
+//mol/log3/log3.ts
 ;
 "use strict";
 var $;
@@ -409,6 +208,16 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_fail(error) {
+        throw error;
+    }
+    $.$mol_fail = $mol_fail;
+})($ || ($ = {}));
+//mol/fail/fail.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_fail_hidden(error) {
         throw error;
     }
@@ -461,118 +270,6 @@ var $;
     $.$mol_object2 = $mol_object2;
 })($ || ($ = {}));
 //mol/object2/object2.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_jsx_view extends $mol_object2 {
-        static of(node) {
-            return node[this];
-        }
-        [Symbol.toStringTag];
-        attributes;
-        ownerDocument;
-        childNodes;
-        valueOf() {
-            const prefix = $mol_jsx_prefix;
-            const booked = $mol_jsx_booked;
-            const document = $mol_jsx_document;
-            try {
-                $mol_jsx_prefix = this[Symbol.toStringTag];
-                $mol_jsx_booked = new Set;
-                $mol_jsx_document = this.ownerDocument;
-                return this.render();
-            }
-            finally {
-                $mol_jsx_prefix = prefix;
-                $mol_jsx_booked = booked;
-                $mol_jsx_document = document;
-            }
-        }
-        render() {
-            return $mol_fail(new Error('dom_tree() not implemented'));
-        }
-    }
-    $.$mol_jsx_view = $mol_jsx_view;
-})($ || ($ = {}));
-//mol/jsx/view/view.tsx
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_jsx_attach(next, action) {
-        const prev = $mol_jsx_document;
-        try {
-            $mol_jsx_document = next;
-            return action();
-        }
-        finally {
-            $mol_jsx_document = prev;
-        }
-    }
-    $.$mol_jsx_attach = $mol_jsx_attach;
-})($ || ($ = {}));
-//mol/jsx/attach/attach.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class Item extends $mol_jsx_view {
-        title = '';
-        content = '';
-        selected = false;
-        onSelect() { }
-        render() {
-            return ($mol_jsx("div", { classList: [`list-item list-item-selected-${this.selected}`], onclick: () => this.onSelect() },
-                $mol_jsx("div", { id: "/title", classList: ['list-item-title'] }, this.title),
-                $mol_jsx("div", { id: "/content", classList: ['list-item-content'] }, this.content)));
-        }
-    }
-    $.Item = Item;
-    class List extends $mol_jsx_view {
-        static render(props) {
-            return $mol_jsx_attach($mol_dom_context.document, () => $mol_jsx(this, { id: "/list", ...props }));
-        }
-        data = {
-            sample: '',
-            items: []
-        };
-        selected = Number.NaN;
-        onItemSelect(item) {
-            this.selected = item.id;
-            this.valueOf();
-        }
-        render() {
-            return ($mol_jsx("div", { classList: ['list'] }, ...this.data.items.map(item => ($mol_jsx(Item, { id: '/item:' + item.id, title: item.title, content: item.content, selected: item.id === this.selected, onSelect: () => this.onItemSelect(item) })))));
-        }
-    }
-    $.List = List;
-})($ || ($ = {}));
-//hyoo/bench/list/tsx/index.tsx
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_log3_area_lazy(event) {
-        const self = this;
-        const stack = self.$mol_log3_stack;
-        const deep = stack.length;
-        let logged = false;
-        stack.push(() => {
-            logged = true;
-            self.$mol_log3_area.call(self, event);
-        });
-        return () => {
-            if (logged)
-                self.console.groupEnd();
-            if (stack.length > deep)
-                stack.length = deep;
-        };
-    }
-    $.$mol_log3_area_lazy = $mol_log3_area_lazy;
-    $.$mol_log3_stack = [];
-})($ || ($ = {}));
-//mol/log3/log3.ts
 ;
 "use strict";
 var $;
@@ -1004,5 +701,80 @@ var $;
     $.$mol_exec = $mol_exec;
 })($ || ($ = {}));
 //mol/exec/exec.node.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_dom_context = new $node.jsdom.JSDOM('', { url: 'https://localhost/' }).window;
+})($ || ($ = {}));
+//mol/dom/context/context.node.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_report_bugsnag = '';
+    globalThis.onerror = function (msg, url, line, col, err) {
+        const doc = $mol_dom_context.document;
+        const report = {
+            apiKey: $.$mol_report_bugsnag,
+            payloadVersion: 5,
+            notifier: {
+                name: '$mol_report_bugsnag',
+                version: '1',
+                url: '$mol_report_bugsnag',
+            },
+            events: [{
+                    device: {
+                        locale: $mol_dom_context.navigator.language,
+                        userAgent: $mol_dom_context.navigator.userAgent,
+                        time: new Date().toISOString(),
+                    },
+                    context: doc?.activeElement?.id,
+                    exceptions: [{
+                            message: err?.message || err || msg,
+                            errorClass: err?.constructor.name,
+                            stacktrace: [{
+                                    columnNumber: col,
+                                    file: url,
+                                    lineNumber: line,
+                                    method: '',
+                                }],
+                        }],
+                    metaData: {
+                        stack: err && err.stack,
+                    },
+                    request: {
+                        url: doc?.location.href,
+                        referer: doc?.referrer,
+                    },
+                }],
+        };
+        if ($mol_dom_context.location.hostname === 'localhost') {
+            console.debug('Error report', report);
+        }
+        else {
+            fetch('https://notify.bugsnag.com/', {
+                method: 'post',
+                body: JSON.stringify(report),
+            }).catch(() => null);
+        }
+    };
+    globalThis.onunhandledrejection = function (event) {
+        globalThis.onerror('Unhandled Rejection', '', 0, 0, event.reason);
+    };
+    const error = console.error;
+    console.error = function (...args) {
+        globalThis.onerror('Logged Error', '', 0, 0, arguments[0]);
+        error.apply(console, args);
+    };
+})($ || ($ = {}));
+//mol/report/bugsnag/bugsnag.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_report_bugsnag = '18acf016ed2a2a4cc4445daa9dd2dd3c';
+})($ || ($ = {}));
+//hyoo/hyoo.ts
 
 //# sourceMappingURL=node.js.map

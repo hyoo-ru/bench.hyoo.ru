@@ -107,6 +107,12 @@ var $;
 //mol/type/assert/assert.ts
 ;
 "use strict";
+//mol/type/equals/equals.test.ts
+;
+"use strict";
+//mol/type/equals/equals.ts
+;
+"use strict";
 //mol/type/partial/deep/deep.test.ts
 ;
 "use strict";
@@ -148,8 +154,8 @@ var $;
             $mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
         },
         'Function as component'() {
-            const Button = ({ hint }, target) => {
-                return $mol_jsx("button", { title: hint }, target());
+            const Button = (props, target) => {
+                return $mol_jsx("button", { title: props.hint }, target());
             };
             const dom = $mol_jsx(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
             $mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
@@ -598,6 +604,76 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    function $mol_log3_area_lazy(event) {
+        const self = this;
+        const stack = self.$mol_log3_stack;
+        const deep = stack.length;
+        let logged = false;
+        stack.push(() => {
+            logged = true;
+            self.$mol_log3_area.call(self, event);
+        });
+        return () => {
+            if (logged)
+                self.console.groupEnd();
+            if (stack.length > deep)
+                stack.length = deep;
+        };
+    }
+    $.$mol_log3_area_lazy = $mol_log3_area_lazy;
+    $.$mol_log3_stack = [];
+})($ || ($ = {}));
+//mol/log3/log3.ts
+;
+"use strict";
+//mol/type/keys/extract/extract.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_log3_come = () => { };
+        $.$mol_log3_done = () => { };
+        $.$mol_log3_fail = () => { };
+        $.$mol_log3_warn = () => { };
+        $.$mol_log3_rise = () => { };
+        $.$mol_log3_area = () => () => { };
+    });
+})($ || ($ = {}));
+//mol/log3/log3.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_log3_web_make(level, color) {
+        return function $mol_log3_logger(event) {
+            const pending = this.$mol_log3_stack.pop();
+            if (pending)
+                pending();
+            let tpl = '%c';
+            const chunks = Object.values(event);
+            for (let i = 0; i < chunks.length; ++i) {
+                tpl += (typeof chunks[i] === 'string') ? ' ⦙ %s' : ' ⦙ %o';
+            }
+            const style = `color:${color};font-weight:bolder`;
+            this.console[level](tpl, style, ...chunks);
+            const self = this;
+            return () => self.console.groupEnd();
+        };
+    }
+    $.$mol_log3_web_make = $mol_log3_web_make;
+    $.$mol_log3_come = $mol_log3_web_make('info', 'royalblue');
+    $.$mol_log3_done = $mol_log3_web_make('info', 'forestgreen');
+    $.$mol_log3_fail = $mol_log3_web_make('error', 'orangered');
+    $.$mol_log3_warn = $mol_log3_web_make('warn', 'goldenrod');
+    $.$mol_log3_rise = $mol_log3_web_make('log', 'magenta');
+    $.$mol_log3_area = $mol_log3_web_make('group', 'cyan');
+})($ || ($ = {}));
+//mol/log3/log3.web.ts
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test_mocks.push($ => {
         $.$mol_after_tick = $mol_after_mock_commmon;
@@ -642,9 +718,9 @@ var $;
             const sub = new $mol_wire_pub_sub;
             const bu1 = sub.track_on();
             try {
-                pub1.track_promote();
-                pub2.track_promote();
-                pub2.track_promote();
+                pub1.promote();
+                pub2.promote();
+                pub2.promote();
             }
             finally {
                 sub.track_cut();
@@ -655,9 +731,9 @@ var $;
             $mol_assert_like(sub.pub_list, [pub1, pub2, pub2]);
             const bu2 = sub.track_on();
             try {
-                pub1.track_promote();
-                pub1.track_promote();
-                pub2.track_promote();
+                pub1.promote();
+                pub1.promote();
+                pub2.promote();
             }
             finally {
                 sub.track_cut();
@@ -674,7 +750,7 @@ var $;
             try {
                 const bu2 = sub2.track_on();
                 try {
-                    $mol_assert_fail(() => sub1.track_promote(), 'Circular subscription');
+                    $mol_assert_fail(() => sub1.promote(), 'Circular subscription');
                 }
                 finally {
                     sub2.track_cut();
@@ -689,61 +765,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/wire/pub/sub/sub.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'Primitives'() {
-            $mol_assert_equal($mol_key(null), 'null');
-            $mol_assert_equal($mol_key(false), 'false');
-            $mol_assert_equal($mol_key(true), 'true');
-            $mol_assert_equal($mol_key(0), '0');
-            $mol_assert_equal($mol_key(''), '""');
-        },
-        'Array & POJO'() {
-            $mol_assert_equal($mol_key([null]), '[null]');
-            $mol_assert_equal($mol_key({ foo: 0 }), '{"foo":0}');
-            $mol_assert_equal($mol_key({ foo: [false] }), '{"foo":[false]}');
-        },
-        'Function'() {
-            const func = () => { };
-            $mol_assert_equal($mol_key(func), $mol_key(func));
-            $mol_assert_unique($mol_key(func), $mol_key(() => { }));
-        },
-        'Objects'() {
-            class User {
-            }
-            const jin = new User();
-            $mol_assert_equal($mol_key(jin), $mol_key(jin));
-            $mol_assert_unique($mol_key(jin), $mol_key(new User()));
-        },
-        'Elements'() {
-            const foo = $mol_jsx("div", null, "bar");
-            $mol_assert_equal($mol_key(foo), $mol_key(foo));
-            $mol_assert_unique($mol_key(foo), $mol_key($mol_jsx("div", null, "bar")));
-        },
-        'Custom JSON representation'() {
-            class User {
-                name;
-                age;
-                constructor(name, age) {
-                    this.name = name;
-                    this.age = age;
-                }
-                toJSON() { return { name: this.name }; }
-            }
-            $mol_assert_equal($mol_key(new User('jin', 18)), '{"name":"jin"}');
-        },
-        'Special native classes'() {
-            $mol_assert_equal($mol_key(new Date('xyz')), 'null');
-            $mol_assert_equal($mol_key(new Date('2001-01-02T03:04:05.678Z')), '"2001-01-02T03:04:05.678Z"');
-            $mol_assert_equal($mol_key(/./), '"/./"');
-            $mol_assert_equal($mol_key(/\./gimsu), '"/\\\\./gimsu"');
-        },
-    });
-})($ || ($ = {}));
-//mol/key/key.test.tsx
 ;
 "use strict";
 var $;
@@ -845,8 +866,9 @@ var $;
                 const val = obj[field];
                 if (typeof val !== 'function')
                     return val;
+                const temp = $mol_wire_task.getter(val);
                 return function $mol_wire_sync(...args) {
-                    const fiber = $mol_wire_fiber.temp(obj, val, ...args);
+                    const fiber = temp(obj, args);
                     return fiber.sync();
                 };
             }
@@ -858,6 +880,52 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    function $mol_promise() {
+        let done;
+        let fail;
+        const promise = new Promise((d, f) => {
+            done = d;
+            fail = f;
+        });
+        return Object.assign(promise, {
+            done,
+            fail,
+        });
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+//mol/promise/promise.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_timeout = $mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//mol/after/timeout/timeout.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_timeout_async(timeout) {
+        const promise = $mol_promise();
+        const task = new this.$mol_after_timeout(timeout, () => promise.done());
+        return Object.assign(promise, {
+            destructor: () => task.destructor()
+        });
+    }
+    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
+    function $mol_wait_timeout(timeout) {
+        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
+    }
+    $.$mol_wait_timeout = $mol_wait_timeout;
+})($ || ($ = {}));
+//mol/wait/timeout/timeout.ts
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test({
         'Cached channel'($) {
@@ -866,19 +934,13 @@ var $;
                 static value(next = 1) {
                     return next + 1;
                 }
-                static test() {
-                    $mol_assert_equal(App.value(), 2);
-                    App.value(2);
-                    $mol_assert_equal(App.value(), 3);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
             ], App, "value", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            $mol_assert_equal(App.value(), 2);
+            App.value(2);
+            $mol_assert_equal(App.value(), 3);
         },
         'Mem overrides mem'($) {
             class Base extends $mol_object2 {
@@ -902,19 +964,13 @@ var $;
                 static value(next) {
                     return super.value(next) * 3;
                 }
-                static test() {
-                    $mol_assert_equal(this.value(), 9);
-                    $mol_assert_equal(this.value(5), 21);
-                    $mol_assert_equal(this.value(), 21);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
             ], App, "value", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            $mol_assert_equal(App.value(), 9);
+            $mol_assert_equal(App.value(5), 21);
+            $mol_assert_equal(App.value(), 21);
         },
         'Auto recalculation of cached values'($) {
             class App extends $mol_object2 {
@@ -928,12 +984,6 @@ var $;
                 static zzz() {
                     return this.yyy() + 1;
                 }
-                static test() {
-                    $mol_assert_equal(App.yyy(), 2);
-                    $mol_assert_equal(App.zzz(), 3);
-                    App.xxx(5);
-                    $mol_assert_equal(App.zzz(), 7);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
@@ -944,10 +994,10 @@ var $;
             __decorate([
                 $mol_wire_mem(0)
             ], App, "zzz", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            $mol_assert_equal(App.yyy(), 2);
+            $mol_assert_equal(App.zzz(), 3);
+            App.xxx(5);
+            $mol_assert_equal(App.zzz(), 7);
         },
         'Skip recalculation when actually no dependency changes'($) {
             const log = [];
@@ -965,13 +1015,6 @@ var $;
                     log.push('zzz');
                     return this.yyy()[0] + 1;
                 }
-                static test() {
-                    App.zzz();
-                    $mol_assert_like(log, ['zzz', 'yyy', 'xxx']);
-                    App.xxx(5);
-                    App.zzz();
-                    $mol_assert_like(log, ['zzz', 'yyy', 'xxx', 'xxx', 'yyy']);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
@@ -982,10 +1025,12 @@ var $;
             __decorate([
                 $mol_wire_mem(0)
             ], App, "zzz", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            App.zzz();
+            $mol_assert_like(log, ['zzz', 'yyy', 'xxx']);
+            App.xxx(5);
+            $mol_assert_like(log, ['zzz', 'yyy', 'xxx', 'xxx']);
+            App.zzz();
+            $mol_assert_like(log, ['zzz', 'yyy', 'xxx', 'xxx', 'yyy']);
         },
         'Flow: Auto'($) {
             class App extends $mol_object2 {
@@ -1030,13 +1075,6 @@ var $;
                 static bar() {
                     return { ...this.foo(), count: ++counter };
                 }
-                static test() {
-                    $mol_assert_like(App.bar(), { numbs: [1], count: 1 });
-                    App.foo({ numbs: [1] });
-                    $mol_assert_like(App.bar(), { numbs: [1], count: 1 });
-                    App.foo({ numbs: [2] });
-                    $mol_assert_like(App.bar(), { numbs: [2], count: 2 });
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
@@ -1044,10 +1082,11 @@ var $;
             __decorate([
                 $mol_wire_mem(0)
             ], App, "bar", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            $mol_assert_like(App.bar(), { numbs: [1], count: 1 });
+            App.foo({ numbs: [1] });
+            $mol_assert_like(App.bar(), { numbs: [1], count: 1 });
+            App.foo({ numbs: [2] });
+            $mol_assert_like(App.bar(), { numbs: [2], count: 2 });
         },
         'Cycle: Fail'($) {
             class App extends $mol_object2 {
@@ -1085,13 +1124,6 @@ var $;
                 static slow(next) {
                     return this.store(next);
                 }
-                static test() {
-                    App.fast();
-                    $mol_assert_equal(App.slow(666), 666);
-                    $mol_assert_equal(App.fast(), App.slow(), 666);
-                    App.store(777);
-                    $mol_assert_equal(App.fast(), App.slow(), 777);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
@@ -1102,10 +1134,11 @@ var $;
             __decorate([
                 $mol_wire_mem(0)
             ], App, "slow", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+            App.fast();
+            $mol_assert_equal(App.slow(666), 666);
+            $mol_assert_equal(App.fast(), App.slow(), 666);
+            App.store(777);
+            $mol_assert_equal(App.fast(), App.slow(), 777);
         },
         'Actions inside invariant'($) {
             class App extends $mol_object2 {
@@ -1122,11 +1155,6 @@ var $;
                         this.count(count + 1);
                     return count + 1;
                 }
-                static test() {
-                    $mol_assert_like(App.res(), 1);
-                    App.count(5);
-                    $mol_assert_like(App.res(), 6);
-                }
             }
             __decorate([
                 $mol_wire_mem(0)
@@ -1137,10 +1165,43 @@ var $;
             __decorate([
                 $mol_wire_mem(0)
             ], App, "res", null);
+            $mol_assert_like(App.res(), 1);
+            App.count(5);
+            $mol_assert_like(App.res(), 6);
+        },
+        async 'Toggle with async'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static checked(next = false) {
+                    $$.$mol_wait_timeout(0);
+                    return next;
+                }
+                static toggle() {
+                    const prev = this.checked();
+                    $mol_assert_unique(this.checked(!prev), prev);
+                }
+                static res() {
+                    return this.checked();
+                }
+                static test() {
+                    $mol_assert_equal(App.res(), false);
+                    App.toggle();
+                    $mol_assert_equal(App.res(), true);
+                }
+            }
+            __decorate([
+                $mol_wire_mem(0)
+            ], App, "checked", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "toggle", null);
+            __decorate([
+                $mol_wire_mem(0)
+            ], App, "res", null);
             __decorate([
                 $mol_wire_method
             ], App, "test", null);
-            App.test();
+            await $mol_wire_async(App).test();
         },
         'Restore after error'($) {
             class App extends $mol_object2 {
@@ -1275,29 +1336,6 @@ var $;
             $mol_wire_fiber.sync();
             $mol_assert_equal(await $mol_wire_async(App).result(), 1);
         },
-        'Forget sub fibers on complete'($) {
-            class App extends $mol_object2 {
-                static get $() { return $; }
-                static counter = 0;
-                static count() { return this.counter++; }
-                static data(next = 1) { return next; }
-                static result() {
-                    return this.count() + this.data();
-                }
-            }
-            __decorate([
-                $mol_wire_method
-            ], App, "count", null);
-            __decorate([
-                $mol_wire_mem(0)
-            ], App, "data", null);
-            __decorate([
-                $mol_wire_mem(0)
-            ], App, "result", null);
-            $mol_assert_equal(App.result(), 1);
-            App.data(2);
-            $mol_assert_equal(App.result(), 3);
-        },
         'Memoize by single simple key'($) {
             class Team extends $mol_object2 {
                 static $ = $;
@@ -1311,9 +1349,6 @@ var $;
                     ];
                 }
                 static test() {
-                    $mol_assert_like(this.user_names(), ['jin', 'john']);
-                    Team.user_name('jin', 'JIN');
-                    $mol_assert_like(this.user_names(), ['JIN', 'john']);
                 }
             }
             __decorate([
@@ -1325,7 +1360,9 @@ var $;
             __decorate([
                 $mol_wire_method
             ], Team, "test", null);
-            Team.test();
+            $mol_assert_like(Team.user_names(), ['jin', 'john']);
+            Team.user_name('jin', 'JIN');
+            $mol_assert_like(Team.user_names(), ['JIN', 'john']);
         },
         'Memoize by single complex key'($) {
             class Map extends $mol_object2 {
@@ -1402,59 +1439,45 @@ var $;
                     ++this.sums;
                     return this.value(index - 1) + this.value(index - 2);
                 }
-                static test() {
-                    $mol_assert_equal(this.value(4), 5);
-                    $mol_assert_equal(this.sums, 3);
-                    this.value(1, 2);
-                    $mol_assert_equal(this.value(4), 8);
-                    $mol_assert_equal(this.sums, 6);
-                }
             }
             __decorate([
                 $mol_wire_mem(1)
             ], Fib, "value", null);
-            __decorate([
-                $mol_wire_method
-            ], Fib, "test", null);
-            Fib.test();
-        },
-        'Unsubscribe from temp pubs on complete'($) {
-            class Random extends $mol_object2 {
-                static $ = $;
-                static seed() {
-                    return Math.random();
-                }
-                static resets(next) {
-                    return Math.random();
-                }
-                static value() {
-                    this.resets();
-                    return this.seed();
-                }
-                static test() {
-                    const first = this.value();
-                    this.resets(null);
-                    const second = this.value();
-                    $mol_assert_unique(first, second);
-                }
-            }
-            __decorate([
-                $mol_wire_method
-            ], Random, "seed", null);
-            __decorate([
-                $mol_wire_mem(0)
-            ], Random, "resets", null);
-            __decorate([
-                $mol_wire_mem(0)
-            ], Random, "value", null);
-            __decorate([
-                $mol_wire_method
-            ], Random, "test", null);
-            Random.test();
+            $mol_assert_equal(Fib.value(4), 5);
+            $mol_assert_equal(Fib.sums, 3);
+            Fib.value(1, 2);
+            $mol_assert_equal(Fib.value(4), 8);
+            $mol_assert_equal(Fib.sums, 6);
         },
     });
 })($ || ($ = {}));
 //mol/wire/mem/mem.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'Previous value'() {
+            class Cache extends $mol_object2 {
+                static store(next) {
+                    if (!next)
+                        return {};
+                    return {
+                        ...$mol_wire_probe(() => this.store()) ?? {},
+                        ...next,
+                    };
+                }
+            }
+            __decorate([
+                $mol_wire_mem(0)
+            ], Cache, "store", null);
+            $mol_assert_like(Cache.store(), {});
+            $mol_assert_like(Cache.store({ foo: 666 }), { foo: 666 });
+            $mol_assert_like(Cache.store({ bar: 777 }), { foo: 666, bar: 777 });
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/probe/probe.test.ts
 ;
 "use strict";
 var $;
@@ -1490,19 +1513,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/maybe/maybe.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'const returns stored value'() {
-            const foo = { bar: $mol_const(Math.random()) };
-            $mol_assert_equal(foo.bar(), foo.bar());
-            $mol_assert_equal(foo.bar(), foo.bar['()']);
-        },
-    });
-})($ || ($ = {}));
-//mol/const/const.test.ts
 ;
 "use strict";
 var $;
@@ -1649,6 +1659,19 @@ var $;
 ;
 "use strict";
 var $;
+(function ($) {
+    $mol_test({
+        'const returns stored value'() {
+            const foo = { bar: $mol_const(Math.random()) };
+            $mol_assert_equal(foo.bar(), foo.bar());
+            $mol_assert_equal(foo.bar(), foo.bar['()']);
+        },
+    });
+})($ || ($ = {}));
+//mol/const/const.test.ts
+;
+"use strict";
+var $;
 (function ($_1) {
     $mol_test({
         'FQN of anon function'($) {
@@ -1662,21 +1685,120 @@ var $;
 //mol/func/name/name.test.ts
 ;
 "use strict";
-//mol/type/keys/extract/extract.test.ts
+var $;
+(function ($) {
+    class $mol_wire_log extends $mol_object2 {
+        static watch(task) {
+            return task;
+        }
+        static track(fiber) {
+            const prev = $mol_wire_probe(() => this.track(fiber));
+            let next;
+            try {
+                next = fiber.sync();
+            }
+            finally {
+                for (const pub of fiber.pub_list) {
+                    if (pub instanceof $mol_wire_fiber) {
+                        this.track(pub);
+                    }
+                }
+            }
+            if (prev !== undefined && !$mol_compare_deep(prev, next)) {
+                this.$.$mol_log3_rise({
+                    message: 'Changed',
+                    place: fiber,
+                });
+            }
+            return next;
+        }
+        static active() {
+            try {
+                this.watch()?.();
+            }
+            finally {
+                for (const pub of $mol_wire_auto().pub_list) {
+                    if (pub instanceof $mol_wire_fiber) {
+                        this.track(pub);
+                    }
+                }
+            }
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_wire_log, "watch", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_wire_log, "track", null);
+    __decorate([
+        $mol_mem
+    ], $mol_wire_log, "active", null);
+    $.$mol_wire_log = $mol_wire_log;
+})($ || ($ = {}));
+//mol/wire/log/log.ts
 ;
 "use strict";
 var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_log3_come = () => { };
-        $.$mol_log3_done = () => { };
-        $.$mol_log3_fail = () => { };
-        $.$mol_log3_warn = () => { };
-        $.$mol_log3_rise = () => { };
-        $.$mol_log3_area = () => () => { };
+(function ($) {
+    $mol_test({
+        'Primitives'() {
+            $mol_assert_equal($mol_key(null), 'null');
+            $mol_assert_equal($mol_key(false), 'false');
+            $mol_assert_equal($mol_key(true), 'true');
+            $mol_assert_equal($mol_key(0), '0');
+            $mol_assert_equal($mol_key(''), '""');
+        },
+        'Array & POJO'() {
+            $mol_assert_equal($mol_key([null]), '[null]');
+            $mol_assert_equal($mol_key({ foo: 0 }), '{"foo":0}');
+            $mol_assert_equal($mol_key({ foo: [false] }), '{"foo":[false]}');
+        },
+        'Function'() {
+            const func = () => { };
+            $mol_assert_equal($mol_key(func), $mol_key(func));
+            $mol_assert_unique($mol_key(func), $mol_key(() => { }));
+        },
+        'Objects'() {
+            class User {
+            }
+            const jin = new User();
+            $mol_assert_equal($mol_key(jin), $mol_key(jin));
+            $mol_assert_unique($mol_key(jin), $mol_key(new User()));
+        },
+        'Elements'() {
+            const foo = $mol_jsx("div", null, "bar");
+            $mol_assert_equal($mol_key(foo), $mol_key(foo));
+            $mol_assert_unique($mol_key(foo), $mol_key($mol_jsx("div", null, "bar")));
+        },
+        'Custom JSON representation'() {
+            class User {
+                name;
+                age;
+                constructor(name, age) {
+                    this.name = name;
+                    this.age = age;
+                }
+                toJSON() { return { name: this.name }; }
+            }
+            $mol_assert_equal($mol_key(new User('jin', 18)), '{"name":"jin"}');
+        },
+        'Special native classes'() {
+            $mol_assert_equal($mol_key(new Date('xyz')), 'null');
+            $mol_assert_equal($mol_key(new Date('2001-01-02T03:04:05.678Z')), '"2001-01-02T03:04:05.678Z"');
+            $mol_assert_equal($mol_key(/./), '"/./"');
+            $mol_assert_equal($mol_key(/\./gimsu), '"/\\\\./gimsu"');
+        },
     });
 })($ || ($ = {}));
-//mol/log3/log3.test.ts
+//mol/key/key.test.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_wire_log.active();
+})($ || ($ = {}));
+//mol/wire/atom/atom.test.ts
 ;
 "use strict";
 var $;
@@ -1785,15 +1907,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/view/view/view.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_after_timeout = $mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-//mol/after/timeout/timeout.test.ts
 ;
 "use strict";
 var $;
@@ -2116,179 +2229,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_test({
-        'null by default'() {
-            const key = String(Math.random());
-            $mol_assert_equal($mol_state_session.value(key), null);
-        },
-        'storing'() {
-            const key = String(Math.random());
-            $mol_state_session.value(key, '$mol_state_session_test');
-            $mol_assert_equal($mol_state_session.value(key), '$mol_state_session_test');
-            $mol_state_session.value(key, null);
-            $mol_assert_equal($mol_state_session.value(key), null);
-        },
-    });
-})($ || ($ = {}));
-//mol/state/session/session.test.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
-        'lazy calls'() {
-            let calls = 0;
-            const list = $mol_range2(index => (++calls, index), () => 10);
-            $mol_assert_ok(list instanceof Array);
-            $mol_assert_equal(list.length, 10);
-            $mol_assert_equal(list[-1], -1);
-            $mol_assert_equal(list[0], 0);
-            $mol_assert_equal(list[9], 9);
-            $mol_assert_equal(list[9.5], undefined);
-            $mol_assert_equal(list[10], 10);
-            $mol_assert_equal(calls, 4);
-        },
-        'infinity list'() {
-            let calls = 0;
-            const list = $mol_range2(index => (++calls, index));
-            $mol_assert_equal(list.length, Number.POSITIVE_INFINITY);
-            $mol_assert_equal(list[0], 0);
-            $mol_assert_equal(list[4], 4);
-            $mol_assert_equal(list[Number.MAX_SAFE_INTEGER], Number.MAX_SAFE_INTEGER);
-            $mol_assert_equal(list[Number.POSITIVE_INFINITY], Number.POSITIVE_INFINITY);
-            $mol_assert_equal(calls, 4);
-        },
-        'stringify'() {
-            const list = $mol_range2(i => i, () => 5);
-            $mol_assert_equal(list.toString(), '0,1,2,3,4');
-            $mol_assert_equal(list.join(';'), '0;1;2;3;4');
-        },
-        'for-of'() {
-            let log = '';
-            for (let i of $mol_range2(i => i + 1, () => 5)) {
-                log += i;
-            }
-            $mol_assert_equal(log, '12345');
-        },
-        'for-in'() {
-            let log = '';
-            for (let i in $mol_range2(i => i, () => 5)) {
-                log += i;
-            }
-            $mol_assert_equal(log, '01234');
-        },
-        'forEach'() {
-            let log = '';
-            $mol_range2(i => i, () => 5).forEach(i => log += i);
-            $mol_assert_equal(log, '01234');
-        },
-        'lazy concat'() {
-            let calls1 = 0;
-            let calls2 = 0;
-            const list = $mol_range2(index => (++calls1, index), () => 5).concat([0, 1, 2, 3, 4], $mol_range2(index => (++calls2, index), () => 5));
-            $mol_assert_ok(list instanceof Array);
-            $mol_assert_equal(list.length, 15);
-            $mol_assert_equal(list[0], 0);
-            $mol_assert_equal(list[4], 4);
-            $mol_assert_equal(list[5], 0);
-            $mol_assert_equal(list[9], 4);
-            $mol_assert_equal(list[10], 0);
-            $mol_assert_equal(list[14], 4);
-            $mol_assert_equal(list[15], 5);
-            $mol_assert_equal(calls1, 2);
-            $mol_assert_equal(calls2, 3);
-        },
-        'filter'() {
-            let calls = 0;
-            const list = $mol_range2(index => (++calls, index), () => 10).filter(v => v % 2).slice(0, 3);
-            $mol_assert_ok(list instanceof Array);
-            $mol_assert_equal(list.length, 3);
-            $mol_assert_equal(list[0], 1);
-            $mol_assert_equal(list[2], 5);
-            $mol_assert_equal(list[3], 7);
-            $mol_assert_equal(calls, 10);
-        },
-        'reduce'() {
-            let calls = 0;
-            const list = $mol_range2().slice(1, 6);
-            $mol_assert_equal(list.reduce((s, v) => s + v), 15);
-            $mol_assert_equal(list.reduce((s, v) => s + v, 5), 20);
-        },
-        'lazy map'() {
-            let calls1 = 0;
-            let calls2 = 0;
-            const source = $mol_range2(index => (++calls1, index), () => 5);
-            const target = source.map((item, index, self) => {
-                ++calls2;
-                $mol_assert_equal(source, self);
-                return index + 10;
-            }, () => 5);
-            $mol_assert_ok(target instanceof Array);
-            $mol_assert_equal(target.length, 5);
-            $mol_assert_equal(target[0], 10);
-            $mol_assert_equal(target[4], 14);
-            $mol_assert_equal(target[5], 15);
-            $mol_assert_equal(calls1, 3);
-            $mol_assert_equal(calls2, 3);
-        },
-        'lazy slice'() {
-            let calls = 0;
-            const list = $mol_range2(index => (++calls, index), () => 10).slice(3, 7);
-            $mol_assert_ok(list instanceof Array);
-            $mol_assert_equal(list.length, 4);
-            $mol_assert_equal(list[0], 3);
-            $mol_assert_equal(list[3], 6);
-            $mol_assert_equal(list[4], 7);
-            $mol_assert_equal(calls, 3);
-        },
-        'lazy some'() {
-            let calls = 0;
-            $mol_assert_ok($mol_range2(index => (++calls, index), () => 5).some(v => v >= 2));
-            $mol_assert_equal(calls, 3);
-            $mol_assert_not($mol_range2(i => i, () => 0).some(v => true));
-            $mol_assert_ok($mol_range2(i => i).some(v => v > 5));
-        },
-        'lazy every'() {
-            let calls = 0;
-            $mol_assert_not($mol_range2(index => (++calls, index), () => 5).every(v => v < 2));
-            $mol_assert_equal(calls, 3);
-            $mol_assert_ok($mol_range2(i => i, () => 0).every(v => false));
-            $mol_assert_not($mol_range2(i => i).every(v => v < 5));
-        },
-        'lazyfy'() {
-            let calls = 0;
-            const list = new $mol_range2_array(...[0, 1, 2, 3, 4, 5]).map(i => (++calls, i + 10)).slice(2);
-            $mol_assert_ok(list instanceof Array);
-            $mol_assert_equal(list.length, 4);
-            $mol_assert_equal(calls, 0);
-            $mol_assert_equal(list[0], 12);
-            $mol_assert_equal(list[3], 15);
-            $mol_assert_equal(list[4], Number.NaN);
-            $mol_assert_equal(calls, 3);
-        },
-        'prevent modification'() {
-            const list = $mol_range2(i => i, () => 5);
-            $mol_assert_fail(() => list.push(4), TypeError);
-            $mol_assert_fail(() => list.pop(), TypeError);
-            $mol_assert_fail(() => list.unshift(4), TypeError);
-            $mol_assert_fail(() => list.shift(), TypeError);
-            $mol_assert_fail(() => list.splice(1, 2), TypeError);
-            $mol_assert_fail(() => list[1] = 2, TypeError);
-            $mol_assert_equal(list.toString(), '0,1,2,3,4');
-        }
-    });
-})($ || ($ = {}));
-//mol/range2/range2.test.ts
-;
-"use strict";
-//mol/type/equals/equals.test.ts
-;
-"use strict";
-//mol/type/equals/equals.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_view_tree_test_attributes_super extends $mol_view {
         some() {
             return {
@@ -2481,6 +2421,30 @@ var $;
     })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 //mol/view/tree/test/tree.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_deprecated(message) {
+        return (host, field, descr) => {
+            const value = descr.value;
+            let warned = false;
+            descr.value = function $mol_deprecated_wrapper(...args) {
+                if (!warned) {
+                    $$.$mol_log3_warn({
+                        place: `${host.constructor.name}::${field}`,
+                        message: `Deprecated`,
+                        hint: message,
+                    });
+                    warned = true;
+                }
+                return value.call(this, ...args);
+            };
+        };
+    }
+    $.$mol_deprecated = $mol_deprecated;
+})($ || ($ = {}));
+//mol/deprecated/deprecated.ts
 ;
 "use strict";
 var $;
@@ -3047,6 +3011,7 @@ var $;
         static relative(path) {
             throw new Error('Not implemented yet');
         }
+        static base = '';
         path() {
             return '.';
         }
@@ -3080,7 +3045,7 @@ var $;
                 return exists;
             if (next)
                 this.parent().exists(true);
-            this.ensure(next);
+            this.ensure();
             this.reset();
             return next;
         }
@@ -3360,7 +3325,7 @@ var $;
             }
             return this.constructor.absolute(res);
         }
-        ensure(next) {
+        ensure() {
             throw new Error('$mol_file_web.ensure() not implemented');
         }
         sub() {
@@ -3398,10 +3363,10 @@ var $;
             return 'en';
         }
         static lang(next) {
-            return $mol_state_local.value('locale', next) || $mol_dom_context.navigator.language.replace(/-.*/, '') || this.lang_default();
+            return this.$.$mol_state_local.value('locale', next) || $mol_dom_context.navigator.language.replace(/-.*/, '') || this.lang_default();
         }
         static source(lang) {
-            return JSON.parse($mol_file.relative(`web.locale=${lang}.json`).text().toString());
+            return JSON.parse(this.$.$mol_file.relative(`web.locale=${lang}.json`).text().toString());
         }
         static texts(lang, next) {
             if (next)
@@ -3738,38 +3703,149 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
+    $mol_test({
+        'lazy calls'() {
+            let calls = 0;
+            const list = $mol_range2(index => (++calls, index), () => 10);
+            $mol_assert_ok(list instanceof Array);
+            $mol_assert_equal(list.length, 10);
+            $mol_assert_equal(list[-1], -1);
+            $mol_assert_equal(list[0], 0);
+            $mol_assert_equal(list[9], 9);
+            $mol_assert_equal(list[9.5], undefined);
+            $mol_assert_equal(list[10], 10);
+            $mol_assert_equal(calls, 4);
+        },
+        'infinity list'() {
+            let calls = 0;
+            const list = $mol_range2(index => (++calls, index));
+            $mol_assert_equal(list.length, Number.POSITIVE_INFINITY);
+            $mol_assert_equal(list[0], 0);
+            $mol_assert_equal(list[4], 4);
+            $mol_assert_equal(list[Number.MAX_SAFE_INTEGER], Number.MAX_SAFE_INTEGER);
+            $mol_assert_equal(list[Number.POSITIVE_INFINITY], Number.POSITIVE_INFINITY);
+            $mol_assert_equal(calls, 4);
+        },
+        'stringify'() {
+            const list = $mol_range2(i => i, () => 5);
+            $mol_assert_equal(list.toString(), '0,1,2,3,4');
+            $mol_assert_equal(list.join(';'), '0;1;2;3;4');
+        },
+        'for-of'() {
+            let log = '';
+            for (let i of $mol_range2(i => i + 1, () => 5)) {
+                log += i;
+            }
+            $mol_assert_equal(log, '12345');
+        },
+        'for-in'() {
+            let log = '';
+            for (let i in $mol_range2(i => i, () => 5)) {
+                log += i;
+            }
+            $mol_assert_equal(log, '01234');
+        },
+        'forEach'() {
+            let log = '';
+            $mol_range2(i => i, () => 5).forEach(i => log += i);
+            $mol_assert_equal(log, '01234');
+        },
+        'lazy concat'() {
+            let calls1 = 0;
+            let calls2 = 0;
+            const list = $mol_range2(index => (++calls1, index), () => 5).concat([0, 1, 2, 3, 4], $mol_range2(index => (++calls2, index), () => 5));
+            $mol_assert_ok(list instanceof Array);
+            $mol_assert_equal(list.length, 15);
+            $mol_assert_equal(list[0], 0);
+            $mol_assert_equal(list[4], 4);
+            $mol_assert_equal(list[5], 0);
+            $mol_assert_equal(list[9], 4);
+            $mol_assert_equal(list[10], 0);
+            $mol_assert_equal(list[14], 4);
+            $mol_assert_equal(list[15], 5);
+            $mol_assert_equal(calls1, 2);
+            $mol_assert_equal(calls2, 3);
+        },
+        'filter'() {
+            let calls = 0;
+            const list = $mol_range2(index => (++calls, index), () => 10).filter(v => v % 2).slice(0, 3);
+            $mol_assert_ok(list instanceof Array);
+            $mol_assert_equal(list.length, 3);
+            $mol_assert_equal(list[0], 1);
+            $mol_assert_equal(list[2], 5);
+            $mol_assert_equal(list[3], 7);
+            $mol_assert_equal(calls, 10);
+        },
+        'reduce'() {
+            let calls = 0;
+            const list = $mol_range2().slice(1, 6);
+            $mol_assert_equal(list.reduce((s, v) => s + v), 15);
+            $mol_assert_equal(list.reduce((s, v) => s + v, 5), 20);
+        },
+        'lazy map'() {
+            let calls1 = 0;
+            let calls2 = 0;
+            const source = $mol_range2(index => (++calls1, index), () => 5);
+            const target = source.map((item, index, self) => {
+                ++calls2;
+                $mol_assert_equal(source, self);
+                return index + 10;
+            }, () => 5);
+            $mol_assert_ok(target instanceof Array);
+            $mol_assert_equal(target.length, 5);
+            $mol_assert_equal(target[0], 10);
+            $mol_assert_equal(target[4], 14);
+            $mol_assert_equal(target[5], 15);
+            $mol_assert_equal(calls1, 3);
+            $mol_assert_equal(calls2, 3);
+        },
+        'lazy slice'() {
+            let calls = 0;
+            const list = $mol_range2(index => (++calls, index), () => 10).slice(3, 7);
+            $mol_assert_ok(list instanceof Array);
+            $mol_assert_equal(list.length, 4);
+            $mol_assert_equal(list[0], 3);
+            $mol_assert_equal(list[3], 6);
+            $mol_assert_equal(list[4], 7);
+            $mol_assert_equal(calls, 3);
+        },
+        'lazy some'() {
+            let calls = 0;
+            $mol_assert_ok($mol_range2(index => (++calls, index), () => 5).some(v => v >= 2));
+            $mol_assert_equal(calls, 3);
+            $mol_assert_not($mol_range2(i => i, () => 0).some(v => true));
+            $mol_assert_ok($mol_range2(i => i).some(v => v > 5));
+        },
+        'lazy every'() {
+            let calls = 0;
+            $mol_assert_not($mol_range2(index => (++calls, index), () => 5).every(v => v < 2));
+            $mol_assert_equal(calls, 3);
+            $mol_assert_ok($mol_range2(i => i, () => 0).every(v => false));
+            $mol_assert_not($mol_range2(i => i).every(v => v < 5));
+        },
+        'lazyfy'() {
+            let calls = 0;
+            const list = new $mol_range2_array(...[0, 1, 2, 3, 4, 5]).map(i => (++calls, i + 10)).slice(2);
+            $mol_assert_ok(list instanceof Array);
+            $mol_assert_equal(list.length, 4);
+            $mol_assert_equal(calls, 0);
+            $mol_assert_equal(list[0], 12);
+            $mol_assert_equal(list[3], 15);
+            $mol_assert_equal(list[4], Number.NaN);
+            $mol_assert_equal(calls, 3);
+        },
+        'prevent modification'() {
+            const list = $mol_range2(i => i, () => 5);
+            $mol_assert_fail(() => list.push(4), TypeError);
+            $mol_assert_fail(() => list.pop(), TypeError);
+            $mol_assert_fail(() => list.unshift(4), TypeError);
+            $mol_assert_fail(() => list.shift(), TypeError);
+            $mol_assert_fail(() => list.splice(1, 2), TypeError);
+            $mol_assert_fail(() => list[1] = 2, TypeError);
+            $mol_assert_equal(list.toString(), '0,1,2,3,4');
+        }
+    });
 })($ || ($ = {}));
-//mol/promise/promise.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
-        const task = new this.$mol_after_timeout(timeout, () => promise.done());
-        return Object.assign(promise, {
-            destructor: () => task.destructor()
-        });
-    }
-    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
-    function $mol_wait_timeout(timeout) {
-        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
-    }
-    $.$mol_wait_timeout = $mol_wait_timeout;
-})($ || ($ = {}));
-//mol/wait/timeout/timeout.ts
+//mol/range2/range2.test.ts
 
 //# sourceMappingURL=web.test.js.map
