@@ -65,8 +65,8 @@ $mol_plot_graph $mol_svg_group
 		<= gap_y $mol_vector_range /
 			0
 			0
-	repos_x!val 0
-	repos_y!val 0
+	repos_x* 0
+	repos_y* 0
 	indexes /number
 	points /readonly(number)[]
 	front /$mol_svg
@@ -169,18 +169,18 @@ $mol_plot_ruler $mol_plot_graph
 			pos_y <= title_pos_y \100%
 			align <= title_align \start
 			text <= title
-	Label!index $mol_svg_text
-		pos <= label_pos!index /
-			<= label_pos_x!index \
-			<= label_pos_y!index \
-		text <= label_text!index \
+	Label* $mol_svg_text
+		pos <= label_pos* /
+			<= label_pos_x* \
+			<= label_pos_y* \
+		text <= label_text* \
 		align <= label_align \
 
 $mol_plot_ruler_vert $mol_plot_ruler
 	title_align \end
 	label_align \end
 	title_pos_y \14
-	label_pos_x!v <= title_pos_x
+	label_pos_x* <= title_pos_x
 	background_height \100%
 	background_width <= title_pos_x
 
@@ -189,7 +189,7 @@ $mol_plot_ruler_hor $mol_plot_ruler
 	label_align \middle
 	title_pos_x \0
 	title_pos_y \100%
-	label_pos_y!v <= title_pos_y
+	label_pos_y* <= title_pos_y
 	background_width \100%
 
 $mol_plot_mark_hor $mol_plot_ruler_hor
@@ -210,14 +210,14 @@ $mol_chart_legend $mol_scroll
 	graphs_front /$mol_plot_graph
 	sub <= graph_legends /$mol_view
 	-
-	Graph_legend!id $mol_view
+	Graph_legend* $mol_view
 		sub /
-			<= Graph_sample_box!id $mol_view
+			<= Graph_sample_box* $mol_view
 				sub /
-					<= Graph_sample!id null
-			<= Graph_title!id $mol_view
+					<= Graph_sample* null
+			<= Graph_title* $mol_view
 				sub /
-					<= graph_title!id \
+					<= graph_title* \
 
 $mol_svg_root $mol_svg
 	dom_name \svg
