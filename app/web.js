@@ -8260,11 +8260,6 @@ var $;
 var $;
 (function ($) {
     class $hyoo_bench_app extends $mol_book2 {
-        attr() {
-            return {
-                mol_theme: "$mol_theme_light"
-            };
-        }
         samples(next) {
             if (next !== undefined)
                 return next;

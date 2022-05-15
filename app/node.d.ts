@@ -2582,9 +2582,6 @@ declare namespace $.$$ {
 
 declare namespace $ {
     class $hyoo_bench_app extends $mol_book2 {
-        attr(): {
-            mol_theme: string;
-        };
         samples(next?: any): readonly string[];
         pages(): readonly any[];
         Menu_option(id: any): $mol_check_box;
