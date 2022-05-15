@@ -1,6 +1,4 @@
 $hyoo_bench_app $mol_book2
-	attr *
-		mol_theme \$mol_theme_light
 	samples? /string
 	pages /
 		<= Addon_page $mol_page
