@@ -2245,6 +2245,7 @@ declare namespace $ {
         uri(val?: any): string;
         mime(): string;
         title(val?: any): string;
+        Fallback(): $$.$mol_link;
     }
 }
 
@@ -2560,6 +2561,7 @@ declare namespace $ {
         attr(): {
             mol_theme: string;
         };
+        samples(next?: any): readonly string[];
         pages(): readonly any[];
         Menu_option(id: any): $mol_check_box;
         Param(id: any): $mol_labeler;
@@ -2569,8 +2571,10 @@ declare namespace $ {
         Filter(): $$.$mol_search;
         source_link(): string;
         Source_link(): $mol_link_source;
+        menu_tools(): readonly any[];
         menu_options(): readonly any[];
         Menu(): $$.$mol_list;
+        Menu_tools(): $mol_view;
         Addon_page(): $mol_page;
         description(): string;
         Descr(): $$.$mol_text;

@@ -429,7 +429,9 @@ $mol_embed_native $mol_scroll
 		data <= uri?val \
 		type <= mime \
 	sub /
-		<= title?val \
+		<= Fallback $mol_link
+			uri <= uri
+			title <= title?val \
 
 $mol_text $mol_list
 	uri_base \
@@ -572,12 +574,16 @@ $mol_number $mol_view
 $hyoo_bench_app $mol_book2
 	attr *
 		mol_theme \$mol_theme_light
+	samples? /string
 	pages /
 		<= Addon_page $mol_page
 			title <= addon_title @ \Samples
+			Tools => Menu_tools
 			head /
 				<= Filter $mol_search
 					query?val <=> filter?val \
+				<= Menu_tools
+			tools <= menu_tools /
 				<= Source_link $mol_link_source
 					uri <= source_link \https://github.com/hyoo-ru/bench.hyoo.ru
 			body /
