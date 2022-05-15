@@ -7,6 +7,6 @@ $hyoo_bench_chart_bar_mol $mol_view
 				<= Hor $mol_plot_mark_hor
 					title \Iter
 					series_x <= hor_series /number
-	Graph!id $mol_plot_bar
-		title <= graph_title!id \
-		series_y <= series!id /number
+	Graph* $mol_plot_bar
+		title <= graph_title* \
+		series_y <= series* /number

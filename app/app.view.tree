@@ -1,10 +1,14 @@
 $hyoo_bench_app $mol_book2
+	samples? /string
 	pages /
 		<= Addon_page $mol_page
 			title <= addon_title @ \Samples
+			Tools => Menu_tools
 			head /
 				<= Filter $mol_search
 					query?val <=> filter?val \
+				<= Menu_tools
+			tools <= menu_tools /
 				<= Source_link $mol_link_source
 					uri <= source_link \https://github.com/hyoo-ru/bench.hyoo.ru
 			body /

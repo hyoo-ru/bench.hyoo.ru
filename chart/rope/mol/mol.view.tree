@@ -6,9 +6,9 @@ $hyoo_bench_chart_rope_mol $mol_view
 					title \Val
 				<= Hor $mol_plot_ruler_hor
 					title \Iter
-	Graph!id $mol_plot_group
-		title <= graph_title!id \
-		series_y <= series!id /
+	Graph* $mol_plot_group
+		title <= graph_title* \
+		series_y <= series* /
 		graphs /
-			<= Line!id $mol_plot_line
-			<= Dots!id $mol_plot_dot
+			<= Line* $mol_plot_line
+			<= Dots* $mol_plot_dot

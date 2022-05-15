@@ -2,10 +2,10 @@ $hyoo_bench_list_mol $mol_scroll
 	sub /
 		<= List $mol_list
 			rows <= rows /
-	Row!id $hyoo_bench_list_mol_row
-		checked?val <=> row_selected!id?val false
-		title <= row_title!id \
-		content <= row_content!id \
+	Row* $hyoo_bench_list_mol_row
+		checked?val <=> row_selected*?val false
+		title <= row_title* \
+		content <= row_content* \
 
 $hyoo_bench_list_mol_row $mol_check
 	selected?val false
