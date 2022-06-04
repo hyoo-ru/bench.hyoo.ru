@@ -41,6 +41,8 @@ var $node = new Proxy({ require }, {
         const mod = target.require('module');
         if (mod.builtinModules.indexOf(name) >= 0)
             return target.require(name);
+        if (name[0] === '.')
+            return target.require(name);
         const path = target.require('path');
         const fs = target.require('fs');
         let dir = path.resolve('.');
@@ -599,28 +601,71 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_term_color {
+        static reset = this.ansi(0, 0);
+        static bold = this.ansi(1, 22);
+        static italic = this.ansi(3, 23);
+        static underline = this.ansi(4, 24);
+        static inverse = this.ansi(7, 27);
+        static hidden = this.ansi(8, 28);
+        static strike = this.ansi(9, 29);
+        static gray = this.ansi(90, 39);
+        static red = this.ansi(91, 39);
+        static green = this.ansi(92, 39);
+        static yellow = this.ansi(93, 39);
+        static blue = this.ansi(94, 39);
+        static magenta = this.ansi(95, 39);
+        static cyan = this.ansi(96, 39);
+        static white = this.ansi(97, 39);
+        static Red = (str) => this.inverse(this.red(str));
+        static Green = (str) => this.inverse(this.green(str));
+        static Yellow = (str) => this.inverse(this.yellow(str));
+        static Blue = (str) => this.inverse(this.blue(str));
+        static Magenta = (str) => this.inverse(this.magenta(str));
+        static Cyan = (str) => this.inverse(this.cyan(str));
+        static White = (str) => this.inverse(this.white(str));
+        static ansi(open, close) {
+            if (typeof process === 'undefined')
+                return String;
+            if (!process.stdout.isTTY)
+                return String;
+            const prefix = `\x1b[${open}m`;
+            const postfix = `\x1b[${close}m`;
+            const suffix_regexp = new RegExp(postfix.replace('[', '\\['), 'g');
+            return function colorer(str) {
+                str = String(str);
+                if (str === '')
+                    return str;
+                const suffix = str.replace(suffix_regexp, prefix);
+                return prefix + suffix + postfix;
+            };
+        }
+    }
+    $.$mol_term_color = $mol_term_color;
+})($ || ($ = {}));
+//mol/term/color/color.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_log3_node_make(level, output, type, color) {
         return function $mol_log3_logger(event) {
             if (!event.time)
                 event = { time: new Date().toISOString(), ...event };
             const tree = this.$mol_tree.fromJSON(event).clone({ type });
-            let str = tree.toString();
-            if (process[output].isTTY) {
-                str = $node.colorette[color + 'Bright'](str);
-            }
-            ;
+            let str = color(tree.toString());
             this.console[level](str);
             const self = this;
             return () => self.console.groupEnd();
         };
     }
     $.$mol_log3_node_make = $mol_log3_node_make;
-    $.$mol_log3_come = $mol_log3_node_make('info', 'stdout', 'come', 'blue');
-    $.$mol_log3_done = $mol_log3_node_make('info', 'stdout', 'done', 'green');
-    $.$mol_log3_fail = $mol_log3_node_make('error', 'stderr', 'fail', 'red');
-    $.$mol_log3_warn = $mol_log3_node_make('warn', 'stderr', 'warn', 'yellow');
-    $.$mol_log3_rise = $mol_log3_node_make('log', 'stdout', 'rise', 'magenta');
-    $.$mol_log3_area = $mol_log3_node_make('log', 'stdout', 'area', 'cyan');
+    $.$mol_log3_come = $mol_log3_node_make('info', 'stdout', 'come', $mol_term_color.blue);
+    $.$mol_log3_done = $mol_log3_node_make('info', 'stdout', 'done', $mol_term_color.green);
+    $.$mol_log3_fail = $mol_log3_node_make('error', 'stderr', 'fail', $mol_term_color.red);
+    $.$mol_log3_warn = $mol_log3_node_make('warn', 'stderr', 'warn', $mol_term_color.yellow);
+    $.$mol_log3_rise = $mol_log3_node_make('log', 'stdout', 'rise', $mol_term_color.magenta);
+    $.$mol_log3_area = $mol_log3_node_make('log', 'stdout', 'area', $mol_term_color.cyan);
 })($ || ($ = {}));
 //mol/log3/log3.node.ts
 ;
@@ -871,7 +916,7 @@ var $;
         promote() {
             $mol_wire_auto()?.track_next(this);
         }
-        refresh() { }
+        fresh() { }
         complete() { }
         emit(quant = $mol_wire_cursor.stale) {
             for (let i = this.sub_from; i < this.data.length; i += 2) {
@@ -1074,7 +1119,7 @@ var $;
             }
             for (let cursor = this.pub_from; cursor < this.cursor; cursor += 2) {
                 const pub = this.data[cursor];
-                pub.refresh();
+                pub.fresh();
             }
             this.cursor = $mol_wire_cursor.fresh;
         }
@@ -1210,7 +1255,7 @@ var $;
                         continue;
                     if (fiber.cursor === $mol_wire_cursor.final)
                         continue;
-                    fiber.refresh();
+                    fiber.fresh();
                 }
             }
             while (this.reaping.size) {
@@ -1278,7 +1323,7 @@ var $;
             else
                 super.emit(quant);
         }
-        refresh() {
+        fresh() {
             if (this.cursor === $mol_wire_cursor.fresh)
                 return;
             if (this.cursor === $mol_wire_cursor.final)
@@ -1286,7 +1331,7 @@ var $;
             check: if (this.cursor === $mol_wire_cursor.doubt) {
                 for (let i = this.pub_from; i < this.sub_from; i += 2) {
                     ;
-                    this.data[i]?.refresh();
+                    this.data[i]?.fresh();
                     if (this.cursor !== $mol_wire_cursor.doubt)
                         break check;
                 }
@@ -1342,12 +1387,16 @@ var $;
             this.track_off(bu);
             this.put(result);
         }
+        refresh() {
+            this.cursor = $mol_wire_cursor.stale;
+            this.fresh();
+        }
         sync() {
             if (!$mol_wire_fiber.warm) {
                 return this.result();
             }
             this.promote();
-            this.refresh();
+            this.fresh();
             if (this.cache instanceof Error) {
                 return $mol_fail_hidden(this.cache);
             }
@@ -1358,7 +1407,7 @@ var $;
         }
         async async() {
             while (true) {
-                this.refresh();
+                this.fresh();
                 if (this.cache instanceof Error) {
                     $mol_fail_hidden(this.cache);
                 }
@@ -1660,6 +1709,22 @@ var $;
                 };
             }
         }
+        static watching = new Set();
+        static watch() {
+            new $mol_after_frame($mol_wire_atom.watch);
+            for (const atom of $mol_wire_atom.watching) {
+                if (atom.cursor === $mol_wire_cursor.final) {
+                    $mol_wire_atom.watching.delete(atom);
+                }
+                else {
+                    atom.cursor = $mol_wire_cursor.stale;
+                    atom.fresh();
+                }
+            }
+        }
+        watch() {
+            $mol_wire_atom.watching.add(this);
+        }
         resync(args) {
             return this.put(this.task.call(this.host, ...args));
         }
@@ -1714,6 +1779,7 @@ var $;
         $mol_wire_method
     ], $mol_wire_atom.prototype, "once", null);
     $.$mol_wire_atom = $mol_wire_atom;
+    $mol_wire_atom.watch();
 })($ || ($ = {}));
 //mol/wire/atom/atom.ts
 ;
@@ -2063,6 +2129,20 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_log3_come = () => { };
+        $.$mol_log3_done = () => { };
+        $.$mol_log3_fail = () => { };
+        $.$mol_log3_warn = () => { };
+        $.$mol_log3_rise = () => { };
+        $.$mol_log3_area = () => () => { };
+    });
+})($ || ($ = {}));
+//mol/log3/log3.test.ts
+;
+"use strict";
+var $;
 (function ($) {
     function $mol_dom_serialize(node) {
         const serializer = new $mol_dom_context.XMLSerializer;
@@ -2215,20 +2295,6 @@ var $;
 ;
 "use strict";
 //mol/type/partial/deep/deep.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_log3_come = () => { };
-        $.$mol_log3_done = () => { };
-        $.$mol_log3_fail = () => { };
-        $.$mol_log3_warn = () => { };
-        $.$mol_log3_rise = () => { };
-        $.$mol_log3_area = () => () => { };
-    });
-})($ || ($ = {}));
-//mol/log3/log3.test.ts
 ;
 "use strict";
 var $;
@@ -2440,6 +2506,25 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_promise() {
+        let done;
+        let fail;
+        const promise = new Promise((d, f) => {
+            done = d;
+            fail = f;
+        });
+        return Object.assign(promise, {
+            done,
+            fail,
+        });
+    }
+    $.$mol_promise = $mol_promise;
+})($ || ($ = {}));
+//mol/promise/promise.ts
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_after_mock_queue = [];
     function $mol_after_mock_warp() {
         const queue = $.$mol_after_mock_queue.splice(0);
@@ -2478,6 +2563,59 @@ var $;
 "use strict";
 var $;
 (function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_timeout = $mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//mol/after/timeout/timeout.test.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_sync(obj) {
+        return new Proxy(obj, {
+            get(obj, field) {
+                const val = obj[field];
+                if (typeof val !== 'function')
+                    return val;
+                const temp = $mol_wire_task.getter(val);
+                return function $mol_wire_sync(...args) {
+                    const fiber = temp(obj, args);
+                    return fiber.sync();
+                };
+            },
+            apply(obj, self, args) {
+                const temp = $mol_wire_task.getter(obj);
+                const fiber = temp(self, args);
+                return fiber.sync();
+            },
+        });
+    }
+    $.$mol_wire_sync = $mol_wire_sync;
+})($ || ($ = {}));
+//mol/wire/sync/sync.ts
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wait_timeout_async(timeout) {
+        const promise = $mol_promise();
+        const task = new this.$mol_after_timeout(timeout, () => promise.done());
+        return Object.assign(promise, {
+            destructor: () => task.destructor()
+        });
+    }
+    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
+    function $mol_wait_timeout(timeout) {
+        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
+    }
+    $.$mol_wait_timeout = $mol_wait_timeout;
+})($ || ($ = {}));
+//mol/wait/timeout/timeout.ts
+;
+"use strict";
+var $;
+(function ($_1) {
     $mol_test({
         async 'Latest Calls Wins on Concurrency'($) {
             class NameLogger extends $mol_object2 {
@@ -2497,6 +2635,15 @@ var $;
             await promise;
             $mol_assert_like(NameLogger.first, ['john', 'jin']);
             $mol_assert_like(NameLogger.last, ['jin']);
+        },
+        async 'Wrap function'($) {
+            const name = $mol_wire_async(function (name) {
+                $.$mol_wait_timeout(0);
+                return name;
+            });
+            const promise = name('jin');
+            $.$mol_after_mock_warp();
+            $mol_assert_like(await promise, 'jin');
         },
     });
 })($ || ($ = {}));
@@ -2518,7 +2665,12 @@ var $;
                     fiber = temp(obj, args);
                     return fiber.async();
                 };
-            }
+            },
+            apply(obj, self, args) {
+                const temp = $mol_wire_task.getter(obj);
+                const fiber = temp(self, args);
+                return fiber.async();
+            },
         });
     }
     $.$mol_wire_async = $mol_wire_async;
@@ -2582,15 +2734,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/wire/pub/sub/sub.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_after_timeout = $mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-//mol/after/timeout/timeout.test.ts
 ;
 "use strict";
 var $;
@@ -2777,64 +2920,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/compare/deep/deep.test.tsx
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_sync(obj) {
-        return new Proxy(obj, {
-            get(obj, field) {
-                const val = obj[field];
-                if (typeof val !== 'function')
-                    return val;
-                const temp = $mol_wire_task.getter(val);
-                return function $mol_wire_sync(...args) {
-                    const fiber = temp(obj, args);
-                    return fiber.sync();
-                };
-            }
-        });
-    }
-    $.$mol_wire_sync = $mol_wire_sync;
-})($ || ($ = {}));
-//mol/wire/sync/sync.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_promise() {
-        let done;
-        let fail;
-        const promise = new Promise((d, f) => {
-            done = d;
-            fail = f;
-        });
-        return Object.assign(promise, {
-            done,
-            fail,
-        });
-    }
-    $.$mol_promise = $mol_promise;
-})($ || ($ = {}));
-//mol/promise/promise.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wait_timeout_async(timeout) {
-        const promise = $mol_promise();
-        const task = new this.$mol_after_timeout(timeout, () => promise.done());
-        return Object.assign(promise, {
-            destructor: () => task.destructor()
-        });
-    }
-    $.$mol_wait_timeout_async = $mol_wait_timeout_async;
-    function $mol_wait_timeout(timeout) {
-        return this.$mol_wire_sync(this).$mol_wait_timeout_async(timeout);
-    }
-    $.$mol_wait_timeout = $mol_wait_timeout;
-})($ || ($ = {}));
-//mol/wait/timeout/timeout.ts
 ;
 "use strict";
 var $;

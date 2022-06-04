@@ -409,7 +409,7 @@ var $;
         promote() {
             $mol_wire_auto()?.track_next(this);
         }
-        refresh() { }
+        fresh() { }
         complete() { }
         emit(quant = $mol_wire_cursor.stale) {
             for (let i = this.sub_from; i < this.data.length; i += 2) {
@@ -612,7 +612,7 @@ var $;
             }
             for (let cursor = this.pub_from; cursor < this.cursor; cursor += 2) {
                 const pub = this.data[cursor];
-                pub.refresh();
+                pub.fresh();
             }
             this.cursor = $mol_wire_cursor.fresh;
         }
@@ -688,18 +688,20 @@ var $;
     class $mol_after_frame extends $mol_object2 {
         task;
         static _promise = null;
-        static _timeout = null;
         static get promise() {
             if (this._promise)
                 return this._promise;
             return this._promise = new Promise(done => {
                 const complete = () => {
                     this._promise = null;
-                    clearTimeout(this._timeout);
                     done();
                 };
-                requestAnimationFrame(complete);
-                this._timeout = setTimeout(complete, 100);
+                if (typeof requestAnimationFrame === 'function') {
+                    requestAnimationFrame(complete);
+                }
+                else {
+                    setTimeout(complete, 16);
+                }
             });
         }
         cancelled = false;
@@ -752,7 +754,7 @@ var $;
                         continue;
                     if (fiber.cursor === $mol_wire_cursor.final)
                         continue;
-                    fiber.refresh();
+                    fiber.fresh();
                 }
             }
             while (this.reaping.size) {
@@ -820,7 +822,7 @@ var $;
             else
                 super.emit(quant);
         }
-        refresh() {
+        fresh() {
             if (this.cursor === $mol_wire_cursor.fresh)
                 return;
             if (this.cursor === $mol_wire_cursor.final)
@@ -828,7 +830,7 @@ var $;
             check: if (this.cursor === $mol_wire_cursor.doubt) {
                 for (let i = this.pub_from; i < this.sub_from; i += 2) {
                     ;
-                    this.data[i]?.refresh();
+                    this.data[i]?.fresh();
                     if (this.cursor !== $mol_wire_cursor.doubt)
                         break check;
                 }
@@ -884,12 +886,16 @@ var $;
             this.track_off(bu);
             this.put(result);
         }
+        refresh() {
+            this.cursor = $mol_wire_cursor.stale;
+            this.fresh();
+        }
         sync() {
             if (!$mol_wire_fiber.warm) {
                 return this.result();
             }
             this.promote();
-            this.refresh();
+            this.fresh();
             if (this.cache instanceof Error) {
                 return $mol_fail_hidden(this.cache);
             }
@@ -900,7 +906,7 @@ var $;
         }
         async async() {
             while (true) {
-                this.refresh();
+                this.fresh();
                 if (this.cache instanceof Error) {
                     $mol_fail_hidden(this.cache);
                 }
@@ -1202,6 +1208,22 @@ var $;
                 };
             }
         }
+        static watching = new Set();
+        static watch() {
+            new $mol_after_frame($mol_wire_atom.watch);
+            for (const atom of $mol_wire_atom.watching) {
+                if (atom.cursor === $mol_wire_cursor.final) {
+                    $mol_wire_atom.watching.delete(atom);
+                }
+                else {
+                    atom.cursor = $mol_wire_cursor.stale;
+                    atom.fresh();
+                }
+            }
+        }
+        watch() {
+            $mol_wire_atom.watching.add(this);
+        }
         resync(args) {
             return this.put(this.task.call(this.host, ...args));
         }
@@ -1256,6 +1278,7 @@ var $;
         $mol_wire_method
     ], $mol_wire_atom.prototype, "once", null);
     $.$mol_wire_atom = $mol_wire_atom;
+    $mol_wire_atom.watch();
 })($ || ($ = {}));
 //mol/wire/atom/atom.ts
 ;

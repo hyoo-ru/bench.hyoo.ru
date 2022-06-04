@@ -205,7 +205,7 @@ declare namespace $ {
         sub_off(sub_pos: number): void;
         reap(): void;
         promote(): void;
-        refresh(): void;
+        fresh(): void;
         complete(): void;
         emit(quant?: $mol_wire_cursor): void;
         peer_move(from_pos: number, to_pos: number): void;
@@ -281,7 +281,6 @@ declare namespace $ {
     class $mol_after_frame extends $mol_object2 {
         task: () => void;
         static _promise: Promise<void> | null;
-        static _timeout: any;
         static get promise(): Promise<void>;
         cancelled: boolean;
         promise: Promise<void>;
@@ -311,6 +310,7 @@ declare namespace $ {
         toJSON(): any;
         get $(): any;
         emit(quant?: $mol_wire_cursor): void;
+        fresh(): void;
         refresh(): void;
         abstract put(next: Result | Error | Promise<Result | Error>): Result | Error | Promise<Result | Error>;
         sync(): Awaited<Result>;
@@ -354,6 +354,9 @@ declare namespace $ {
 declare namespace $ {
     class $mol_wire_atom<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result, keys: number): (host: Host, args: Args) => $mol_wire_atom<Host, [...Args], Result>;
+        static watching: Set<$mol_wire_atom<any, any, any>>;
+        static watch(): void;
+        watch(): void;
         resync(args: Args): Error | Result | Promise<Error | Result>;
         once(): Awaited<Result>;
         destructor(): void;
@@ -461,6 +464,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_wire_watch(): void;
+}
+
+declare namespace $ {
     function $mol_const<Value>(value: Value): {
         (): Value;
         '()': Value;
@@ -474,7 +481,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_wire_async<Host extends object>(obj: Host): { [key in keyof Host]: Host[key] extends (...args: infer Args) => infer Res ? Res extends Promise<any> ? Host[key] : (...args: Args) => Promise<Res> : Host[key]; };
+    function $mol_wire_async<Host extends object>(obj: Host): (Host extends (...args: infer Args) => infer Res ? Res extends Promise<any> ? Host : (...args: Args) => Promise<Res> : {}) & { [key in keyof Host]: Host[key] extends (...args: infer Args_1) => infer Res_1 ? Res_1 extends Promise<any> ? Host[key] : (...args: Args_1) => Promise<Res_1> : Host[key]; };
 }
 
 declare namespace $ {
@@ -528,10 +535,13 @@ declare namespace $ {
         maximal_width(): number;
         minimal_height(): number;
         static watchers: Set<$mol_view>;
-        view_rect(): DOMRectReadOnly | null;
-        view_rect_cache(next?: DOMRectReadOnly | null): DOMRectReadOnly | null;
-        view_rect_watcher(): {
-            destructor: () => boolean;
+        view_rect(): {
+            width: number;
+            height: number;
+            left: number;
+            right: number;
+            top: number;
+            bottom: number;
         };
         dom_id(): any;
         dom_node(next?: Element): Element;
@@ -1403,7 +1413,7 @@ declare namespace $.$$ {
         dimensions(): $mol_vector_2d<$mol_vector_range<number>>;
         size(): $mol_vector_2d<number>;
         graph_hue(index: number): number;
-        graphs_colored(): $.$mol_plot_graph[];
+        graphs_colored(): readonly $.$mol_plot_graph[];
         size_real(): $mol_vector_2d<number>;
         view_box(): string;
         scale_limit(): $mol_vector_2d<$mol_vector_range<number>>;
@@ -1417,7 +1427,7 @@ declare namespace $.$$ {
         shift(next?: $mol_vector_2d<number>): $mol_vector_2d<number>;
         reset(event?: Event): void;
         graphs_visible(): $.$mol_plot_graph[];
-        graphs_positioned(): $.$mol_plot_graph[];
+        graphs_positioned(): readonly $.$mol_plot_graph[];
         dimensions_viewport(): $mol_vector<$mol_vector_range<number>, 2>;
         viewport(): $mol_vector_2d<$mol_vector_range<number>>;
         graphs_sorted(): $.$mol_svg[];
@@ -1438,7 +1448,7 @@ declare namespace $ {
         hue_base(): number;
         hue_shift(): number;
         zoom(val?: any): number;
-        graphs_colored(): $mol_plot_graph[];
+        graphs_colored(): readonly $mol_plot_graph[];
         Plot(): $$.$mol_plot_pane;
     }
 }
@@ -1503,7 +1513,6 @@ declare namespace $.$$ {
         filled(): Set<number>;
         indexes(): number[];
         curve(): string;
-        dimensions(): $mol_vector_2d<$mol_vector_range<number>>;
     }
 }
 
