@@ -4199,6 +4199,9 @@ var $;
             alignSelf: 'stretch',
             boxSizing: 'border-box',
             willChange: 'scroll-position',
+            scroll: {
+                padding: [rem(.75), 0],
+            },
             maxHeight: per(100),
             maxWidth: per(100),
             webkitOverflowScrolling: 'touch',
