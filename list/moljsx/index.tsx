@@ -1,5 +1,14 @@
 /** @jsx $mol_jsx */
 namespace $ {
+	
+	export class Text extends $mol_jsx_view {
+		text() { return '' }
+		render() { return (
+			<div>
+				{ this.text() }
+			</div>
+		) }
+	}
 
 	export class Item extends $mol_jsx_view {
 
@@ -12,21 +21,11 @@ namespace $ {
 		
 		render() { return (
 			<div
-				class={ `list-item list-item-selected-${ this.selected() }` }
+				class={ `Item__selected-${ this.selected() }` }
 				onclick={ ()=> this.selected( true ) }
 				>
-				<div
-					id="/title"
-					class={ 'list-item-title' }
-					>
-					{ this.title() }
-				</div>
-				<div
-					id="/content"
-					class={ 'list-item-content' }
-					>
-					{ this.content() }
-				</div>
+				<Text id="title" text={ ()=> this.title() } />
+				<Text id="content" text={ ()=> this.content() } />
 			</div>
 		) }
 
@@ -69,7 +68,6 @@ namespace $ {
 			return Object.fromEntries( this.data().items.map( item => [ item.id, item ] ) )
 		}
 
-		@ $mol_mem_key
 		item( id : number ) {
 			return this.dict()[ id ] ?? {}
 		}
@@ -88,10 +86,10 @@ namespace $ {
 		}
 		
 		render() { return (
-			<div class={ 'list' } >
+			<div>
 				{ ... this.ids().map( id => (
 					<Item
-						id={ '/item:' + id }
+						id={ 'item/' + id }
 						title={ ()=> this.item(id).title }
 						content={ ()=> this.item(id).content }
 						selected={ next => this.item_selected( id , next ) }
@@ -102,6 +100,6 @@ namespace $ {
 
 	}
 
-	$mol_jsx_attach( $mol_dom_context.document , ()=> <List id="/list" /> )
+	$mol_jsx_attach( $mol_dom_context.document , ()=> <List id="list" /> )
 
 }
