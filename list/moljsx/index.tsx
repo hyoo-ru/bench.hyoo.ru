@@ -1,7 +1,7 @@
 /** @jsx $mol_jsx */
 namespace $ {
 	
-	export class Text extends $mol_jsx_view {
+	class Text extends $mol_jsx_view {
 		text() { return '' }
 		render() { return (
 			<div>
@@ -10,7 +10,7 @@ namespace $ {
 		) }
 	}
 
-	export class Item extends $mol_jsx_view {
+	class Item extends $mol_jsx_view {
 
 		title() { return '' }
 
@@ -31,7 +31,7 @@ namespace $ {
 
 	}
 
-	export class List extends $mol_jsx_view {
+	class List extends $mol_jsx_view {
 
 		@ $mol_mem
 		receiver() {
