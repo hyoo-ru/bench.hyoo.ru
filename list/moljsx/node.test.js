@@ -823,7 +823,7 @@ var $;
     function $mol_jsx(Elem, props, ...childNodes) {
         const id = props && props.id || '';
         const guid = id ? $.$mol_jsx_prefix ? $.$mol_jsx_prefix + '/' + id : id : $.$mol_jsx_prefix;
-        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id}`) : $.$mol_jsx_crumbs;
+        const crumbs_self = id ? $.$mol_jsx_crumbs.replace(/(\S+)/g, `$1_${id.replace(/\/.*/i, '')}`) : $.$mol_jsx_crumbs;
         if (Elem && $.$mol_jsx_booked) {
             if ($.$mol_jsx_booked.has(id)) {
                 $mol_fail(new Error(`JSX already has tag with id ${JSON.stringify(guid)}`));
@@ -899,7 +899,11 @@ var $;
         $mol_dom_render_children(node, [].concat(...childNodes));
         if (!Elem)
             return node;
+        if (guid)
+            node.id = guid;
         for (const key in props) {
+            if (key === 'id')
+                continue;
             if (typeof props[key] === 'string') {
                 ;
                 node.setAttribute(key, props[key]);
@@ -916,8 +920,6 @@ var $;
                 node[key] = props[key];
             }
         }
-        if (guid)
-            node.id = guid;
         if ($.$mol_jsx_crumbs)
             node.className = (props?.['class'] ? props['class'] + ' ' : '') + crumbs_self;
         return node;
@@ -2019,20 +2021,25 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class Text extends $mol_jsx_view {
+        text() { return ''; }
+        render() {
+            return ($mol_jsx("div", null, this.text()));
+        }
+    }
     class Item extends $mol_jsx_view {
         title() { return ''; }
         content() { return ''; }
         selected(next = false) { return next; }
         render() {
-            return ($mol_jsx("div", { class: `list-item list-item-selected-${this.selected()}`, onclick: () => this.selected(true) },
-                $mol_jsx("div", { id: "/title", class: 'list-item-title' }, this.title()),
-                $mol_jsx("div", { id: "/content", class: 'list-item-content' }, this.content())));
+            return ($mol_jsx("div", { class: `Item__selected-${this.selected()}`, onclick: () => this.selected(true) },
+                $mol_jsx(Text, { id: "title", text: () => this.title() }),
+                $mol_jsx(Text, { id: "content", text: () => this.content() })));
         }
     }
     __decorate([
         $mol_mem
     ], Item.prototype, "selected", null);
-    $.Item = Item;
     class List extends $mol_jsx_view {
         receiver() {
             return new $mol_dom_listener($mol_dom_context, 'message', event => {
@@ -2064,7 +2071,7 @@ var $;
             return this.data().items.map(item => item.id);
         }
         render() {
-            return ($mol_jsx("div", { class: 'list' }, ...this.ids().map(id => ($mol_jsx(Item, { id: '/item:' + id, title: () => this.item(id).title, content: () => this.item(id).content, selected: next => this.item_selected(id, next) })))));
+            return ($mol_jsx("div", null, ...this.ids().map(id => ($mol_jsx(Item, { id: 'item/' + id, title: () => this.item(id).title, content: () => this.item(id).content, selected: next => this.item_selected(id, next) })))));
         }
     }
     __decorate([
@@ -2077,9 +2084,6 @@ var $;
         $mol_mem
     ], List.prototype, "dict", null);
     __decorate([
-        $mol_mem_key
-    ], List.prototype, "item", null);
-    __decorate([
         $mol_mem
     ], List.prototype, "selected", null);
     __decorate([
@@ -2088,8 +2092,7 @@ var $;
     __decorate([
         $mol_mem
     ], List.prototype, "ids", null);
-    $.List = List;
-    $mol_jsx_attach($mol_dom_context.document, () => $mol_jsx(List, { id: "/list" }));
+    $mol_jsx_attach($mol_dom_context.document, () => $mol_jsx(List, { id: "list" }));
 })($ || ($ = {}));
 //hyoo/bench/list/moljsx/index.tsx
 ;

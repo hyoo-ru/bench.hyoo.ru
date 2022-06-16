@@ -504,46 +504,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class Item extends $mol_jsx_view {
-        title(): string;
-        content(): string;
-        selected(next?: boolean): boolean;
-        render(): $mol_jsx.JSX.Element;
-    }
-    class List extends $mol_jsx_view {
-        receiver(): $mol_dom_listener;
-        data(next?: {
-            sample: string;
-            items: {
-                id: number;
-                title: string;
-                content: string;
-            }[];
-        }): {
-            sample: string;
-            items: {
-                id: number;
-                title: string;
-                content: string;
-            }[];
-        };
-        dict(): {
-            [k: string]: {
-                id: number;
-                title: string;
-                content: string;
-            };
-        };
-        item(id: number): {
-            id: number;
-            title: string;
-            content: string;
-        };
-        selected(next?: number): number;
-        item_selected(id: number, next?: boolean): boolean;
-        ids(): number[];
-        render(): $mol_jsx.JSX.Element;
-    }
 }
 
 export = $;

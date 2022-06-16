@@ -37,88 +37,89 @@
 
 <body>
 
-<script src="//unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-<script src="//unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 <script>
 	
-	var Test = function(){
-		React.Component.apply( this , arguments )
-		this.state = {
+	class Item extends React.Component {
+		
+		render() {
+			return React.createElement(
+				"div" ,
+				{
+					className : "list-item" + ( this.props.selected ? " list-item-selected " : "" ) ,
+					onClick : this.props.onClick
+				} ,
+				[
+					React.createElement(
+						"div" ,
+						{ className : 'list-item-title' } ,
+						this.props.title
+					) ,
+					React.createElement(
+						"div" ,
+						{ className : 'list-item-content' } ,
+						this.props.content
+					)
+				]
+			)
+		}
+		
+	}
+	
+	class Test extends React.Component {
+
+		state = {
 			data : {
 				sample : '' ,
 				items : []
 			} ,
 			selected : -1
 		}
-		this.onMessage = this.onMessage.bind( this )
-	}
-	Test.prototype = Object.assign( Object.create( React.Component.prototype ) ,
-	{
+		
+		constructor( props ) {
+			super( props )
+			this.onMessage = this.onMessage.bind( this )
+		}
+		
+		onSelect( selected ) {
+			this.setState( { selected } )
+		}
 	
-		select : function( data ) {
-			this.setState( {
-				selected : data.id
-			} )
-		} ,
-	
-		componentWillMount : function() {
+		componentWillMount() {
 			window.addEventListener( 'message' , this.onMessage )
-		} ,
+		}
 	
-		componentDidUnmount : function() {
+		componentDidUnmount() {
 			window.removeEventListener( 'message' , this.onMessage )
-		} ,
+		}
 	
-		onMessage : function( event ) {
+		onMessage( event ) {
 			switch( event.data[ 0 ] ) {
 				case 'set data' :
 					this.setState( { data : event.data[ 1 ] , selected : -1 } )
 					break
 			}
-		} ,
+		}
 	
-		render : function() {
-			var items = []
-			for( var i = 0 ; i < this.state.data.items.length ; i++ ) {
-				var selectedClass = this.state.selected === this.state.data.items[ i ].id ? " list-item-selected " : ""
-				items.push(
-					React.createElement(
-						"div" ,
-						{
-							key : i ,
-							className : "list-item" + selectedClass ,
-							onClick : this.select.bind( this , this.state.data.items[ i ] )
-						} ,
-						[
-							React.createElement(
-								"div" ,
-								{
-									className : 'list-item-title'
-								} ,
-								this.state.data.items[ i ].title
-							) ,
-							React.createElement(
-								"div" ,
-								{
-									className : 'list-item-content'
-								} ,
-								this.state.data.items[ i ].content
-							)
-						]
-					)
-				);
-			}
-			var self = this
+		render() {
 			return React.createElement(
 				"div" ,
-				{
-					className : 'list'
-				} ,
-				items
+				{ className : 'list' } ,
+				this.state.data.items.map( item => React.createElement(
+					Item ,
+					{
+						key : item.id ,
+						title: item.title,
+						content: item.content,
+						selected : this.state.selected === item.id ,
+						onClick : this.onSelect.bind( this , item.id ),
+					}
+				) )
 			)
 		}
 	
-	} )
+	}
 	
 	var test = new Test
 	
