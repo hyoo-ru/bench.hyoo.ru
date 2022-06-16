@@ -180,6 +180,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_func_name(this: $, func: Function): string;
+    function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
+}
+
+declare namespace $ {
     function $mol_dom_render_children(el: Element | DocumentFragment, childNodes: NodeList | Array<Node | string | null>): void;
 }
 
@@ -191,6 +196,7 @@ declare namespace $ {
 
 declare namespace $ {
     let $mol_jsx_prefix: string;
+    let $mol_jsx_crumbs: string;
     let $mol_jsx_booked: Set<string> | null;
     let $mol_jsx_document: $mol_jsx.JSX.ElementClass['ownerDocument'];
     const $mol_jsx_frag = "";
@@ -459,6 +465,7 @@ declare namespace $ {
         static of<This extends typeof $mol_jsx_view>(this: This, node: Element): InstanceType<This>;
         attributes: Partial<Pick<this, Exclude<keyof this, 'valueOf'>>>;
         ownerDocument: typeof $mol_jsx_document;
+        className: typeof $mol_jsx_crumbs;
         get childNodes(): Array<Node | string>;
         set childNodes(next: Array<Node | string>);
         _kids(next?: (string | Node)[]): (string | Node)[];

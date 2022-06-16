@@ -238,6 +238,20 @@ var $;
 //mol/assert/assert.ts
 ;
 "use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'FQN of anon function'($) {
+            const $$ = Object.assign($, { $mol_func_name_test: (() => () => { })() });
+            $mol_assert_equal($$.$mol_func_name_test.name, '');
+            $mol_assert_equal($$.$mol_func_name($$.$mol_func_name_test), '$mol_func_name_test');
+            $mol_assert_equal($$.$mol_func_name_test.name, '$mol_func_name_test');
+        },
+    });
+})($ || ($ = {}));
+//mol/func/name/name.test.ts
+;
+"use strict";
 //mol/type/error/error.ts
 ;
 "use strict";
@@ -367,28 +381,52 @@ var $;
             const Button = (props, target) => {
                 return $mol_jsx("button", { title: props.hint }, target());
             };
-            const dom = $mol_jsx(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
-            $mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
+            const dom = $mol_jsx(Button, { id: "foo", hint: "click me" }, () => 'hey!');
+            $mol_assert_equal(dom.outerHTML, '<button title="click me" id="foo" class="Button">hey!</button>');
         },
         'Nested guid generation'() {
             const Foo = () => {
                 return $mol_jsx("div", null,
-                    $mol_jsx(Bar, { id: "/bar" },
-                        $mol_jsx("img", { id: "/icon" })));
+                    $mol_jsx(Bar, { id: "bar" },
+                        $mol_jsx("img", { id: "icon" })));
             };
             const Bar = (props, icon) => {
-                return $mol_jsx("span", null, icon);
+                return $mol_jsx("span", null,
+                    icon,
+                    $mol_jsx("i", { id: "label" }));
             };
-            const dom = $mol_jsx(Foo, { id: "/foo" });
-            $mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
+            const dom = $mol_jsx(Foo, { id: "foo" });
+            $mol_assert_equal(dom.outerHTML, '<div id="foo" class="Foo"><span id="foo/bar" class="Foo_bar Bar"><img id="foo/icon" class="Foo_icon"><i id="foo/bar/label" class="Foo_bar_label Bar_label"></i></span></div>');
         },
         'Fail on non unique ids'() {
             const App = () => {
                 return $mol_jsx("div", null,
-                    $mol_jsx("span", { id: "/bar" }),
-                    $mol_jsx("span", { id: "/bar" }));
+                    $mol_jsx("span", { id: "bar" }),
+                    $mol_jsx("span", { id: "bar" }));
             };
-            $mol_assert_fail(() => $mol_jsx(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
+            $mol_assert_fail(() => $mol_jsx(App, { id: "foo" }), 'JSX already has tag with id "foo/bar"');
+        },
+        'Owner based guid generationn'() {
+            const Foo = () => {
+                return $mol_jsx("div", null,
+                    $mol_jsx(Bar, { id: "middle", icon: () => $mol_jsx("img", { id: "icon" }) }));
+            };
+            const Bar = (props) => {
+                return $mol_jsx("span", null, props.icon());
+            };
+            const dom = $mol_jsx(Foo, { id: "app" });
+            $mol_assert_equal(dom.outerHTML, '<div id="app" class="Foo"><span id="app/middle" class="Foo_middle Bar"><img id="app/icon" class="Foo_icon"></span></div>');
+        },
+        'Fail on same ids from different caller'() {
+            const Foo = () => {
+                return $mol_jsx("div", null,
+                    $mol_jsx("img", { id: "icon" }),
+                    $mol_jsx(Bar, { id: "bar", icon: () => $mol_jsx("img", { id: "icon" }) }));
+            };
+            const Bar = (props) => {
+                return $mol_jsx("span", null, props.icon());
+            };
+            $mol_assert_fail(() => $mol_jsx(Foo, { id: "foo" }), 'JSX already has tag with id "foo/icon"');
         },
     });
 })($ || ($ = {}));
@@ -1515,9 +1553,9 @@ var $;
 (function ($) {
     $mol_test({
         'Attach to document'() {
-            const doc = $mol_dom_parse('<html><body id="/foo"></body></html>');
-            $mol_jsx_attach(doc, () => $mol_jsx("body", { id: "/foo" }, "bar"));
-            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
+            const doc = $mol_dom_parse('<html><body id="foo"></body></html>');
+            $mol_jsx_attach(doc, () => $mol_jsx("body", { id: "foo" }, "bar"));
+            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo">bar</body></html>');
         },
     });
 })($ || ($ = {}));
@@ -1653,10 +1691,10 @@ var $;
                         this.childNodes.join('-'));
                 }
             }
-            const dom = $mol_jsx(Foo, { id: "/foo", title: "bar" },
+            const dom = $mol_jsx(Foo, { id: "foo", title: "bar" },
                 "xxx",
                 123);
-            $mol_assert_equal(dom.outerHTML, '<div id="/foo">bar xxx-123</div>');
+            $mol_assert_equal(dom.outerHTML, '<div id="foo" class="Foo">bar xxx-123</div>');
         },
         'View by element'() {
             let br;
@@ -1664,7 +1702,7 @@ var $;
             class Br extends $mol_jsx_view {
                 render() {
                     br = this;
-                    return $mol_jsx("br", { id: "/foo" });
+                    return $mol_jsx("br", { id: "foo" });
                 }
             }
             class Brr extends $mol_jsx_view {
@@ -1677,7 +1715,7 @@ var $;
             $mol_assert_equal(Brr.of($mol_jsx(Brr, null)), brr);
         },
         async 'Attached view rerender'() {
-            const doc = $mol_dom_parse('<html><body id="/foo"></body></html>');
+            const doc = $mol_dom_parse('<html><body id="foo"></body></html>');
             class Title extends $mol_jsx_view {
                 value(next = 'foo') { return next; }
                 render() {
@@ -1687,13 +1725,13 @@ var $;
             __decorate([
                 $mol_mem
             ], Title.prototype, "value", null);
-            const dom = $mol_jsx_attach(doc, () => $mol_jsx(Title, { id: "/foo" }));
+            const dom = $mol_jsx_attach(doc, () => $mol_jsx(Title, { id: "foo" }));
             const title = Title.of(dom);
             $mol_assert_equal(title.ownerDocument, doc);
-            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">foo</body></html>');
+            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">foo</body></html>');
             title.value('bar');
             await $mol_wire_fiber.sync();
-            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="/foo">bar</body></html>');
+            $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">bar</body></html>');
         },
         async 'Nested bound views'($) {
             class Task extends $mol_jsx_view {
@@ -1713,23 +1751,23 @@ var $;
             class App extends $mol_jsx_view {
                 title(next = '') { return next; }
                 render() {
-                    return ($mol_jsx(List, null, this.title() && $mol_jsx(Task, { id: "/task", title: next => this.title(next) })));
+                    return ($mol_jsx(List, null, this.title() && $mol_jsx(Task, { id: "task", title: next => this.title(next) })));
                 }
             }
             __decorate([
                 $mol_mem
             ], App.prototype, "title", null);
-            const doc = $mol_dom_parse('<html xmlns="http://www.w3.org/1999/xhtml"><body id="/root"></body></html>');
-            const root = $.$mol_jsx_attach(doc, () => $mol_jsx(App, { "$": $, id: "/root" }));
-            $mol_assert_equal($mol_dom_serialize(doc.documentElement), '<html xmlns="http://www.w3.org/1999/xhtml"><body id="/root" class="list"></body></html>');
+            const doc = $mol_dom_parse('<html xmlns="http://www.w3.org/1999/xhtml"><body id="root"></body></html>');
+            const root = $.$mol_jsx_attach(doc, () => $mol_jsx(App, { "$": $, id: "root" }));
+            $mol_assert_equal($mol_dom_serialize(doc.documentElement), '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"></body></html>');
             App.of(root).title('barbar');
             await $mol_wire_fiber.sync();
             $mol_assert_equal(Task.of(root.firstElementChild).title(), 'barbar');
-            $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="/root" class="list"><h1 id="/root/task">barbar</h1></body></html>');
+            $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">barbar</h1></body></html>');
             Task.of(root.firstElementChild).title('foofoo');
             await $mol_wire_fiber.sync();
             $mol_assert_equal(App.of(root).title(), 'foofoo');
-            $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="/root" class="list"><h1 id="/root/task">foofoo</h1></body></html>');
+            $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">foofoo</h1></body></html>');
         },
     });
 })($ || ($ = {}));
