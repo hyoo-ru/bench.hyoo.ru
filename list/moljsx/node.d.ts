@@ -275,6 +275,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_const<Value>(value: Value): {
+        (): Value;
+        '()': Value;
+    };
+}
+
+declare namespace $ {
     function $mol_dev_format_register(config: {
         header: (val: any, config: any) => any;
         hasBody: (val: any, config: any) => false;
@@ -414,6 +421,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
+}
+
+declare namespace $ {
     function $mol_wire_mem<Keys extends number>(keys: Keys): <Host extends object, Field extends keyof Host, Prop extends Extract<Host[Field], (...args: any[]) => any>>(host: Host, field: string | Field, descr?: TypedPropertyDescriptor<Prop> | undefined) => {
         value: NonNullable<Prop>;
         enumerable?: boolean | undefined;
@@ -461,16 +472,14 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_jsx_view extends $mol_object2 {
+    abstract class $mol_jsx_view extends $mol_object2 {
         static of<This extends typeof $mol_jsx_view>(this: This, node: Element): InstanceType<This>;
         attributes: Partial<Pick<this, Exclude<keyof this, 'valueOf'>>>;
         ownerDocument: typeof $mol_jsx_document;
-        className: typeof $mol_jsx_crumbs;
-        get childNodes(): Array<Node | string>;
-        set childNodes(next: Array<Node | string>);
-        _kids(next?: (string | Node)[]): (string | Node)[];
+        className: string;
+        get childNodes(): (string | Node)[];
         valueOf(): HTMLElement;
-        render(): HTMLElement;
+        abstract render(): HTMLElement;
     }
 }
 

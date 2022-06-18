@@ -1023,6 +1023,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_const(value) {
+        var getter = (() => value);
+        getter['()'] = value;
+        getter[Symbol.toStringTag] = value;
+        return getter;
+    }
+    $.$mol_const = $mol_const;
+})($ || ($ = {}));
+//mol/const/const.ts
+;
+"use strict";
+var $;
+(function ($) {
     $['devtoolsFormatters'] = $['devtoolsFormatters'] || [];
     function $mol_dev_format_register(config) {
         $['devtoolsFormatters'].push(config);
@@ -1851,6 +1864,40 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const persist = $mol_wire_atom.getter(_get, 0);
+        const _set = descr?.set || function (next) {
+            persist(this, []).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return persist(this, []).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+//mol/wire/field/field.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_wire_mem(keys) {
         const wrap = $mol_wire_mem_func(keys);
         return (host, field, descr) => {
@@ -1915,14 +1962,10 @@ var $;
         }
         attributes;
         ownerDocument;
-        className;
+        className = '';
         get childNodes() {
-            return this._kids();
+            return [];
         }
-        set childNodes(next) {
-            this._kids(next);
-        }
-        _kids(next = []) { return next; }
         valueOf() {
             const prefix = $mol_jsx_prefix;
             const booked = $mol_jsx_booked;
@@ -1942,13 +1985,10 @@ var $;
                 $mol_jsx_document = document;
             }
         }
-        render() {
-            return $mol_fail(new Error(`render() isn't implemented`));
-        }
     }
     __decorate([
-        $mol_mem
-    ], $mol_jsx_view.prototype, "_kids", null);
+        $mol_wire_field
+    ], $mol_jsx_view.prototype, "childNodes", null);
     __decorate([
         $mol_mem
     ], $mol_jsx_view.prototype, "valueOf", null);
@@ -2546,7 +2586,7 @@ var $;
                 return $mol_jsx("button", { title: props.hint }, target());
             };
             const dom = $mol_jsx(Button, { id: "foo", hint: "click me" }, () => 'hey!');
-            $mol_assert_equal(dom.outerHTML, '<button title="click me" id="foo" class="Button">hey!</button>');
+            $mol_assert_equal(dom.outerHTML, '<button id="foo" title="click me" class="Button">hey!</button>');
         },
         'Nested guid generation'() {
             const Foo = () => {
@@ -3578,6 +3618,33 @@ var $;
             $mol_assert_equal(Fib.value(4), 8);
             $mol_assert_equal(Fib.sums, 6);
         },
+        'Unsubscribe from temp pubs on complete'($) {
+            class Random extends $mol_object2 {
+                static $ = $;
+                static seed() {
+                    return Math.random();
+                }
+                static resets(next) {
+                    return Math.random();
+                }
+                static value() {
+                    this.resets();
+                    return this.seed();
+                }
+            }
+            __decorate([
+                $mol_wire_method
+            ], Random, "seed", null);
+            __decorate([
+                $mol_wire_mem(0)
+            ], Random, "resets", null);
+            __decorate([
+                $mol_wire_mem(0)
+            ], Random, "value", null);
+            const first = Random.value();
+            Random.resets(null);
+            $mol_assert_unique(Random.value(), first);
+        },
     });
 })($ || ($ = {}));
 //mol/wire/mem/mem.test.ts
@@ -3637,6 +3704,19 @@ var $;
     });
 })($ || ($ = {}));
 //mol/jsx/attach/attach.test.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'const returns stored value'() {
+            const foo = { bar: $mol_const(Math.random()) };
+            $mol_assert_equal(foo.bar(), foo.bar());
+            $mol_assert_equal(foo.bar(), foo.bar['()']);
+        },
+    });
+})($ || ($ = {}));
+//mol/const/const.test.ts
 ;
 "use strict";
 var $;
@@ -3753,6 +3833,41 @@ var $;
     $mol_wire_log.active();
 })($ || ($ = {}));
 //mol/wire/atom/atom.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
+    $mol_test({
+        'Cached field'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static low = 1;
+                static get high() {
+                    return this.low + 1;
+                }
+                static set high(next) {
+                    this.low = next - 1;
+                }
+                static test() {
+                    $mol_assert_equal(App.high, 2);
+                    App.high = 3;
+                    $mol_assert_equal(App.high, 3);
+                }
+            }
+            __decorate([
+                $mol_wire_field
+            ], App, "low", void 0);
+            __decorate([
+                $mol_wire_field
+            ], App, "high", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "test", null);
+            App.test();
+        },
+    });
+})($ || ($ = {}));
+//mol/wire/field/field.test.ts
 ;
 "use strict";
 var $;

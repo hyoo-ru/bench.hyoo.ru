@@ -516,6 +516,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_const(value) {
+        var getter = (() => value);
+        getter['()'] = value;
+        getter[Symbol.toStringTag] = value;
+        return getter;
+    }
+    $.$mol_const = $mol_const;
+})($ || ($ = {}));
+//mol/const/const.ts
+;
+"use strict";
+var $;
+(function ($) {
     $['devtoolsFormatters'] = $['devtoolsFormatters'] || [];
     function $mol_dev_format_register(config) {
         $['devtoolsFormatters'].push(config);
@@ -1350,6 +1363,40 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const persist = $mol_wire_atom.getter(_get, 0);
+        const _set = descr?.set || function (next) {
+            persist(this, []).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return persist(this, []).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+//mol/wire/field/field.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_wire_mem(keys) {
         const wrap = $mol_wire_mem_func(keys);
         return (host, field, descr) => {
@@ -1414,14 +1461,10 @@ var $;
         }
         attributes;
         ownerDocument;
-        className;
+        className = '';
         get childNodes() {
-            return this._kids();
+            return [];
         }
-        set childNodes(next) {
-            this._kids(next);
-        }
-        _kids(next = []) { return next; }
         valueOf() {
             const prefix = $mol_jsx_prefix;
             const booked = $mol_jsx_booked;
@@ -1441,13 +1484,10 @@ var $;
                 $mol_jsx_document = document;
             }
         }
-        render() {
-            return $mol_fail(new Error(`render() isn't implemented`));
-        }
     }
     __decorate([
-        $mol_mem
-    ], $mol_jsx_view.prototype, "_kids", null);
+        $mol_wire_field
+    ], $mol_jsx_view.prototype, "childNodes", null);
     __decorate([
         $mol_mem
     ], $mol_jsx_view.prototype, "valueOf", null);
