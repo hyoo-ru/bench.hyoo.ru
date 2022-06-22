@@ -58,7 +58,10 @@
     "$mol_compare_deep",
     "$mol_compare",
     "$mol_mem",
-    "$mol_wire_mem",
+    "$mol_wire_solo",
+    "$mol_type_tail",
+    "$mol_wire_plex",
+    "$mol_type_error",
     "$mol_dom_listener",
     "$mol_object",
     "$mol_jsx_attach"
