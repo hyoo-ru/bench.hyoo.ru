@@ -252,6 +252,9 @@ var $;
 //mol/func/name/name.test.ts
 ;
 "use strict";
+//mol/type/error/error.ts
+;
+"use strict";
 //mol/type/assert/assert.test.ts
 ;
 "use strict";
