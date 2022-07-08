@@ -457,11 +457,44 @@ $mol_embed_native $mol_scroll
 			sub /
 				<= title \
 
+$mol_frame $mol_embed_native
+	dom_name \iframe
+	attr *
+		^
+		data null
+		type null
+		src <= uri?val \
+		srcdoc <= html null
+		allow <= allow \
+		allowFullscreen <= fullscreen true
+	accelerometer true
+	autoplay true
+	encription true
+	gyroscope true
+	pip true
+
+$mol_embed_youtube $mol_check
+	uri \
+	video_preview \
+	video_id \
+	checked? <=> active? false
+	sub /
+		<= Image $mol_image
+			title <= title \
+			uri <= video_preview \
+		<= Frame $mol_frame
+			title <= title \
+			uri <= video_embed \
+
+
 $mol_embed_any $mol_ghost
 	Image $mol_image
 		title <= title \
 		uri <= uri \
 	Object $mol_embed_native
+		title <= title \
+		uri <= uri \
+	Youtube $mol_embed_youtube
 		title <= title \
 		uri <= uri \
 
@@ -581,21 +614,6 @@ $mol_bench_head $mol_float
 	attr *
 		^
 		title <= hint @ \Click to sort by this column
-
-$mol_frame $mol_embed_native
-	dom_name \iframe
-	attr *
-		data null
-		type null
-		src <= uri?val \
-		srcdoc <= html null
-		allow <= allow \
-	fullscreen true
-	accelerometer true
-	autoplay true
-	encription true
-	gyroscope true
-	pip true
 
 $mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
 
