@@ -936,7 +936,7 @@ var $;
                         return res;
                     };
                     result = Object.assign(result.then(put, put), {
-                        destructor: result['destructor']
+                        destructor: result['destructor'] ?? (() => { })
                     });
                     handled.add(result);
                 }
@@ -953,7 +953,7 @@ var $;
                         if (this.cache === result)
                             this.absorb();
                     }), {
-                        destructor: result['destructor']
+                        destructor: result['destructor'] ?? (() => { })
                     });
                     handled.add(result);
                 }
@@ -1201,6 +1201,8 @@ var $;
             };
         }
         complete() {
+            if (this.cache instanceof Promise)
+                return;
             this.destructor();
         }
         put(next) {
@@ -1328,7 +1330,9 @@ var $;
                     try {
                         next[Symbol.toStringTag] = this[Symbol.toStringTag];
                     }
-                    catch { }
+                    catch {
+                        Object.defineProperty(next, Symbol.toStringTag, { value: this[Symbol.toStringTag] });
+                    }
                 }
                 if (this.sub_from < this.data.length) {
                     if (!$mol_compare_deep(prev, next)) {
