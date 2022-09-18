@@ -2155,7 +2155,7 @@ var $;
                 kids[index].force_render(path);
             }
         }
-        async ensure_visible(view, align = "start") {
+        ensure_visible(view, align = "start") {
             const path = this.view_find(v => v === view).next().value;
             this.force_render(new Set(path));
             this.dom_final();
@@ -2163,7 +2163,7 @@ var $;
         }
         bring() {
             new $mol_after_frame(() => {
-                this.dom_node().scrollIntoView();
+                this.dom_node().scrollIntoView({ inline: 'start' });
                 this.focused(true);
             });
         }
@@ -2567,7 +2567,7 @@ var $;
             return obj;
         }
         hue() {
-            return NaN;
+            return +NaN;
         }
         Sample() {
             return null;
@@ -4553,7 +4553,7 @@ var $;
         hue_base(val) {
             if (val !== undefined)
                 return val;
-            return NaN;
+            return +NaN;
         }
         hue_shift(val) {
             if (val !== undefined)
@@ -5254,7 +5254,7 @@ var $;
 (function ($) {
     class $mol_plot_dot extends $mol_plot_graph {
         points_max() {
-            return Infinity;
+            return +Infinity;
         }
         aspect() {
             return 1;
