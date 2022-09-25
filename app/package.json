@@ -168,6 +168,7 @@
     "$mol_ghost",
     "$mol_dom_render_events",
     "$mol_embed_native",
+    "$mol_wire_solid",
     "$mol_wait_timeout",
     "$mol_wait",
     "$mol_promise",
@@ -184,7 +185,6 @@
     "$mol_number",
     "$mol_icon_minus",
     "$mol_icon_plus",
-    "$mol_wire_solid",
     "$mol_compare_text"
   ],
   "dependencies": {
