@@ -47,6 +47,21 @@ $mol_button_typed $mol_button
 	minimal_height 40
 	minimal_width 40
 
+$mol_button_minor $mol_button_typed
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked?val false
+		aria-checked <= checked?val false
+		role \checkbox
+	sub /$mol_view_content
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
@@ -75,21 +90,6 @@ $mol_icon $mol_svg_root
 	sub /
 		<= Path $mol_svg_path
 			geometry <= path \
-
-$mol_button_minor $mol_button_typed
-
-$mol_check $mol_button_minor
-	attr *
-		^
-		mol_check_checked <= checked?val false
-		aria-checked <= checked?val false
-		role \checkbox
-	sub /$mol_view_content
-		<= Icon null
-		<= label /
-			<= Title $mol_view
-				sub /
-					<= title \
 
 $mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
 
@@ -539,7 +539,7 @@ $mol_text $mol_list
 		auto_scroll null
 	Header* $mol_text_header
 		minimal_height 40
-		dom_name <= header_level* \h
+		level <= header_level* 1
 		content <= block_content* /
 		arg <= header_arg* *
 	Pre* $mol_text_code
@@ -584,6 +584,7 @@ $mol_text $mol_list
 		title <= line_text* \
 
 $mol_text_header $mol_paragraph
+	level 1
 	sub /
 		<= Link $mol_link
 			arg <= arg *
