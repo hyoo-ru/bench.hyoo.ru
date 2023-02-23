@@ -2132,9 +2132,6 @@ var $;
 //mol/vector/vector.test.ts
 ;
 "use strict";
-//mol/type/result/result.test.ts
-;
-"use strict";
 var $;
 (function ($) {
     class $mol_style_sheet_test1 extends $mol_view {
