@@ -1291,6 +1291,9 @@ declare namespace $ {
     class $mol_fetch_response extends $mol_object2 {
         readonly native: Response;
         constructor(native: Response);
+        status(): "success" | "unknown" | "inform" | "redirect" | "wrong" | "failed";
+        code(): number;
+        message(): string;
         headers(): Headers;
         mime(): string | null;
         stream(): ReadableStream<Uint8Array> | null;
@@ -1306,6 +1309,7 @@ declare namespace $ {
             destructor: () => void;
         };
         static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
+        static success(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array> | null;
         static text(input: RequestInfo, init?: RequestInit): string;
         static json(input: RequestInfo, init?: RequestInit): unknown;
@@ -1596,6 +1600,7 @@ declare namespace $ {
         length_max(): number;
         type(val?: any): string;
         event_change(event?: any): any;
+        submit_with_ctrl(): boolean;
         submit(event?: any): any;
         Submit(): $$.$mol_hotkey;
     }
@@ -1867,9 +1872,9 @@ declare namespace $ {
         static href_absolute(): string;
         static dict(next?: {
             [key: string]: string | null;
-        }): {
+        }): Readonly<{
             [key: string]: string;
-        };
+        }>;
         static dict_cut(except: string[]): {
             [key: string]: string;
         };
@@ -2822,20 +2827,22 @@ declare namespace $ {
     class $mol_number extends $mol_view {
         precision_view(): number;
         precision_change(): number;
-        value(val?: any): number;
+        value_min(): number;
+        value_max(): number;
+        value(next?: any): number;
+        enabled(): boolean;
         sub(): readonly any[];
         precision(): number;
         type(): string;
         value_string(val?: any): string;
         hint(): string;
-        enabled(): boolean;
         string_enabled(): boolean;
         String(): $$.$mol_string;
-        event_dec(val?: any): any;
+        event_dec(next?: any): any;
         dec_enabled(): boolean;
         dec_icon(): $mol_icon_minus;
         Dec(): $mol_button_minor;
-        event_inc(val?: any): any;
+        event_inc(next?: any): any;
         inc_enabled(): boolean;
         inc_icon(): $mol_icon_plus;
         Inc(): $mol_button_minor;
@@ -2847,9 +2854,12 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_number extends $.$mol_number {
+        value_limited(next?: any): number;
         event_dec(next?: Event): void;
         event_inc(next?: Event): void;
         value_string(next?: string): string;
+        dec_enabled(): boolean;
+        inc_enabled(): boolean;
     }
 }
 

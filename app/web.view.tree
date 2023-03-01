@@ -200,6 +200,7 @@ $mol_string $mol_view
 		input?event <=> event_change?event null
 	plugins /
 		<= Submit $mol_hotkey
+			mod_ctrl <= submit_with_ctrl false
 			key * enter?event <=> submit?event null
 
 $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
@@ -664,7 +665,10 @@ $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 $mol_number $mol_view
 	precision_view <= precision 1
 	precision_change <= precision 1
-	value?val +NaN
+	value_min -Infinity
+	value_max +Infinity
+	value? +NaN
+	enabled true
 	sub /
 		<= String $mol_string
 			- \ we don't want native number controls in mobile devices
@@ -672,14 +676,14 @@ $mol_number $mol_view
 			type <= type \tel
 			value?val <=> value_string?val \
 			hint <= hint \ 
-			enabled <= string_enabled <= enabled true
+			enabled <= string_enabled <= enabled
 		<= Dec $mol_button_minor
-			event_click?val <=> event_dec?val null
-			enabled <= dec_enabled <= enabled true
+			event_click? <=> event_dec? null
+			enabled <= dec_enabled <= enabled
 			sub / <= dec_icon $mol_icon_minus
 		<= Inc $mol_button_minor
-			event_click?val <=> event_inc?val null
-			enabled <= inc_enabled <= enabled true
+			event_click? <=> event_inc? null
+			enabled <= inc_enabled <= enabled
 			sub / <= inc_icon $mol_icon_plus
 
 $mol_text_list $mol_text
