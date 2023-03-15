@@ -43,7 +43,6 @@
 [hyoo_bench_app_menu] {
 	display: flex;
 	flex-direction: column;
-	padding: var(--mol_gap_block);
 }
 
 [hyoo_bench_app_addon_page_tools] {
