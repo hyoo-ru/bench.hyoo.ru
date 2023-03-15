@@ -19,7 +19,7 @@ $hyoo_bench_app $mol_book2
 			body /
 				<= Descr $mol_text
 					text <= description \
-				<= Param_fields $mol_row
+				<= Param_fields $mol_view
 					sub <= param_fields /
 				<= Result $mol_bench
 					result <= result null

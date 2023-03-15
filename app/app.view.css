@@ -32,11 +32,11 @@
 
 [hyoo_bench_app_param_fields] {
 	flex: none;
+	flex-wrap: wrap;
 }
 
 [hyoo_bench_app_result] {
 	flex: none;
-	padding: var(--mol_gap_block);
 }
 
 [hyoo_bench_app_menu] {
