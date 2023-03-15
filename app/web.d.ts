@@ -2685,14 +2685,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_row extends $mol_view {
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_icon_sort extends $mol_icon {
         path(): string;
     }
@@ -2879,7 +2871,7 @@ declare namespace $ {
         description(): string;
         Descr(): $$.$mol_text;
         param_fields(): readonly any[];
-        Param_fields(): $mol_row;
+        Param_fields(): $mol_view;
         result(): any;
         result_col_title(id: any): string;
         result_col_sort(val?: any): string;
