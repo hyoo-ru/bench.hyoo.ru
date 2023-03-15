@@ -28,7 +28,6 @@
 [hyoo_bench_app_descr] {
 	flex: 0 1 auto;
 	max-width: none;
-	padding: var(--mol_gap_block);
 }
 
 [hyoo_bench_app_param_fields] {
