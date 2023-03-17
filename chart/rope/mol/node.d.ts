@@ -1630,7 +1630,7 @@ declare namespace $.$$ {
     class $hyoo_bench_chart_rope_mol extends $.$hyoo_bench_chart_rope_mol {
         static listener(): $mol_dom_listener;
         static data(next?: $hyoo_bench_chart_rope_mol_data): $hyoo_bench_chart_rope_mol_data;
-        graphs(): $.$mol_plot_graph[];
+        graphs(): ($.$mol_plot_graph | $mol_plot_group)[];
         graph_title(id: number): string;
         series(id: number): number[];
     }
