@@ -6,6 +6,7 @@ Common benchmarking interface, that can be added to any benchmarks.
 
 * [list](list) - Rendering of lists by frameworks ([online](http://bench.hyoo.ru/list/#bench=list/sort=fill/sample=angularjs~mol~native-dom~react~native-html))
 * [elements](elements) - Rendering of HTML elements ([online](http://bench.hyoo.ru/elements/#sample=audio~button~details~div~fieldset~hr~img~input~keygen~marquee~meter~object~optgroup~q~select~style~textarea~video#sort=fill#))
+* [selectors](selectors) - Performance of CSS selectors ([online](http://bench.hyoo.ru/selectors/))
 * [geometry](geometry) - Rendering of simple geometry by graphics libraries ([online](http://bench.hyoo.ru/geometry/#sort=render#))
 * [chart/rope](chart/rope) - Line graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/rope/#sort=fill/sample=hcharts~mol))
 * [chart/bar](chart/bar) - Bar graphs rendering by charts libraries ([online](http://bench.hyoo.ru/chart/bar/#sort=fill/sample=hcharts~mol))
