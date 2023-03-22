@@ -37,6 +37,7 @@ jobs:
         mv hyoo/bench/list/moljsx/- ./-/list/moljsx
         mv hyoo/bench/geometry ./-
         mv hyoo/bench/elements ./-
+        mv hyoo/bench/selectors ./-
         mkdir ./-/chart
         mkdir ./-/chart/bar
         mv hyoo/bench/chart/bar/index.html ./-/chart/bar
