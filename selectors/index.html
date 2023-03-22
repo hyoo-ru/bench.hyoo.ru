@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+<meta charset="utf-8" />
+
+<style>
+</style>
+
+<script>
+
+	if( window.parent === window ) document.location = '//bench.hyoo.ru/#bench=' + encodeURIComponent( location.href )
+
+	var metaData = {
+		source : 'https://github.com/hyoo-ru/bench.hyoo.ru/tree/master/selectors',
+		title : {
+			'en' : 'CSS Selectors Benchark' ,
+			'ru' : 'Бенчмарк CSS селекторов' ,
+		} ,
+		descr : {
+			'en' : 'The effect of the selector type on responsiveness' ,
+			'ru' : 'Влияние типа селектора на отзывчивость' ,
+		} ,
+		params : {
+			'elements' : {
+				title : {
+					'en' : 'Count of elements',
+					'ru' : 'Колличество элементов',
+				},
+				default : 1000,
+				type : 'number',
+				precision : 100,
+			},
+			'names' : {
+				title : {
+					'en' : 'Count of names per element',
+					'ru' : 'Колличество имён для элемента',
+				},
+				default : 10,
+				type : 'number',
+				precision : 1,
+			},
+			'rules' : {
+				title : {
+					'en' : 'Count of Rules',
+					'ru' : 'Число правил',
+				},
+				default : 100,
+				type : 'number',
+				precision : 10,
+			},
+		},
+		samples : {
+			classList: {
+				title : { 'en' : 'classList & .bar_n' },
+			},
+			className: {
+				title : { 'en' : 'className & .bar_n' },
+			},
+			attr_multi: {
+				title : { 'en' : 'setAttrinute & [bar_n]' },
+			},
+			attr_single: {
+				title : { 'en' : 'setAttrinute & [bar~="n"]' },
+			},
+		} ,
+		steps : {
+			'fill' : {
+				title : {
+					'en' : 'Make DOM' ,
+					'ru' : 'Создание DOM' ,
+				} ,
+			} ,
+			'reflow' : {
+				title : {
+					'en' : 'Style recalculation' ,
+					'ru' : 'Пересчёт стилей' ,
+				} ,
+			} ,
+		} ,
+	}
+
+	function meta() {
+		done( metaData )
+	}
+
+	function fill( sample, params ) {
+		
+		var body = document.body
+		while( body.firstChild ) {
+			body.removeChild( body.firstChild )
+		}
+		
+		const enrich = {
+			classList: ( el, i )=> {
+				for( var j = 0 ; j < params.names ; ++ j ) {
+					el.classList.add( `bar_${j}` )
+				}
+			},
+			className: ( el, i )=> {
+				let names = ''
+				for( var j = 0 ; j < params.names ; ++ j ) {
+					names += `bar_${j} `
+				}
+				el.className = names
+			},
+			attr_multi: ( el, i )=> {
+				for( var j = 0 ; j < params.names ; ++ j ) {
+					el.setAttribute( `bar_${j}`, '' )
+				}
+			},
+			attr_single: ( el, i )=> {
+				let names = ''
+				for( var j = 0 ; j < params.names ; ++ j ) {
+					names += `${j} `
+				}
+				el.setAttribute( `bar`, names )
+			},
+		}[ sample ]
+		
+		const selector = {
+			classList: i => `.bar_${i}`,
+			className: i => `.bar_${i}`,
+			attr_multi: i => `[bar_${i}]`,
+			attr_single: i => `[bar~="${i}"]`,
+		}[ sample ]
+		
+		requestAnimationFrame( ()=> {
+			
+			var start = Date.now()
+			
+			let rules = ''
+			for( var i = 0 ; i < params.rules ; ++ i ) {
+				rules += selector(i) + ' { color: blue } '
+			}
+			
+			var style = document.createElement( 'style' )
+			style.innerText = rules
+			body.appendChild( style )
+			
+			var frag = document.createDocumentFragment()
+			for( var i = 0 ; i < params.elements ; ++ i ) {
+				const el = document.createElement( 'foo' )
+				el.innerText = i + ' '
+				enrich( el, i )
+				frag.appendChild( el )
+			}
+			body.appendChild( frag )
+	
+			setImmediate( function() {
+				done( Date.now() - start + ' ms' )
+			} )
+			
+		} )
+		
+	}
+
+	function reflow( sample, params ) {
+		
+		requestAnimationFrame( ()=> {
+			
+			document.body.insertBefore( document.createElement( 'br' ), document.body.firstChild )
+	
+			var start = Date.now()
+			setImmediate( function() {
+				done( Date.now() - start + ' ms' )
+			} )
+			
+		} )
+		
+	}
+
+	function done( result ) {
+		if( parent === window ) console.log( result )
+		else parent.postMessage( [ 'done' , result ] , '*' )
+	}
+
+	window.addEventListener( 'message' , function( event ) {
+		window[ event.data[0] ].apply( null , event.data.slice( 1 ) )
+	} )
+
+	var setImmediate_task
+	function setImmediate( task ) {
+		setImmediate_task = task
+		postMessage( [ 'setImmediate_task' ] , '*' )
+	}
+
+</script>
