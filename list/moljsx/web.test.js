@@ -1818,7 +1818,7 @@ var $;
             $mol_assert_equal(title.ownerDocument, doc);
             $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">foo</body></html>');
             title.value('bar');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">bar</body></html>');
         },
         async 'Nested bound views'($) {
@@ -1849,11 +1849,11 @@ var $;
             const root = $.$mol_jsx_attach(doc, () => $mol_jsx(App, { "$": $, id: "root" }));
             $mol_assert_equal($mol_dom_serialize(doc.documentElement), '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"></body></html>');
             App.of(root).title('barbar');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(Task.of(root.firstElementChild).title(), 'barbar');
             $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">barbar</h1></body></html>');
             Task.of(root.firstElementChild).title('foofoo');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(App.of(root).title(), 'foofoo');
             $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">foofoo</h1></body></html>');
         },

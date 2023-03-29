@@ -229,6 +229,7 @@ var $;
 (function ($) {
     class $mol_object2 {
         static $ = $;
+        [Symbol.toStringTag];
         [$mol_ambient_ref] = null;
         get $() {
             if (this[$mol_ambient_ref])
@@ -954,7 +955,7 @@ var $;
         }
         if (typeof Elem !== 'string') {
             if ('prototype' in Elem) {
-                const view = node && node[Elem] || new Elem;
+                const view = node && node[String(Elem)] || new Elem;
                 Object.assign(view, props);
                 view[Symbol.toStringTag] = guid;
                 view.childNodes = childNodes;
@@ -962,7 +963,7 @@ var $;
                     view.ownerDocument = $.$mol_jsx_document;
                 view.className = (crumbs_self ? crumbs_self + ' ' : '') + (Elem['name'] || Elem);
                 node = view.valueOf();
-                node[Elem] = view;
+                node[String(Elem)] = view;
                 return node;
             }
             else {
@@ -1116,7 +1117,7 @@ var $;
 var $;
 (function ($) {
     function $mol_const(value) {
-        var getter = (() => value);
+        const getter = (() => value);
         getter['()'] = value;
         getter[Symbol.toStringTag] = value;
         return getter;
@@ -1128,7 +1129,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $['devtoolsFormatters'] = $['devtoolsFormatters'] || [];
+    $['devtoolsFormatters'] ||= [];
     function $mol_dev_format_register(config) {
         $['devtoolsFormatters'].push(config);
     }
@@ -1440,6 +1441,7 @@ var $;
                 }
             }
         }
+        [Symbol.toStringTag];
         cache = undefined;
         get args() {
             return this.data.slice(0, this.pub_from);
@@ -1676,9 +1678,9 @@ var $;
         if (left instanceof Date)
             return Object.is(left.valueOf(), right['valueOf']());
         if (left instanceof RegExp)
-            return left.source === right['source'] && left.flags === right['flags'];
+            return left.source === right.source && left.flags === right.flags;
         if (left instanceof Error)
-            return left.message === right['message'] && left.stack === right['stack'];
+            return left.message === right.message && left.stack === right.stack;
         let left_cache = $.$mol_compare_deep_cache.get(left);
         if (left_cache) {
             const right_cache = left_cache.get(right);
@@ -4243,7 +4245,7 @@ var $;
             $mol_assert_equal(title.ownerDocument, doc);
             $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">foo</body></html>');
             title.value('bar');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(doc.documentElement.outerHTML, '<html><body id="foo" class="Title">bar</body></html>');
         },
         async 'Nested bound views'($) {
@@ -4274,11 +4276,11 @@ var $;
             const root = $.$mol_jsx_attach(doc, () => $mol_jsx(App, { "$": $, id: "root" }));
             $mol_assert_equal($mol_dom_serialize(doc.documentElement), '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"></body></html>');
             App.of(root).title('barbar');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(Task.of(root.firstElementChild).title(), 'barbar');
             $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">barbar</h1></body></html>');
             Task.of(root.firstElementChild).title('foofoo');
-            await $mol_wire_fiber.sync();
+            $mol_wire_fiber.sync();
             $mol_assert_equal(App.of(root).title(), 'foofoo');
             $mol_assert_equal(doc.documentElement.outerHTML, '<html xmlns="http://www.w3.org/1999/xhtml"><body id="root" class="list App List"><h1 id="root/task" class="App_task Task">foofoo</h1></body></html>');
         },
