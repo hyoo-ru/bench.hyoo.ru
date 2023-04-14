@@ -200,7 +200,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		param_dict() {
-			const param_dict = {}
+			const param_dict = {} as Record< string, number >
 			const params = this.params()
 
 			for (let param of params ) {
