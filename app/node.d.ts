@@ -3157,7 +3157,7 @@ declare namespace $.$$ {
         param_title(id: string): string;
         param_value(id: string, next?: any): number;
         param_precision(id: string): number;
-        param_dict(): {};
+        param_dict(): Record<string, number>;
     }
 }
 
