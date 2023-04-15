@@ -617,7 +617,7 @@ declare namespace $ {
         dom_name_space(): string;
         font_size(): number;
         font_family(): string;
-        style_size(): {};
+        style_size(): Record<string, any>;
     }
 }
 
@@ -640,7 +640,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_svg extends $.$mol_svg {
-        computed_style(): CSSStyleDeclaration;
+        computed_style(): Record<string, any>;
         font_size(): number;
         font_family(): any;
     }
@@ -735,12 +735,8 @@ declare namespace $ {
     class $mol_plot_graph extends $mol_svg_group {
         series_x(): readonly number[];
         series_y(): readonly number[];
-        attr(): {
-            mol_plot_graph_type: string;
-        };
-        style(): {
-            color: string;
-        };
+        attr(): Record<string, any>;
+        style(): Record<string, any>;
         viewport(): $mol_vector_2d<$mol_vector_range<number>>;
         shift(): readonly number[];
         scale(): readonly number[];
@@ -772,12 +768,8 @@ declare namespace $ {
         hint(): string;
     }
     class $mol_plot_graph_sample extends $mol_view {
-        attr(): {
-            mol_plot_graph_type: string;
-        };
-        style(): {
-            color: string;
-        };
+        attr(): Record<string, any>;
+        style(): Record<string, any>;
         type(): string;
         color(): string;
     }
@@ -803,19 +795,14 @@ declare namespace $ {
 declare namespace $ {
     class $mol_svg_path extends $mol_svg {
         dom_name(): string;
-        attr(): {
-            d: string;
-        };
+        attr(): Record<string, any>;
         geometry(): string;
     }
 }
 
 declare namespace $ {
     class $mol_plot_bar extends $mol_plot_graph {
-        style(): {
-            "stroke-width": string;
-            color: string;
-        };
+        style(): Record<string, any>;
         sub(): readonly any[];
         Sample(): $mol_plot_graph_sample;
         stroke_width(): string;
@@ -841,11 +828,7 @@ declare namespace $ {
     class $mol_svg_text extends $mol_svg {
         dom_name(): string;
         pos(): readonly any[];
-        attr(): {
-            x: string;
-            y: string;
-            "text-anchor": string;
-        };
+        attr(): Record<string, any>;
         sub(): readonly any[];
         pos_x(): string;
         pos_y(): string;
@@ -868,12 +851,7 @@ declare namespace $ {
     class $mol_svg_rect extends $mol_svg {
         dom_name(): string;
         pos(): readonly any[];
-        attr(): {
-            width: string;
-            height: string;
-            x: string;
-            y: string;
-        };
+        attr(): Record<string, any>;
         width(): string;
         height(): string;
         pos_x(): string;
@@ -1024,12 +1002,8 @@ declare namespace $ {
     class $mol_scroll extends $mol_view {
         scroll_top(val?: any): number;
         scroll_left(val?: any): number;
-        field(): {
-            tabIndex: number;
-        };
-        event(): {
-            scroll: (event?: any) => any;
-        };
+        field(): Record<string, any>;
+        event(): Record<string, any>;
         tabindex(): number;
         event_scroll(event?: any): any;
     }
@@ -1247,10 +1221,7 @@ declare namespace $ {
 declare namespace $ {
     class $mol_svg_root extends $mol_svg {
         dom_name(): string;
-        attr(): {
-            viewBox: string;
-            preserveAspectRatio: string;
-        };
+        attr(): Record<string, any>;
         view_box(): string;
         aspect(): string;
     }
@@ -1302,17 +1273,8 @@ declare namespace $ {
         draw_start(event?: any): any;
         draw(event?: any): any;
         draw_end(event?: any): any;
-        style(): {
-            "touch-action": string;
-            "overscroll-behavior": string;
-        };
-        event(): {
-            pointerdown: (event?: any) => any;
-            pointermove: (event?: any) => any;
-            pointerup: (event?: any) => any;
-            pointerleave: (event?: any) => any;
-            wheel: (event?: any) => any;
-        };
+        style(): Record<string, any>;
+        event(): Record<string, any>;
         event_start(event?: any): any;
         event_move(event?: any): any;
         event_end(event?: any): any;
@@ -1492,10 +1454,7 @@ declare namespace $ {
         spacing(): number;
         color_fill(): string;
         dom_name(): string;
-        attr(): {
-            d: string;
-            mol_plot_graph_type: string;
-        };
+        attr(): Record<string, any>;
         sub(): readonly any[];
         Sample(): $mol_plot_graph_sample;
         curve(): string;
@@ -1517,10 +1476,7 @@ declare namespace $ {
     class $mol_plot_dot extends $mol_plot_graph {
         points_max(): number;
         aspect(): number;
-        style(): {
-            "stroke-width": number;
-            color: string;
-        };
+        style(): Record<string, any>;
         sub(): readonly any[];
         Sample(): $mol_plot_graph_sample;
         diameter(): number;
