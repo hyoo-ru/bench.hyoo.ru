@@ -1764,6 +1764,5 @@ var $;
     $mol_jsx_attach($mol_dom_context.document, () => $mol_jsx(List, { id: "list" }));
 })($ || ($ = {}));
 //hyoo/bench/list/moljsx/index.tsx
-;
-export default $
-//# sourceMappingURL=web.mjs.map
+
+//# sourceMappingURL=web.js.map
