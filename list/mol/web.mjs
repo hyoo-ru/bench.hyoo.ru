@@ -3622,4 +3622,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/bench/list/mol/-css/mol.view.css.ts
 
+export default $
 //# sourceMappingURL=web.js.map

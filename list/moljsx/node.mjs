@@ -2362,4 +2362,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/bench/list/moljsx/index.tsx
 
+export default $
 //# sourceMappingURL=node.js.map

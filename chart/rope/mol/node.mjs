@@ -6120,4 +6120,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/bench/chart/rope/mol/-css/mol.view.css.ts
 
+export default $
 //# sourceMappingURL=node.js.map

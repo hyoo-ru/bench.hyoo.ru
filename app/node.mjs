@@ -10719,4 +10719,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/bench/app/-css/app.view.css.ts
 
+export default $
 //# sourceMappingURL=node.js.map

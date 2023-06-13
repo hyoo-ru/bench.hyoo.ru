@@ -1765,4 +1765,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/bench/list/moljsx/index.tsx
 
+export default $
 //# sourceMappingURL=web.js.map
