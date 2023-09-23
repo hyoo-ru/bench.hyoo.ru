@@ -1605,6 +1605,7 @@ declare namespace $ {
         every<Context = null>(check: (this: Context, val: Item, index: number, list: Item[]) => boolean, context?: Context): boolean;
         reverse(): never;
         sort(): never;
+        [Symbol.toPrimitive](): string;
     }
 }
 
