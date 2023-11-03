@@ -1301,9 +1301,6 @@ declare namespace $ {
 declare namespace $ {
     class $mol_plugin extends $mol_view {
         dom_node_external(next?: Element): Element;
-        attr_static(): {
-            [key: string]: string | number | boolean;
-        };
         render(): void;
     }
 }
