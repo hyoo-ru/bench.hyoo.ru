@@ -141,6 +141,7 @@
     "$mol_support",
     "$mol_locale",
     "$mol_state_local",
+    "$mol_storage",
     "$mol_file",
     "$mol_charset_decode",
     "$mol_charset",
