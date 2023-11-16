@@ -138,6 +138,7 @@
     "$mol_style_pseudo",
     "$mol_type_error",
     "$mol_style_sheet",
+    "$mol_gallery",
     "$mol_plot_pane",
     "$mol_svg_root",
     "$mol_touch",

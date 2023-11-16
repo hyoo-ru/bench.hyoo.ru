@@ -188,10 +188,18 @@ $mol_scroll $mol_view
 		^
 		scroll?event <=> event_scroll?event null
 
+$mol_gallery $mol_view
+	sub <= items /$mol_view
+	Side* $mol_gallery
+		style *
+			flexGrow <= side_size* \1
+		items <= side_items* /$mol_view
+
 $mol_chart_legend $mol_scroll
 	graphs /$mol_plot_graph
 	graphs_front /$mol_plot_graph
-	sub <= graph_legends /$mol_view
+	sub /
+		<= Gallery $mol_gallery items <= graph_legends /$mol_view
 	-
 	Graph_legend* $mol_view
 		sub /
@@ -376,8 +384,8 @@ $mol_chart $mol_view
 			gap_top <= gap_top
 			graphs <= graphs
 			graphs_colored => graphs_colored
-			hue_base <= hue_base 140
-			hue_shift <= hue_shift 111
+			hue_base <= hue_base 210
+			hue_shift <= hue_shift 163
 
 $hyoo_bench_chart_bar_mol $mol_view
 	sub /
