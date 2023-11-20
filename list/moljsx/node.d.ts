@@ -324,13 +324,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_const<Value>(value: Value): {
-        (): Value;
-        '()': Value;
-    };
-}
-
-declare namespace $ {
     function $mol_dev_format_register(config: {
         header: (val: any, config: any) => any;
         hasBody: (val: any, config: any) => false;
@@ -356,6 +349,13 @@ declare namespace $ {
     let $mol_dev_format_string: (...args: any[]) => any[];
     let $mol_dev_format_shade: (...args: any[]) => any[];
     let $mol_dev_format_indent: (...args: any[]) => any[];
+}
+
+declare namespace $ {
+    function $mol_const<Value>(value: Value): {
+        (): Value;
+        '()': Value;
+    };
 }
 
 declare namespace $ {
