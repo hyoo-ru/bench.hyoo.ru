@@ -418,6 +418,9 @@ var $;
         toString() {
             return this[Symbol.toStringTag] || this.constructor.name + '()';
         }
+        static toJSON() {
+            return this.$.$mol_func_name(this);
+        }
         toJSON() {
             return this.toString();
         }
