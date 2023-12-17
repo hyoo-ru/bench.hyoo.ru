@@ -150,17 +150,12 @@
     "$mol_charset_encoding",
     "$mol_charset_encode",
     "$mol_compare_array",
-    "$hyoo_lingua_translate",
-    "$hyoo_lingua",
-    "$mol_huggingface",
-    "$mol_fetch",
-    "$mol_action",
-    "$mol_dom_parse",
     "$mol_search",
     "$mol_pop",
     "$mol_hotkey",
     "$mol_nav",
     "$mol_string",
+    "$mol_action",
     "$mol_icon_cross",
     "$mol_dimmer",
     "$mol_paragraph",
@@ -217,7 +212,6 @@
   ],
   "dependencies": {
     "jsdom": "*",
-    "chokidar": "*",
-    "undici": "*"
+    "chokidar": "*"
   }
 }
