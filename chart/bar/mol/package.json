@@ -119,6 +119,7 @@
     "$mol_state",
     "$mol_vector",
     "$mol_svg_title",
+    "$mol_type_enforce",
     "$mol_svg_path",
     "$mol_plot_ruler_vert",
     "$mol_plot_ruler",
