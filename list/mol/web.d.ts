@@ -929,14 +929,14 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__style__RZ46K9DX = $mol_type_enforce<
+	type $mol_view__style__NP1C8C0U = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_before'] >,
 		}) 
 		,
 		ReturnType< $mol_view['style'] >
 	>
-	type $mol_view__style__5JWDX4YA = $mol_type_enforce<
+	type $mol_view__style__D7Z9Y97L = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_after'] >,
 		}) 
@@ -1109,7 +1109,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_speck__value__KEMTYTO3 = $mol_type_enforce<
+	type $mol_speck__value__YFXYGROQ = $mol_type_enforce<
 		ReturnType< $mol_button['error'] >
 		,
 		ReturnType< $mol_speck['value'] >
@@ -1189,7 +1189,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__sub__48D9IR59 = $mol_type_enforce<
+	type $mol_view__sub__OGTULRE8 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -1224,22 +1224,22 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $hyoo_bench_list_mol_row__checked__E0TEY07S = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__checked__1TRPC4TK = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_selected'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['checked'] >
 	>
-	type $hyoo_bench_list_mol_row__title__9F34MX8O = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__title__8RECEQCF = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_title'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['title'] >
 	>
-	type $hyoo_bench_list_mol_row__content__060STTFQ = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__content__C3U6CT2J = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_content'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['content'] >
 	>
-	type $mol_list__rows__AHYY3IWI = $mol_type_enforce<
+	type $mol_list__rows__SB5AN44C = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
@@ -1254,12 +1254,12 @@ declare namespace $ {
 		row_content( id: any): string
 	}
 	
-	type $mol_view__sub__L0BKB6AY = $mol_type_enforce<
+	type $mol_view__sub__8SXEDZUQ = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub__H6901JYM = $mol_type_enforce<
+	type $mol_view__sub__1KOLGB82 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
