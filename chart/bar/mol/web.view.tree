@@ -84,23 +84,22 @@ $mol_plot_graph_sample $mol_view
 		^
 		color <= color \black
 
+$mol_svg_rect $mol_svg
+	dom_name \rect
+	pos /
+	attr *
+		^
+		width <= width \0
+		height <= height \0
+		x <= pos_x \
+		y <= pos_y \
+
 $mol_svg_path $mol_svg
 	dom_name \path
 	attr *
 		^
 		d <= geometry \
 
-
-$mol_plot_bar $mol_plot_graph
-	style *
-		^
-		stroke-width <= stroke_width \1rem
-	sub /
-		<= Hint
-		<= Curve $mol_svg_path
-			geometry <= curve \
-	Sample $mol_plot_graph_sample
-		color <= color
 
 $mol_svg_text $mol_svg
 	dom_name \text
@@ -113,16 +112,6 @@ $mol_svg_text $mol_svg
 		alignment-baseline <= align_vert \baseline
 	sub /
 		<= text \
-
-$mol_svg_rect $mol_svg
-	dom_name \rect
-	pos /
-	attr *
-		^
-		width <= width \0
-		height <= height \0
-		x <= pos_x \
-		y <= pos_y \
 
 $mol_plot_ruler $mol_plot_graph
 	step 0
@@ -387,6 +376,17 @@ $mol_chart $mol_view
 			hue_base <= hue_base 210
 			hue_shift <= hue_shift 163
 
+$mol_plot_bar $mol_plot_graph
+	style *
+		^
+		stroke-width <= stroke_width \1rem
+	sub /
+		<= Hint
+		<= Curve $mol_svg_path
+			geometry <= curve \
+	Sample $mol_plot_graph_sample
+		color <= color
+
 $hyoo_bench_chart_bar_mol $mol_view
 	sub /
 		<= Chart $mol_chart
@@ -399,11 +399,6 @@ $hyoo_bench_chart_bar_mol $mol_view
 	Graph* $mol_plot_bar
 		title <= graph_title* \
 		series_y <= series* /number
-
-$mol_plot_group $mol_plot_graph
-	sub <= graphs_enriched <= graphs /$mol_plot_graph
-	Sample $mol_plot_graph_sample
-		sub <= graph_samples /$mol_view
 
 $mol_plot_line $mol_plot_graph
 	threshold 1
@@ -433,6 +428,11 @@ $mol_plot_dot $mol_plot_graph
 	-
 	Sample $mol_plot_graph_sample
 		color <= color
+
+$mol_plot_group $mol_plot_graph
+	sub <= graphs_enriched <= graphs /$mol_plot_graph
+	Sample $mol_plot_graph_sample
+		sub <= graph_samples /$mol_view
 
 $hyoo_bench_chart_rope_mol $mol_view
 	sub /
