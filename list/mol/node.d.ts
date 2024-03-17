@@ -839,19 +839,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_style_prop_result = Record<string, $mol_style_func<'var'>>;
-    function $mol_style_prop(prefix: string, postfixes: Array<string>): $mol_style_prop_result;
+    function $mol_style_prop<Keys extends string[]>(prefix: string, keys: Keys): Record<Keys[number], $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
-    const $mol_theme: $mol_style_prop_result;
+    const $mol_theme: Record<"image" | "line" | "text" | "focus" | "back" | "hover" | "card" | "current" | "special" | "control" | "shade" | "field", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
 }
 
 declare namespace $ {
-    let $mol_gap: $mol_style_prop_result;
+    let $mol_gap: Record<"text" | "blur" | "block" | "space" | "round", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -1050,14 +1049,14 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__style__I98AKJNH = $mol_type_enforce<
+	type $mol_view__style__LTR8R7QS = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_before'] >,
 		}) 
 		,
 		ReturnType< $mol_view['style'] >
 	>
-	type $mol_view__style__HDBCRKEA = $mol_type_enforce<
+	type $mol_view__style__XT0H73AE = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_after'] >,
 		}) 
@@ -1097,7 +1096,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $mol_layer: $mol_style_prop_result;
+    let $mol_layer: Record<string, $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -1230,7 +1229,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_speck__value__LSUJUMVG = $mol_type_enforce<
+	type $mol_speck__value__NUQ2FUJX = $mol_type_enforce<
 		ReturnType< $mol_button['error'] >
 		,
 		ReturnType< $mol_speck['value'] >
@@ -1314,7 +1313,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__sub__Y76ZA0T7 = $mol_type_enforce<
+	type $mol_view__sub__99J2YOZE = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -1349,22 +1348,22 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_list__rows__QC3423FN = $mol_type_enforce<
+	type $mol_list__rows__TM333YGZ = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $hyoo_bench_list_mol_row__checked__F5U5UBU2 = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__checked__5AWIHS2E = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_selected'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['checked'] >
 	>
-	type $hyoo_bench_list_mol_row__title__MKXHDC4X = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__title__3VVH8R5L = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_title'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['title'] >
 	>
-	type $hyoo_bench_list_mol_row__content__TXB25L4F = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__content__UM48KSRY = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_content'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['content'] >
@@ -1379,12 +1378,12 @@ declare namespace $ {
 		Row( id: any): $hyoo_bench_list_mol_row
 	}
 	
-	type $mol_view__sub__I300DKF1 = $mol_type_enforce<
+	type $mol_view__sub__9ASTACFA = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub__E7UNFCDS = $mol_type_enforce<
+	type $mol_view__sub__6HEH41JC = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >

@@ -1619,6 +1619,7 @@ var $;
                     result = Object.assign(result.then(put, put), {
                         destructor: result['destructor'] ?? (() => { })
                     });
+                    Error.captureStackTrace(result);
                     handled.add(result);
                 }
             }
@@ -1636,6 +1637,7 @@ var $;
                     }), {
                         destructor: result['destructor'] ?? (() => { })
                     });
+                    Error.captureStackTrace(result);
                     handled.add(result);
                 }
             }
