@@ -470,22 +470,11 @@ declare namespace $ {
     var $mol_dom_context: typeof globalThis;
 }
 
-declare namespace $ {
-    export function $mol_wire_sync<Host extends object>(obj: Host): ObjectOrFunctionResultAwaited<Host>;
-    type FunctionResultAwaited<Some> = Some extends (...args: infer Args) => infer Res ? (...args: Args) => Awaited<Res> : Some;
-    type MethodsResultAwaited<Host extends Object> = {
-        [K in keyof Host]: FunctionResultAwaited<Host[K]>;
-    };
-    type ObjectOrFunctionResultAwaited<Some> = (Some extends (...args: any) => unknown ? FunctionResultAwaited<Some> : {}) & (Some extends Object ? MethodsResultAwaited<Some> : Some);
-    export {};
-}
-
 interface $node {
     [key: string]: any;
 }
 declare var $node: $node;
-declare const importAsync: (uri: string) => Promise<any>;
-declare const importSync: ((uri: string) => any) & {};
+declare const cache: Map<string, any>;
 
 declare namespace $ {
     function $mol_env(): Record<string, string | undefined>;
@@ -1061,14 +1050,14 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__style__UVXP5WJ3 = $mol_type_enforce<
+	type $mol_view__style__2B1LVWMW = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_before'] >,
 		}) 
 		,
 		ReturnType< $mol_view['style'] >
 	>
-	type $mol_view__style__UKNKBBV8 = $mol_type_enforce<
+	type $mol_view__style__HE2BE51W = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_after'] >,
 		}) 
@@ -1241,7 +1230,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_speck__value__4R85OPJW = $mol_type_enforce<
+	type $mol_speck__value__S6JPVS1X = $mol_type_enforce<
 		ReturnType< $mol_button['error'] >
 		,
 		ReturnType< $mol_speck['value'] >
@@ -1325,7 +1314,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__sub__13AU91YO = $mol_type_enforce<
+	type $mol_view__sub__R6X18TG5 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -1360,22 +1349,22 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_list__rows__J1AW8ULZ = $mol_type_enforce<
+	type $mol_list__rows__GQ5LBIHN = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $hyoo_bench_list_mol_row__checked__JCVNDG6Q = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__checked__ED22072H = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_selected'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['checked'] >
 	>
-	type $hyoo_bench_list_mol_row__title__SI69QOPT = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__title__GDU8NWWH = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_title'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['title'] >
 	>
-	type $hyoo_bench_list_mol_row__content__XFT3RZTM = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__content__SC3BGWGB = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_content'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['content'] >
@@ -1390,12 +1379,12 @@ declare namespace $ {
 		Row( id: any): $hyoo_bench_list_mol_row
 	}
 	
-	type $mol_view__sub__IATSYFSK = $mol_type_enforce<
+	type $mol_view__sub__B84038MM = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub__AFYTSI1E = $mol_type_enforce<
+	type $mol_view__sub__4Z8W51EA = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
