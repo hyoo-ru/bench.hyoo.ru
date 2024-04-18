@@ -770,14 +770,21 @@ declare namespace $ {
             size?: (BG_size | [BG_size, BG_size])[];
         };
         box?: {
-            shadow?: readonly {
+            shadow?: readonly ([
+                ...[inset: 'inset'] | [],
+                x: Length,
+                y: Length,
+                blur: Length,
+                spread: Length,
+                color: $mol_style_properties_color
+            ] | {
                 inset?: boolean;
                 x: Length;
                 y: Length;
                 blur: Length;
                 spread: Length;
                 color: $mol_style_properties_color;
-            }[] | 'none' | Common;
+            })[] | 'none' | Common;
         };
         font?: {
             style?: 'normal' | 'italic' | Common;
@@ -1050,14 +1057,14 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__style__XIZ3L1UY = $mol_type_enforce<
+	type $mol_view__style__U7RTMZLO = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_before'] >,
 		}) 
 		,
 		ReturnType< $mol_view['style'] >
 	>
-	type $mol_view__style__AMK425HM = $mol_type_enforce<
+	type $mol_view__style__VG7OAP6N = $mol_type_enforce<
 		({ 
 			'paddingTop': ReturnType< $mol_list['gap_after'] >,
 		}) 
@@ -1230,7 +1237,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_speck__value__NP9QEY1R = $mol_type_enforce<
+	type $mol_speck__value__YHMXU6EW = $mol_type_enforce<
 		ReturnType< $mol_button['error'] >
 		,
 		ReturnType< $mol_speck['value'] >
@@ -1314,7 +1321,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $mol_view__sub__6VGQ1IZN = $mol_type_enforce<
+	type $mol_view__sub__NP88IJSM = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -1349,22 +1356,22 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_list__rows__FO5BLU2D = $mol_type_enforce<
+	type $mol_list__rows__LPCF36Z4 = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $hyoo_bench_list_mol_row__checked__F6SCF6OK = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__checked__IB33QYFS = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_selected'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['checked'] >
 	>
-	type $hyoo_bench_list_mol_row__title__724FAP86 = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__title__E7FTOM2C = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_title'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['title'] >
 	>
-	type $hyoo_bench_list_mol_row__content__C186VBLD = $mol_type_enforce<
+	type $hyoo_bench_list_mol_row__content__KHMII0Q1 = $mol_type_enforce<
 		ReturnType< $hyoo_bench_list_mol['row_content'] >
 		,
 		ReturnType< $hyoo_bench_list_mol_row['content'] >
@@ -1379,12 +1386,12 @@ declare namespace $ {
 		Row( id: any): $hyoo_bench_list_mol_row
 	}
 	
-	type $mol_view__sub__J6UBESL2 = $mol_type_enforce<
+	type $mol_view__sub__CHWFYUMR = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub__YIQ8RI49 = $mol_type_enforce<
+	type $mol_view__sub__IERAFIW6 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
