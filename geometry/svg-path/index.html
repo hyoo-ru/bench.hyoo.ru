@@ -39,12 +39,12 @@
 				
 				var count = event.data[ 1 ].count 
 
-				var path = 'M 0 0'
+				var path = 'M 0 0 L '
 				for( var i = 0 ; i < count ; ++i ) {
 					var radius = i / count / 2
 					var angle = i * Math.PI / 100
 					var next = [ radius * Math.cos( angle ) , radius * Math.sin( angle ) ]
-					path += ' L ' + next[0] + ' ' + next[1]
+					path += ' ' + next[0] + ' ' + next[1]
 				}
 
 				picture.appendChild( makeEl( 'path' , { d : path } ) )

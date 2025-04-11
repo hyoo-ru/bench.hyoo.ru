@@ -73,7 +73,7 @@ $mol_plot_graph $mol_svg_group
 	back /$mol_svg
 	Hint $mol_svg_title
 		title <= hint <= title \
-	hue +NaN
+	hue? +NaN
 	Sample null
 
 $mol_plot_graph_sample $mol_view
@@ -167,9 +167,9 @@ $mol_plot_ruler_hor $mol_plot_ruler
 $mol_scroll $mol_view
 	scroll_top? 0
 	scroll_left? 0
-	field *
+	attr *
 		^
-		tabIndex <= tabindex -1
+		tabindex <= tabindex -1
 	event *
 		^
 		scroll?event <=> event_scroll?event null
