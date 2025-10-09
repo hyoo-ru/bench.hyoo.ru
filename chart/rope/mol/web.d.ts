@@ -751,7 +751,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    const $mol_theme: Record<"image" | "line" | "text" | "back" | "field" | "focus" | "hover" | "card" | "current" | "special" | "control" | "shade" | "spirit", $mol_style_func<"var", unknown>>;
+    const $mol_theme: Record<"image" | "line" | "text" | "focus" | "back" | "hover" | "card" | "current" | "special" | "control" | "shade" | "field" | "spirit", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -1074,9 +1074,6 @@ declare namespace $ {
             [key: string]: string | number | boolean | null;
         };
         attr(): {};
-        style_size(): {
-            [key: string]: string | number;
-        };
         style(): {
             [key: string]: string | number;
         };
@@ -2417,7 +2414,7 @@ declare namespace $.$$ {
     class $hyoo_bench_chart_rope_mol extends $.$hyoo_bench_chart_rope_mol {
         static listener(): $mol_dom_listener;
         static data(next?: $hyoo_bench_chart_rope_mol_data): $hyoo_bench_chart_rope_mol_data;
-        graphs(): ($.$mol_plot_graph | $.$mol_plot_group)[];
+        graphs(): $.$mol_plot_graph[];
         graph_title(id: number): string;
         series(id: number): number[];
     }
