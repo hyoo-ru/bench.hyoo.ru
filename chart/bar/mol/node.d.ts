@@ -2715,6 +2715,7 @@ declare namespace $ {
         every<Narrow extends Item, Context = null>(check: (value: Item, index: number, array: Item[]) => value is Narrow, context?: Context): this is Narrow[];
         reverse(): never;
         sort(): never;
+        indexOf(needle: Item): number;
         [Symbol.toPrimitive](): string;
     }
 }
