@@ -159,21 +159,7 @@ var $node = new Proxy({ require }, {
                 $$.$mol_fail_log(e);
             }
         }
-        try {
-            return target.require(name);
-        }
-        catch (error) {
-            if ($$.$mol_promise_like(error))
-                $$.$mol_fail_hidden(error);
-            if (error && typeof error === 'object' && error.code === 'ERR_REQUIRE_ESM') {
-                const module = cache.get(name);
-                if (module)
-                    return module;
-                throw Object.assign(import(name).then(module => cache.set(name, module)), { cause: error });
-            }
-            $$.$mol_fail_log(error);
-            return null;
-        }
+        return target.require(name);
     },
     set(target, name, value) {
         target[name] = value;
@@ -2867,6 +2853,18 @@ var $;
 
 ;
 "use strict";
+
+;
+"use strict";
+
+;
+"use strict";
+
+;
+"use strict";
+
+;
+"use strict";
 var $;
 (function ($_1) {
     function $mol_test(set) {
@@ -3068,18 +3066,11 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_test({
-        'return result without errors'() {
-            $mol_assert_equal($mol_try(() => false), false);
-        },
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => $.$mol_fail_log = () => false);
+    function $mol_dom_serialize(node) {
+        const serializer = new $mol_dom_context.XMLSerializer;
+        return serializer.serializeToString(node);
+    }
+    $.$mol_dom_serialize = $mol_dom_serialize;
 })($ || ($ = {}));
 
 ;
@@ -3095,15 +3086,6 @@ var $;
         $.$mol_log3_area = () => () => { };
     });
 })($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-
-;
-"use strict";
 
 ;
 "use strict";
@@ -3998,16 +3980,20 @@ var $;
 
 ;
 "use strict";
+var $;
+(function ($) {
+    $mol_test({
+        'return result without errors'() {
+            $mol_assert_equal($mol_try(() => false), false);
+        },
+    });
+})($ || ($ = {}));
 
 ;
 "use strict";
 var $;
-(function ($) {
-    function $mol_dom_serialize(node) {
-        const serializer = new $mol_dom_context.XMLSerializer;
-        return serializer.serializeToString(node);
-    }
-    $.$mol_dom_serialize = $mol_dom_serialize;
+(function ($_1) {
+    $mol_test_mocks.push($ => $.$mol_fail_log = () => false);
 })($ || ($ = {}));
 
 ;
