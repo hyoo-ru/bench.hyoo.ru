@@ -184,7 +184,6 @@
     "$mol_range2"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }

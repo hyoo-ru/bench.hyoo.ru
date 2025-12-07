@@ -231,7 +231,6 @@
     "$mol_compare_text"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }

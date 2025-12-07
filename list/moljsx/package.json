@@ -95,7 +95,6 @@
     "$mol_jsx_attach"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }

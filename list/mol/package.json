@@ -162,7 +162,6 @@
     "$mol_button_typed"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }

@@ -178,7 +178,6 @@
     "$mol_plot_group"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }
