@@ -1,0 +1,10 @@
+{
+	"name": "hyoo_bench_list_mol",
+	"short_name": "hyoo_bench_list_mol",
+	"description": "",
+	"id": "hyoo_bench_list_mol",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000"
+}

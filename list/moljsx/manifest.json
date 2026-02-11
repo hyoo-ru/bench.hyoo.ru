@@ -1,0 +1,10 @@
+{
+	"name": "hyoo_bench_list_moljsx",
+	"short_name": "hyoo_bench_list_moljsx",
+	"description": "",
+	"id": "hyoo_bench_list_moljsx",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000"
+}
