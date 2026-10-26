@@ -146,7 +146,8 @@
     "$mol_keyboard",
     "$mol_button_typed",
     "$mol_dom_event",
-    "$mol_action"
+    "$mol_action",
+    "$mol_dom_transfer"
   ],
   "dependencies": {
     "autoinstall": "*",
